@@ -1,0 +1,19 @@
+{% import 'presentation/chapters/02-avant-symfony-ux/_macros.html.twig' as ui %}
+
+<section data-slide-id="02-include">
+    {{ ui.slide_header('2.1', 'Twig include', 'La factorisation basique de markup') }}
+
+<pre><code class="language-twig">{% verbatim %}{# templates/components/_alert.html.twig #}
+<div class="alert alert-{{ type|default('info') }}">
+    {{ message }}
+</div>
+
+{# Utilisation #}
+{{ include('components/_alert.html.twig', {
+    type: 'error',
+    message: 'Oops'
+}) }}
+
+{# Forme stricte (contexte parent isolé) #}
+{% include 'components/_alert.html.twig' with { type: 'warning' } only %}{% endverbatim %}</code></pre>
+</section>

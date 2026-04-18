@@ -1,0 +1,22 @@
+{% import 'presentation/chapters/02-avant-symfony-ux/_macros.html.twig' as ui %}
+
+<section data-slide-id="02-form-type">
+    {{ ui.slide_header('2.5', 'Form Type détourné', 'Widget de form utilisé comme composant') }}
+
+<pre class="r-stretch"><code class="language-php">final class TagPickerType extends AbstractType
+{
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'choices'  => [],
+            'multiple' => true,
+            'attr'     => ['class' => 'tag-picker'],
+        ]);
+    }
+
+    public function getParent(): string
+    {
+        return ChoiceType::class;
+    }
+}</code></pre>
+</section>

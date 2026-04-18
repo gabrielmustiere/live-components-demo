@@ -35,4 +35,11 @@ return [
         'version' => '6.0.1',
         'type' => 'css',
     ],
+    'reveal.js/dist/plugin/highlight.mjs' => [
+        'version' => '6.0.1',
+    ],
+    'reveal.js/dist/plugin/highlight/monokai.css' => [
+        'version' => '6.0.1',
+        'type' => 'css',
+    ],
 ];

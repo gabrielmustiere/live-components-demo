@@ -1,0 +1,25 @@
+{% import 'presentation/chapters/02-avant-symfony-ux/_macros.html.twig' as ui %}
+
+<section data-slide-id="02-macro-bilan">
+    {{ ui.slide_header('2.2', 'Twig macro', 'Bilan') }}
+
+    {{ ui.pros_cons(
+        [
+            'Signature explicite (paramètres + valeurs par défaut)',
+            'Isolation totale du contexte par défaut',
+            'Plus proche d\'un "composant appelable"',
+        ],
+        [
+            'Toujours <strong>100 % Twig</strong>, aucune logique PHP',
+            'Paramètres non typés',
+            'Pas de services injectables (translator, router…)',
+            'Pas de <strong>slots</strong> : on ne passe que des strings',
+        ]
+    ) }}
+
+    {{ ui.verdict(
+        'Progrès réel, mais reste dans le monde Twig pur.
+         Parfait pour des primitives sans logique (bouton, badge).
+         Mal adapté dès qu\'il y a du comportement métier.'
+    ) }}
+</section>

@@ -1,0 +1,20 @@
+{% import 'presentation/chapters/02-avant-symfony-ux/_macros.html.twig' as ui %}
+
+<section data-slide-id="02-form-type-bilan">
+    {{ ui.slide_header('2.5', 'Form Type détourné', 'Bilan') }}
+
+    {{ ui.pros_cons(
+        [
+            'Props via <code>OptionsResolver</code> (validation)',
+            'Logique PHP encapsulée',
+            'Template via <code>form_theme</code>',
+        ],
+        [
+            '<strong>Champs de formulaire uniquement</strong>',
+            'Inutilisable pour Card, Modal, Sidebar…',
+            'Machinerie form détournée pour de l\'affichage',
+        ]
+    ) }}
+
+    {{ ui.verdict('Détournement qui marche, mais pas un modèle composant généraliste.') }}
+</section>

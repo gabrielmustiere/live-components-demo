@@ -1,0 +1,53 @@
+{#
+    Macros partagees du chapitre 02.
+    Objectif : centraliser les patterns visuels repetes (badge slide, paires
+    resout / resout pas, verdicts) pour que chaque slide verticale reste
+    courte et lisible.
+#}
+
+{# Bandeau d'identification d'une slide (numero + titre court)
+   fit_title = true utilise r-fit-text (reveal.js) pour un titre auto-scale #}
+{% macro slide_header(number, title, subtitle = null, fit_title = false) %}
+    <header class="slide-header">
+        <span class="slide-header__number">{{ number }}</span>
+        <h2 class="slide-header__title{% if fit_title %} r-fit-text{% endif %}">{{ title }}</h2>
+        {% if subtitle %}<p class="slide-header__subtitle">{{ subtitle }}</p>{% endif %}
+    </header>
+{% endmacro %}
+
+{# Carte "Ce que ca resout / Ce que ca ne resout pas" — accepte un tableau de strings (HTML autorise) #}
+{% macro pros_cons(pros = [], cons = []) %}
+    <div class="pros-cons">
+        {% if pros|length > 0 %}
+            <div class="pros-cons__col pros-cons__col--pros">
+                <h3>✅ Ce que ça résout</h3>
+                <ul>
+                    {% for item in pros %}<li>{{ item|raw }}</li>{% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if cons|length > 0 %}
+            <div class="pros-cons__col pros-cons__col--cons">
+                <h3>❌ Ce que ça ne résout pas</h3>
+                <ul>
+                    {% for item in cons %}<li>{{ item|raw }}</li>{% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{# Verdict final d'une approche (encart resume) #}
+{% macro verdict(text) %}
+    <blockquote class="verdict">{{ text|raw }}</blockquote>
+{% endmacro %}
+
+{# Cas d'usage legitimes (encart positif, contrebalance des limites) #}
+{% macro legitimate_uses(items) %}
+    <div class="legitimate">
+        <h3>🎯 Cas d'usage légitimes</h3>
+        <ul>
+            {% for item in items %}<li>{{ item|raw }}</li>{% endfor %}
+        </ul>
+    </div>
+{% endmacro %}

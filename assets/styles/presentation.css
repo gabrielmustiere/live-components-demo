@@ -18,7 +18,7 @@
 
 .reveal {
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-size: 36px;
+    font-size: 28px;
     font-weight: 400;
     color: #f9fafb; /* gray-50 */
 }
@@ -62,14 +62,14 @@
     margin: 0 0 0.5em 0;
 }
 
-.reveal h1 { font-size: 2.4em; }
-.reveal h2 { font-size: 1.6em; }
-.reveal h3 { font-size: 1.25em; color: #a5b4fc; /* indigo-300 */ font-weight: 600; }
-.reveal h4 { font-size: 1em; }
+.reveal h1 { font-size: 2.2em; }
+.reveal h2 { font-size: 1.4em; }
+.reveal h3 { font-size: 1.1em; color: #a5b4fc; /* indigo-300 */ font-weight: 600; }
+.reveal h4 { font-size: 0.95em; }
 
 .reveal p {
-    margin: 0.6em 0;
-    line-height: 1.5;
+    margin: 0.5em 0;
+    line-height: 1.45;
     color: #e5e7eb; /* gray-200 */
 }
 
@@ -105,21 +105,34 @@
 
 .reveal pre {
     display: block;
-    margin: 0.8em auto;
-    font-size: 0.55em;
+    margin: 0.6em auto;
+    font-size: 0.5em;
     line-height: 1.4;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     overflow: hidden;
+    width: 100%;
 }
 
 .reveal pre code {
     display: block;
-    padding: 1em;
+    padding: 0.9em 1em;
     background: #030712; /* gray-950 */
     color: #e5e7eb;
     border-radius: 8px;
-    max-height: 70vh;
+    max-height: 65vh;
+    overflow: auto;
+}
+
+/* r-stretch sur un <pre> : force l'adaptation a l'espace vertical restant */
+.reveal pre.r-stretch {
+    max-height: none;
+    margin: 0;
+}
+
+.reveal pre.r-stretch code {
+    height: 100%;
+    max-height: none;
 }
 
 /* Listes */
@@ -130,8 +143,9 @@
 }
 
 .reveal li {
-    margin: 0.3em 0;
+    margin: 0.2em 0;
     color: #e5e7eb;
+    font-size: 0.92em;
 }
 
 .reveal ul li::marker {
@@ -228,6 +242,126 @@
 
 .reveal .btn-primary:active {
     transform: translateY(0);
+}
+
+/* ------------------------------------------------------------------ */
+/* Composants reutilisables des chapitres (macros presentation/*)      */
+/* ------------------------------------------------------------------ */
+
+.reveal .slide-header {
+    margin-bottom: 0.6em;
+}
+
+.reveal .slide-header__number {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.55em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #818cf8;
+    background: rgba(129, 140, 248, 0.12);
+    padding: 0.25em 0.6em;
+    border-radius: 4px;
+    margin-bottom: 0.3em;
+}
+
+.reveal .slide-header__title {
+    margin: 0.1em 0 0 0;
+}
+
+.reveal .slide-header__subtitle {
+    color: #9ca3af;
+    font-size: 0.75em;
+    font-style: italic;
+    margin: 0.2em 0 0 0;
+}
+
+/* Paire resout / resout pas en deux colonnes */
+.reveal .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+    margin: 0.6em 0;
+}
+
+.reveal .pros-cons__col {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding: 0.7em 1em;
+    border-left: 3px solid transparent;
+}
+
+.reveal .pros-cons__col--pros {
+    border-left-color: #22c55e; /* green-500 */
+}
+
+.reveal .pros-cons__col--cons {
+    border-left-color: #ef4444; /* red-500 */
+}
+
+.reveal .pros-cons__col h3 {
+    font-size: 0.8em;
+    color: #f9fafb;
+    margin: 0 0 0.4em 0;
+}
+
+.reveal .pros-cons__col ul {
+    margin: 0 0 0 1em;
+    font-size: 0.62em;
+}
+
+.reveal .pros-cons__col li {
+    margin: 0.15em 0;
+    font-size: 1em;
+}
+
+/* Cas d'usage legitimes (encart positif) */
+.reveal .legitimate {
+    background: rgba(34, 197, 94, 0.06);
+    border-left: 3px solid #22c55e;
+    border-radius: 4px;
+    padding: 0.6em 1em;
+    margin: 0.8em 0 0 0;
+}
+
+.reveal .legitimate h3 {
+    font-size: 0.75em;
+    margin: 0 0 0.3em 0;
+    color: #bbf7d0;
+}
+
+.reveal .legitimate ul {
+    margin: 0 0 0 1em;
+    font-size: 0.65em;
+}
+
+.reveal .legitimate li {
+    font-size: 1em;
+}
+
+/* Verdict (encart resume) */
+.reveal .verdict {
+    font-size: 0.75em;
+    border-left-color: #f59e0b; /* amber-500 */
+    background: rgba(245, 158, 11, 0.06);
+    margin: 0.5em 0 0 0;
+    padding: 0.5em 0.8em;
+}
+
+/* Tableau recap final : polices reduites pour tenir sur une slide */
+.reveal .recap-table {
+    font-size: 0.55em;
+}
+
+.reveal .recap-table td,
+.reveal .recap-table th {
+    text-align: center;
+    padding: 0.35em 0.5em;
+}
+
+.reveal .recap-table td:first-child,
+.reveal .recap-table th:first-child {
+    text-align: left;
 }
 
 /* Media queries preservees par reveal.js pour le mode print */
