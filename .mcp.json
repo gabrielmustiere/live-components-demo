@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["chrome-devtools-mcp@latest"]
+    },
+    "symfony-ai-mate": {
+      "command": "./vendor/bin/mate",
+      "args": ["serve", "--force-keep-alive"]
+    }
+  }
+}

@@ -1,0 +1,9 @@
+proxy:
+    domains:
+        - demo-live-components
+
+workers:
+    mate:
+        cmd: [ 'symfony', 'php', 'vendor/bin/mate', 'serve' ]
+    tailwind:
+        cmd: [ 'symfony', 'console', 'tailwind:build', '--watch' ]
