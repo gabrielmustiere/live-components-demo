@@ -25,23 +25,20 @@ développement.
 ## Installation
 
 1. **Cloner le projet**
-2. **Installer les dépendances**
+2. **Installer les dépendances et démarrer le serveur**
    ```bash
-   symfony composer install
-   npm install
+   make init serve
    ```
-3. **Configurer les variables d'environnement**
+   La cible `init` installe Composer, npm et build Tailwind ; `serve` démarre le serveur Symfony.
+3. **Créer la base de données** (première exécution ou reset complet)
+   ```bash
+   make db-reset
+   ```
+4. **Variables d'environnement** (optionnel)
 
-   Copiez le fichier `.env` en `.env.local` si vous souhaitez surcharger des variables.
-4. **Créer la base de données**
-   ```bash
-   symfony console doctrine:migrations:migrate -n
-   symfony console doctrine:fixtures:load -n
-   ```
-5. **Démarrer le serveur Symfony**
-   ```bash
-   symfony serve
-   ```
+   Copiez le fichier `.env` en `.env.local` pour surcharger des variables.
+
+> 💡 Exécutez `make` (ou `make help`) pour lister toutes les cibles disponibles.
 
 ## Workflow de développement
 
