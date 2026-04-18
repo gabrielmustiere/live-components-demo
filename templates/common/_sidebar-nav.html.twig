@@ -1,0 +1,37 @@
+{% set currentRoute = app.request.attributes.get('_route') %}
+{% set currentSlug = app.request.attributes.get('slug') %}
+
+{% set items = [
+    { route: 'app_page',         label: 'Dashboard',    icon: 'tabler:layout-dashboard' },
+    { route: 'app_presentation', label: 'Présentation', icon: 'tabler:presentation' },
+    { route: 'app_demo',         label: 'Démo Counter', icon: 'tabler:square-plus',  params: { slug: 'counter' }, slug: 'counter' },
+] %}
+
+<nav class="relative flex flex-1 flex-col">
+    <ul role="list" class="-mx-2 space-y-1">
+        {% for item in items %}
+            {% set isActive = item.route == currentRoute and (item.slug is not defined or item.slug == currentSlug) %}
+            <li>
+                <a href="{{ path(item.route, item.params ?? {}) }}"
+                   class="group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold {{ isActive ? 'bg-white/5 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-white' }}">
+                    <twig:ux:icon name="{{ item.icon }}" class="size-6 shrink-0"/>
+                    {{ item.label }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if app.user %}
+        <div class="mt-auto -mx-2 border-t border-white/10 pt-4">
+            <div class="flex items-center gap-x-3 px-2 py-1 text-sm/6 text-gray-400">
+                <twig:ux:icon name="tabler:user-circle" class="size-6 shrink-0 text-gray-500"/>
+                <span class="truncate font-semibold text-white">{{ app.user.userIdentifier }}</span>
+            </div>
+            <a href="{{ path('app_logout') }}"
+               class="group mt-1 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-400 hover:bg-white/5 hover:text-white">
+                <twig:ux:icon name="tabler:logout" class="size-6 shrink-0"/>
+                Déconnexion
+            </a>
+        </div>
+    {% endif %}
+</nav>

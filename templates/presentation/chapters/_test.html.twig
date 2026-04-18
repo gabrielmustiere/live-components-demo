@@ -1,0 +1,38 @@
+{# Chapitre de test — valide l'architecture reveal.js + navigation vers /demo/counter #}
+<section>
+    <section>
+        <h1>Live Components</h1>
+        <h3>Chapitre de test</h3>
+        <p><small>Flèches ← → pour naviguer</small></p>
+    </section>
+
+    <section>
+        <h2>Slide verticale 1</h2>
+        <p>Index <code>#/0/1</code></p>
+        <p>Flèche ↓ pour la suite</p>
+    </section>
+
+    <section data-slide-id="counter-demo">
+        <h2>Démo : le compteur</h2>
+        <p>Un Live Component minimal — ~30 lignes de code.</p>
+        <p>
+            <a
+                href="{{ path('app_demo', { slug: 'counter' }) }}?return=0/2"
+                class="btn-primary"
+            >
+                Lancer la démo
+            </a>
+        </p>
+        <p><small>Retour automatique sur cette slide après la démo.</small></p>
+    </section>
+
+    <section>
+        <h2>Slide verticale 3</h2>
+        <p>On continue après la démo…</p>
+    </section>
+</section>
+
+<section>
+    <h2>Chapitre suivant</h2>
+    <p>Les 12 autres chapitres viendront ici.</p>
+</section>

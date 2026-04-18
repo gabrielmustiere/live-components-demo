@@ -28,4 +28,11 @@ return [
     '@symfony/ux-live-component' => [
         'path' => './vendor/symfony/ux-live-component/assets/dist/live_controller.js',
     ],
+    'reveal.js' => [
+        'version' => '6.0.1',
+    ],
+    'reveal.js/dist/reveal.css' => [
+        'version' => '6.0.1',
+        'type' => 'css',
+    ],
 ];

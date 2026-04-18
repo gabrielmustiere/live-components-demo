@@ -1,0 +1,25 @@
+{% extends 'demo/layout.html.twig' %}
+
+{% block demo_page_title %}Compteur Live{% endblock %}
+{% block demo_title %}Counter{% endblock %}
+
+{% block demo_body %}
+    <h1 class="text-3xl font-bold text-gray-900">Compteur Live Component</h1>
+    <p class="mt-2 text-gray-600">
+        Exemple minimal : un <code>LiveProp</code> + trois <code>LiveAction</code>. Zéro JS écrit à la main.
+    </p>
+
+    <div class="mt-10 rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+        <twig:Counter />
+    </div>
+
+    <section class="mt-10">
+        <h2 class="text-xl font-semibold text-gray-900">Code source</h2>
+        <p class="mt-2 text-sm text-gray-600">
+            Voir
+            <a href="{{ file_link('src/Twig/Components/Counter.php') }}" class="font-mono text-indigo-600 hover:underline"><code>src/Twig/Components/Counter.php</code></a>
+            et
+            <a href="{{ file_link('templates/components/Counter.html.twig') }}" class="font-mono text-indigo-600 hover:underline"><code>templates/components/Counter.html.twig</code></a>.
+        </p>
+    </section>
+{% endblock %}

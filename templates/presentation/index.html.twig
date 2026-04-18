@@ -1,0 +1,12 @@
+{% extends 'presentation/layout.html.twig' %}
+
+{% block presentation_body %}
+    <div
+        class="reveal reveal-stage"
+        data-controller="presentation"
+    >
+        <div class="slides">
+            {% include 'presentation/chapters/_test.html.twig' %}
+        </div>
+    </div>
+{% endblock %}

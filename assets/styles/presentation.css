@@ -1,0 +1,240 @@
+/* Thème reveal.js accordé à la palette Tailwind du projet (gray-900 + indigo) */
+
+/* Conteneur reveal : pleine hauteur moins le padding (ou le header sur mobile) */
+.reveal-stage {
+    width: 100%;
+    height: calc(100dvh - 9rem); /* mobile : header 4rem + main py-10 (5rem) */
+}
+
+@media (min-width: 1024px) {
+    .reveal-stage {
+        height: calc(100dvh - 5rem); /* desktop : main py-10 uniquement */
+    }
+}
+
+.reveal-viewport {
+    background: #101828; /* gray-900 */
+}
+
+.reveal {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 36px;
+    font-weight: 400;
+    color: #f9fafb; /* gray-50 */
+}
+
+.reveal ::selection {
+    background: #818cf8; /* indigo-400 */
+    color: #0b1020;
+    text-shadow: none;
+}
+
+.reveal ::-moz-selection {
+    background: #818cf8;
+    color: #0b1020;
+    text-shadow: none;
+}
+
+.reveal .slides {
+    text-align: left;
+}
+
+.reveal .slides > section,
+.reveal .slides > section > section {
+    line-height: 1.4;
+    font-weight: inherit;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    text-shadow: none;
+    word-wrap: break-word;
+    margin: 0 0 0.5em 0;
+}
+
+.reveal h1 { font-size: 2.4em; }
+.reveal h2 { font-size: 1.6em; }
+.reveal h3 { font-size: 1.25em; color: #a5b4fc; /* indigo-300 */ font-weight: 600; }
+.reveal h4 { font-size: 1em; }
+
+.reveal p {
+    margin: 0.6em 0;
+    line-height: 1.5;
+    color: #e5e7eb; /* gray-200 */
+}
+
+.reveal small {
+    color: #9ca3af; /* gray-400 */
+}
+
+.reveal a {
+    color: #a5b4fc; /* indigo-300 */
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.reveal a:hover {
+    color: #c7d2fe; /* indigo-200 */
+}
+
+.reveal strong,
+.reveal b {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* Code inline + blocs */
+.reveal code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    background: rgba(129, 140, 248, 0.12); /* indigo-400/12 */
+    color: #c7d2fe; /* indigo-200 */
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+    font-size: 0.85em;
+}
+
+.reveal pre {
+    display: block;
+    margin: 0.8em auto;
+    font-size: 0.55em;
+    line-height: 1.4;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.reveal pre code {
+    display: block;
+    padding: 1em;
+    background: #030712; /* gray-950 */
+    color: #e5e7eb;
+    border-radius: 8px;
+    max-height: 70vh;
+}
+
+/* Listes */
+.reveal ul,
+.reveal ol {
+    display: block;
+    margin-left: 1.2em;
+}
+
+.reveal li {
+    margin: 0.3em 0;
+    color: #e5e7eb;
+}
+
+.reveal ul li::marker {
+    color: #818cf8;
+}
+
+/* Citations */
+.reveal blockquote {
+    display: block;
+    background: rgba(255, 255, 255, 0.04);
+    border-left: 3px solid #818cf8;
+    padding: 0.8em 1em;
+    margin: 1em 0;
+    border-radius: 4px;
+    font-style: italic;
+    color: #e5e7eb;
+    box-shadow: none;
+    width: auto;
+}
+
+/* Tableaux */
+.reveal table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 1em 0;
+    width: 100%;
+}
+
+.reveal table th,
+.reveal table td {
+    text-align: left;
+    padding: 0.5em 0.8em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reveal table th {
+    color: #ffffff;
+    font-weight: 600;
+    border-bottom-color: rgba(129, 140, 248, 0.5);
+}
+
+/* Controles reveal */
+.reveal .controls {
+    color: #818cf8;
+}
+
+.reveal .controls button {
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+}
+
+.reveal .controls button:hover {
+    opacity: 1;
+}
+
+/* Barre de progression */
+.reveal .progress {
+    background: rgba(255, 255, 255, 0.08);
+    color: #818cf8;
+    height: 3px;
+}
+
+/* Numero de slide */
+.reveal .slide-number {
+    background: rgba(15, 23, 42, 0.6);
+    color: #c7d2fe;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.6em;
+    padding: 0.3em 0.6em;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+}
+
+/* Bouton d'action (démo, CTA) */
+.reveal .btn-primary {
+    display: inline-block;
+    padding: 0.6em 1.2em;
+    background: #6366f1; /* indigo-500 */
+    color: #ffffff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9em;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.reveal .btn-primary:hover {
+    background: #4f46e5; /* indigo-600 */
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+}
+
+.reveal .btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Media queries preservees par reveal.js pour le mode print */
+@media print {
+    .reveal-viewport,
+    .reveal {
+        background: #ffffff;
+        color: #111827;
+    }
+}

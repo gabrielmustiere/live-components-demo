@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% block demo_page_title %}Démo{% endblock %} — Live Components{% endblock %}
+
+{% block body %}
+    {% set returnHash = app.request.query.get('return') %}
+    <div class="mb-8 flex items-center justify-between gap-4 border-b border-gray-200 pb-4 dark:border-white/10">
+        <div class="flex items-center gap-3">
+            <a
+                href="{{ path('app_presentation') }}{% if returnHash %}#/{{ returnHash }}{% endif %}"
+                class="inline-flex items-center gap-2 rounded-md bg-gray-900 px-3 py-2 text-sm font-semibold text-white hover:bg-gray-700"
+            >
+                <twig:ux:icon name="tabler:arrow-left" class="size-4"/>
+                Retour aux slides
+            </a>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Démo : <strong>{% block demo_title %}{% endblock %}</strong></span>
+        </div>
+        <span class="text-xs text-gray-400 font-mono">{{ app.request.pathInfo }}</span>
+    </div>
+
+    {% block demo_body %}{% endblock %}
+{% endblock %}

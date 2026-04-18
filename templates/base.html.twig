@@ -32,33 +32,11 @@
                 <!-- Sidebar component, swap this element with another sidebar if you like -->
                 <div
                     class="relative flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10 dark:before:pointer-events-none dark:before:absolute dark:before:inset-0 dark:before:bg-black/10">
-                    <div class="relative flex h-16 shrink-0 items-center">
-                        <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                             alt="Your Company" class="h-8 w-auto"/>
+                    <div class="relative flex h-16 shrink-0 items-center gap-x-2 text-white">
+                        <twig:ux:icon name="tabler:bolt" class="size-7 text-indigo-400"/>
+                        <span class="text-sm font-semibold">Live Components Demo</span>
                     </div>
-                    <nav class="relative flex flex-1 flex-col">
-                        <ul role="list" class="flex flex-1 flex-col gap-y-7">
-                            <li>
-                                <ul role="list" class="-mx-2 space-y-1">
-                                    <li>
-                                        <!-- Current: "bg-white/5 text-white", Default: "text-gray-400 hover:text-white hover:bg-white/5" -->
-                                        <a href="#"
-                                           class="group flex gap-x-3 rounded-md bg-white/5 p-2 text-sm/6 font-semibold text-white">
-                                            <twig:ux:icon name="tabler:layout-dashboard" class="size-6 shrink-0"/>
-                                            Dashboard
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="mt-auto">
-                                <a href="#"
-                                   class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-400 hover:bg-white/5 hover:text-white">
-                                    <twig:ux:icon name="tabler:settings" class="size-6 shrink-0"/>
-                                    Settings
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                    {% include 'common/_sidebar-nav.html.twig' %}
                 </div>
             </el-dialog-panel>
         </div>
@@ -69,89 +47,25 @@
 <div class="hidden bg-gray-900 ring-1 ring-white/10 lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
     <!-- Sidebar component, swap this element with another sidebar if you like -->
     <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-black/10 px-6 pb-4">
-        <div class="flex h-16 shrink-0 items-center">
-            <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company"
-                 class="h-8 w-auto"/>
+        <div class="flex h-16 shrink-0 items-center gap-x-2 text-white">
+            <twig:ux:icon name="tabler:bolt" class="size-7 text-indigo-400"/>
+            <span class="text-sm font-semibold">Live Components Demo</span>
         </div>
-        <nav class="flex flex-1 flex-col">
-            <ul role="list" class="flex flex-1 flex-col gap-y-7">
-                <li>
-                    <ul role="list" class="-mx-2 space-y-1">
-                        <li>
-                            <!-- Current: "bg-white/5 text-white", Default: "text-gray-400 hover:text-white hover:bg-white/5" -->
-                            <a href="#"
-                               class="group flex gap-x-3 rounded-md bg-white/5 p-2 text-sm/6 font-semibold text-white">
-                                <twig:ux:icon name="tabler:layout-dashboard" class="size-6 shrink-0"/>
-                                Dashboard
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="mt-auto">
-                    <a href="#"
-                       class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-400 hover:bg-white/5 hover:text-white">
-                        <twig:ux:icon name="tabler:settings" class="size-6 shrink-0"/>
-                        Settings
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        {% include 'common/_sidebar-nav.html.twig' %}
     </div>
 </div>
 
 <div class="lg:pl-72">
     <div
-        class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8 dark:border-white/10 dark:bg-gray-900">
+        class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-xs sm:px-6 lg:hidden dark:border-white/10 dark:bg-gray-900">
         <button type="button" command="show-modal" commandfor="sidebar"
-                class="-m-2.5 p-2.5 text-gray-700 hover:text-gray-900 lg:hidden dark:text-gray-400 dark:hover:text-white">
-            <span class="sr-only">Open sidebar</span>
+                class="-m-2.5 p-2.5 text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+            <span class="sr-only">Ouvrir la navigation</span>
             <twig:ux:icon name="tabler:menu-2" class="size-6"/>
         </button>
-
-        <!-- Separator -->
-        <div aria-hidden="true" class="h-6 w-px bg-gray-900/10 lg:hidden dark:bg-white/10"></div>
-
-        <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-            <form action="#" method="GET" class="grid flex-1 grid-cols-1">
-                <input name="search" placeholder="Search" aria-label="Search"
-                       class="col-start-1 row-start-1 block size-full bg-white pl-8 text-base text-gray-900 outline-hidden placeholder:text-gray-400 sm:text-sm/6 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500"/>
-                <twig:ux:icon name="tabler:search"
-                              class="pointer-events-none col-start-1 row-start-1 size-5 self-center text-gray-400"/>
-            </form>
-            <div class="flex items-center gap-x-4 lg:gap-x-6">
-                <button type="button"
-                        class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300">
-                    <span class="sr-only">View notifications</span>
-                    <twig:ux:icon name="tabler:bell" class="size-6"/>
-                </button>
-
-                <!-- Separator -->
-                <div aria-hidden="true"
-                     class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10 dark:lg:bg-gray-100/10"></div>
-
-                <!-- Profile dropdown -->
-                <el-dropdown class="relative">
-                    <button class="relative flex items-center">
-                        <span class="absolute -inset-1.5"></span>
-                        <span class="sr-only">Open user menu</span>
-                        <img
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            alt=""
-                            class="size-8 rounded-full bg-gray-50 outline -outline-offset-1 outline-black/5 dark:bg-gray-800 dark:outline-white/10"/>
-                        <span class="hidden lg:flex lg:items-center">
-              <span aria-hidden="true"
-                    class="ml-4 text-sm/6 font-semibold text-gray-900 dark:text-white">Tom Cook</span>
-              <twig:ux:icon name="tabler:chevron-down" class="ml-2 size-5 text-gray-400 dark:text-gray-500"/>
-            </span>
-                    </button>
-                    <el-menu anchor="bottom end" popover
-                             class="w-32 origin-top-right rounded-md bg-white py-2 shadow-lg outline outline-gray-900/5 transition transition-discrete [--anchor-gap:--spacing(2.5)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
-                        <a href="#"
-                           class="block px-3 py-1 text-sm/6 text-gray-900 focus:bg-gray-50 focus:outline-hidden dark:text-white dark:focus:bg-white/5">Sign
-                            out</a>
-                    </el-menu>
-                </el-dropdown>
-            </div>
+        <div class="flex items-center gap-x-2 text-gray-900 dark:text-white">
+            <twig:ux:icon name="tabler:bolt" class="size-6 text-indigo-500 dark:text-indigo-400"/>
+            <span class="text-sm font-semibold">Live Components Demo</span>
         </div>
     </div>
 
