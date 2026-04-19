@@ -1,0 +1,43 @@
+{% import 'presentation/chapters/02-avant-symfony-ux/_macros.html.twig' as ui %}
+
+<section data-slide-id="02-twig-pur">
+    {{ ui.slide_header('2.1', 'Twig pur', 'include & macro — factorisation du markup') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>include</h3>
+<pre><code class="language-twig">{% verbatim %}{# _alert.html.twig #}
+<div class="alert alert-{{ type }}">
+    {{ message }}
+</div>
+
+{# Appel (contexte isolé) #}
+{% include '_alert.html.twig'
+    with { type: 'error', message: 'Oops' } only %}{% endverbatim %}</code></pre>
+        </div>
+
+        <div class="code-split__col">
+            <h3>macro</h3>
+<pre><code class="language-twig">{% verbatim %}{# ui.html.twig #}
+{% macro button(label, variant = 'primary') %}
+    <button class="btn btn-{{ variant }}">{{ label }}</button>
+{% endmacro %}
+
+{# Appel #}
+{% import 'ui.html.twig' as ui %}
+{{ ui.button('Acheter', 'success') }}{% endverbatim %}</code></pre>
+        </div>
+    </div>
+
+    {{ ui.pros_cons(
+        [
+            'Factorisation du <strong>markup répété</strong>',
+            'Template séparé, lisible, testable',
+        ],
+        [
+            '<strong>Zéro logique PHP</strong> — tout reste dans Twig',
+            'Pas de props typées, pas de validation, pas d\'état',
+            '<code>include</code> : fuite de contexte si on oublie <code>only</code> · <code>macro</code> : pas de slots',
+        ]
+    ) }}
+</section>

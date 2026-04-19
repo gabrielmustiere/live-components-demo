@@ -348,6 +348,29 @@
     padding: 0.5em 0.8em;
 }
 
+/* Deux blocs de code cote a cote (ex. include + macro, twig ext + form type) */
+.reveal .code-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8em;
+    margin: 0.4em 0;
+}
+
+.reveal .code-split__col h3 {
+    font-size: 0.65em;
+    color: #c7d2fe;
+    margin: 0 0 0.3em 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.reveal .code-split pre {
+    margin: 0;
+}
+
+.reveal .code-split pre code {
+    font-size: 0.55em;
+}
+
 /* Tableau recap final : polices reduites pour tenir sur une slide */
 .reveal .recap-table {
     font-size: 0.55em;

@@ -1,0 +1,31 @@
+{% import 'presentation/chapters/02-avant-symfony-ux/_macros.html.twig' as ui %}
+
+<section data-slide-id="02-render-controller">
+    {{ ui.slide_header('2.2', 'render(controller(...))', 'Le "composant" via sous-requête HTTP') }}
+
+<pre><code class="language-twig">{% verbatim %}{{ render(controller('App\\Controller\\CartController::miniCart')) }}{% endverbatim %}</code></pre>
+
+<pre><code class="language-php">public function miniCart(CartRepository $carts, Security $security): Response
+{
+    $cart = $carts->findCurrentFor($security->getUser());
+
+    return $this->render('cart/_mini_cart.html.twig', [
+        'itemCount' => $cart->count(),
+        'total'     => $cart->total(),
+    ]);
+}</code></pre>
+
+    {{ ui.pros_cons(
+        [
+            '<strong>Vraie logique PHP</strong> (DI, services, repositories)',
+            'Cache indépendant possible via ESI',
+        ],
+        [
+            '<strong>Sous-requête HTTP complète</strong> à chaque rendu (event subscribers rejoués, session rouverte)',
+            'Coût qui <strong>explose</strong> avec 10–15 fragments par page',
+            'Pas de props typées, pas d\'état, DX éclatée (contrôleur + template)',
+        ]
+    ) }}
+
+    {{ ui.verdict('Utile pour les fragments à TTL spécifique (ESI) ou en lazy (<code>render_hinclude</code>) — pas comme modèle composant.') }}
+</section>
