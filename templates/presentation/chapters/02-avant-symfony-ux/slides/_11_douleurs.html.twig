@@ -1,0 +1,27 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="02-douleurs">
+    {{ ui.slide_header('2.9', 'Trois douleurs transversales', 'Ce qui manque vraiment, derrière la grille') }}
+
+    <ol>
+        <li>
+            <strong>Pas de contrat de typage</strong> entre la vue et ses données d'entrée.
+            <br><small>Pas d'autocomplétion, pas d'erreur statique, refactor dangereux.</small>
+        </li>
+        <li>
+            <strong>Pas d'unité d'organisation</strong> naturelle.
+            <br><small>Logique, markup et comportement dispersés sur 3–4 fichiers dans des dossiers différents.</small>
+        </li>
+        <li>
+            <strong>Pas de réactivité server-driven</strong>.
+            <br><small>Pour un comportement qui dépend de l'état serveur, on sort de Symfony et on réimplémente côté client.</small>
+        </li>
+    </ol>
+
+    <blockquote class="verdict">
+        Symfony UX attaque cette triple douleur en deux temps :
+        <br>
+        <strong>Twig Components</strong> (unité + props typées) ·
+        <strong>Live Components</strong> (réactivité server-driven).
+    </blockquote>
+</section>

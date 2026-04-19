@@ -1,21 +1,9 @@
 {#
-    Macros partagees du chapitre 02.
-    Objectif : centraliser les patterns visuels repetes (badge slide, paires
-    resout / resout pas, verdicts) pour que chaque slide verticale reste
-    courte et lisible.
+    Macros locales au chapitre 02.
+    `slide_header` vit dans presentation/_macros.html.twig — on ne le redéfinit pas ici.
 #}
 
-{# Bandeau d'identification d'une slide (numero + titre court)
-   fit_title = true utilise r-fit-text (reveal.js) pour un titre auto-scale #}
-{% macro slide_header(number, title, subtitle = null, fit_title = false) %}
-    <header class="slide-header">
-        <span class="slide-header__number">{{ number }}</span>
-        <h2 class="slide-header__title{% if fit_title %} r-fit-text{% endif %}">{{ title }}</h2>
-        {% if subtitle %}<p class="slide-header__subtitle">{{ subtitle }}</p>{% endif %}
-    </header>
-{% endmacro %}
-
-{# Carte "Ce que ca resout / Ce que ca ne resout pas" — accepte un tableau de strings (HTML autorise) #}
+{# Deux colonnes "Ce que ça résout / Ce que ça ne résout pas". HTML autorisé via |raw. #}
 {% macro pros_cons(pros = [], cons = []) %}
     <div class="pros-cons">
         {% if pros|length > 0 %}
@@ -37,12 +25,12 @@
     </div>
 {% endmacro %}
 
-{# Verdict final d'une approche (encart resume) #}
+{# Encart ambre de conclusion pour chaque approche. #}
 {% macro verdict(text) %}
     <blockquote class="verdict">{{ text|raw }}</blockquote>
 {% endmacro %}
 
-{# Cas d'usage legitimes (encart positif, contrebalance des limites) #}
+{# Encart vert "cas d'usage encore pertinents aujourd'hui". #}
 {% macro legitimate_uses(items) %}
     <div class="legitimate">
         <h3>🎯 Cas d'usage légitimes</h3>

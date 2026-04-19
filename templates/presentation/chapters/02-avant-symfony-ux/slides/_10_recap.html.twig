@@ -1,0 +1,31 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+{% import 'presentation/chapters/02-avant-symfony-ux/_macros.html.twig' as card %}
+
+<section data-slide-id="02-recap">
+    {{ ui.slide_header('2.8', 'Tableau récapitulatif', 'Aucune ligne ne coche toutes les cases') }}
+
+    <table class="recap-table">
+        <thead>
+            <tr>
+                <th>Approche</th>
+                <th>Logique PHP</th>
+                <th>Tpl séparé</th>
+                <th>Props typées</th>
+                <th>État</th>
+                <th>Perf</th>
+                <th>Interactif</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td><code>include</code></td>           <td>❌</td><td>✅</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td></tr>
+            <tr><td><code>macro</code></td>             <td>❌</td><td>✅</td><td>⚠️</td><td>❌</td><td>✅</td><td>❌</td></tr>
+            <tr><td><code>render(controller)</code></td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td></tr>
+            <tr><td>Twig extension</td>                 <td>⚠️</td><td>⚠️</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td></tr>
+            <tr><td>Form Type détourné</td>             <td>✅</td><td>✅</td><td>⚠️</td><td>❌</td><td>✅</td><td>❌</td></tr>
+            <tr><td>Template + Stimulus</td>            <td>❌</td><td>✅</td><td>❌</td><td>⚠️ client</td><td>✅</td><td>✅</td></tr>
+            <tr><td>HTML concaténé</td>                 <td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td></tr>
+        </tbody>
+    </table>
+
+    {{ card.verdict('« On bricolait des composants… sans vrai modèle de composant. »') }}
+</section>
