@@ -1,13 +1,33 @@
 {% extends 'presentation/layout.html.twig' %}
 
+{#
+    Structure reveal.js de la présentation.
+    - 1 slide 0 de couverture (titre général).
+    - 13 chapitres, chacun dans son dossier `chapters/XX-slug/`.
+    - L'ordre des include ci-dessous = l'ordre de navigation avec ← →.
+    - Seul le chapitre 2 est entièrement implémenté ; les autres n'exposent
+      pour l'instant que leur slide titre (à enrichir progressivement).
+#}
 {% block presentation_body %}
     <div
         class="reveal reveal-stage"
         data-controller="presentation"
     >
         <div class="slides">
-            {% include 'presentation/chapters/_test.html.twig' %}
+            {% include 'presentation/_cover.html.twig' %}
+            {% include 'presentation/chapters/01-introduction/_chapter.html.twig' %}
             {% include 'presentation/chapters/02-avant-symfony-ux/_chapter.html.twig' %}
+            {% include 'presentation/chapters/03-modele-moderne-frameworks-js/_chapter.html.twig' %}
+            {% include 'presentation/chapters/04-symfony-ux-vision/_chapter.html.twig' %}
+            {% include 'presentation/chapters/05-twig-components/_chapter.html.twig' %}
+            {% include 'presentation/chapters/06-live-components/_chapter.html.twig' %}
+            {% include 'presentation/chapters/07-cycle-de-vie/_chapter.html.twig' %}
+            {% include 'presentation/chapters/08-comparaison/_chapter.html.twig' %}
+            {% include 'presentation/chapters/09-cas-usage/_chapter.html.twig' %}
+            {% include 'presentation/chapters/10-avantages-limites/_chapter.html.twig' %}
+            {% include 'presentation/chapters/11-demo-live/_chapter.html.twig' %}
+            {% include 'presentation/chapters/12-positionnement-strategique/_chapter.html.twig' %}
+            {% include 'presentation/chapters/13-conclusion/_chapter.html.twig' %}
         </div>
     </div>
 {% endblock %}

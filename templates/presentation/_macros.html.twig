@@ -1,0 +1,14 @@
+{#
+    Macros transverses à toute la présentation.
+    Les macros spécifiques à un chapitre restent dans le dossier du chapitre.
+#}
+
+{# Bandeau d'identification (numero + titre court + sous-titre optionnel).
+   fit_title = true utilise r-fit-text (reveal.js) pour un titre auto-scale. #}
+{% macro slide_header(number, title, subtitle = null, fit_title = false) %}
+    <header class="slide-header">
+        <span class="slide-header__number">{{ number }}</span>
+        <h2 class="slide-header__title{% if fit_title %} r-fit-text{% endif %}">{{ title }}</h2>
+        {% if subtitle %}<p class="slide-header__subtitle">{{ subtitle }}</p>{% endif %}
+    </header>
+{% endmacro %}
