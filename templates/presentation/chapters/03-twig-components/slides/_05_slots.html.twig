@@ -1,0 +1,53 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="03-slots">
+    {{ ui.slide_header('3.4', 'Slots : du contenu dans un composant', 'L\'équivalent de children / slots Vue') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>Slot principal</h3>
+<pre><code class="language-twig">{% verbatim %}{# Card.html.twig #}
+<div {{ attributes.defaults({class: 'card'}) }}>
+    <div class="card-body">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+{# Utilisation #}
+<twig:Card class="card-featured">
+    <h3>Mon produit</h3>
+    <p>Description <strong>HTML</strong></p>
+</twig:Card>{% endverbatim %}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>Slots nommés</h3>
+<pre><code class="language-twig">{% verbatim %}{# Modal.html.twig #}
+<div class="modal">
+    <div class="modal-header">
+        {% block header %}{% endblock %}
+    </div>
+    <div class="modal-body">
+        {% block content %}{% endblock %}
+    </div>
+    <div class="modal-footer">
+        {% block footer %}
+            <button>Fermer</button>
+        {% endblock %}
+    </div>
+</div>
+
+{# Utilisation #}
+<twig:Modal>
+    <twig:block name="header">
+        <h2>Confirmer</h2>
+    </twig:block>
+    Voulez-vous supprimer ?
+</twig:Modal>{% endverbatim %}</code></pre>
+        </div>
+    </div>
+
+    <p><small>
+        Le contenu sans <code>twig:block</code> atterrit dans <code>block content</code>.
+        Chaque slot nommé peut avoir un <strong>contenu par défaut</strong>.
+    </small></p>
+</section>

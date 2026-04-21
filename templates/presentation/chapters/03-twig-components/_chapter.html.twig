@@ -1,14 +1,23 @@
 {#
     Chapitre 03 — Twig Components : le socle.
-#}
-{% import 'presentation/_macros.html.twig' as ui %}
 
+    Structure : classe PHP + template Twig = composant réutilisable.
+    Props typées, slots, services injectables, cycle de vie.
+    Pas de démo interactive (statique par design) — Live Components au chapitre 4.
+#}
 <section
     data-chapter="03"
     data-chapter-title="Twig Components"
 >
-    <section data-slide-id="03-intro">
-        {{ ui.slide_header('Chapitre 3', 'Twig Components', 'Le socle') }}
-        <p><small>À venir…</small></p>
-    </section>
+    {% include 'presentation/chapters/03-twig-components/slides/_01_intro.html.twig' %}
+    {% include 'presentation/chapters/03-twig-components/slides/_02_definition.html.twig' %}
+    {% include 'presentation/chapters/03-twig-components/slides/_03_anatomie.html.twig' %}
+    {% include 'presentation/chapters/03-twig-components/slides/_04_props.html.twig' %}
+    {% include 'presentation/chapters/03-twig-components/slides/_05_slots.html.twig' %}
+    {% include 'presentation/chapters/03-twig-components/slides/_06_services_mount.html.twig' %}
+    {% include 'presentation/chapters/03-twig-components/slides/_07_lifecycle.html.twig' %}
+    {% include 'presentation/chapters/03-twig-components/slides/_08_anonymes.html.twig' %}
+    {% include 'presentation/chapters/03-twig-components/slides/_09_gotchas.html.twig' %}
+    {% include 'presentation/chapters/03-twig-components/slides/_10_recap.html.twig' %}
+    {% include 'presentation/chapters/03-twig-components/slides/_11_transition.html.twig' %}
 </section>

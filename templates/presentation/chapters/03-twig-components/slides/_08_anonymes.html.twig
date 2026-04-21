@@ -1,0 +1,46 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="03-anonymes">
+    {{ ui.slide_header('3.7', 'Composants anonymes', 'Zéro classe PHP requise') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>templates/components/Badge.html.twig</h3>
+<pre><code class="language-twig">{% verbatim %}{% props color = 'gray', label %}
+
+<span {{ attributes.defaults({
+    class: 'badge badge-' ~ color
+}) }}>
+    {{ label }}
+</span>{% endverbatim %}</code></pre>
+
+<pre><code class="language-twig">{% verbatim %}{# Utilisation — comme un composant PHP #}
+<twig:Badge label="Nouveau" color="green" />
+<twig:Badge
+    label="{{ product.status.label }}"
+    :color="product.status.color"
+/>{% endverbatim %}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>Convention de nommage</h3>
+<pre><code class="language-text">components/Button/Primary.html.twig
+→ &lt;twig:Button:Primary /&gt;
+
+components/Menu/index.html.twig
+→ &lt;twig:Menu /&gt;</code></pre>
+
+            <div class="legitimate">
+                <h3>🎯 Quand utiliser</h3>
+                <ul>
+                    <li>Primitives UI sans logique : Badge, Icon, Spinner</li>
+                    <li>Markup pur avec props simples</li>
+                    <li>Prototype rapide avant une classe PHP</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <p><small>
+        <code>{{ '{% props %}' }}</code> = l'équivalent Twig de <code>public string $color = 'gray'</code>
+    </small></p>
+</section>

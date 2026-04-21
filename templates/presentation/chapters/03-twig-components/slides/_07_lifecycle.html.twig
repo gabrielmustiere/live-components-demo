@@ -1,0 +1,52 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="03-lifecycle">
+    {{ ui.slide_header('3.6', 'Cycle de vie', '#[PreMount] · #[PostMount] · template dynamique') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>#[PreMount] — valider avant assignation</h3>
+<pre><code class="language-php">#[PreMount]
+public function preMount(array $data): array
+{
+    $resolver = new OptionsResolver();
+    $resolver->setDefaults(['type' => 'info']);
+    $resolver->setAllowedValues(
+        'type', ['info', 'success', 'warning', 'danger']
+    );
+    $resolver->setRequired('message');
+
+    return $resolver->resolve($data) + $data;
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>#[PostMount] — après assignation</h3>
+<pre><code class="language-php">#[PostMount]
+public function postMount(array $data): array
+{
+    if ($this->loading) {
+        $data['disabled'] = true;
+    }
+    return $data;
+}</code></pre>
+
+            <h3>Template dynamique</h3>
+<pre><code class="language-php">#[AsTwigComponent(
+    template: new FromMethod('getTemplateName')
+)]
+final class Button
+{
+    public string $tag = 'button';
+
+    public function getTemplateName(): string
+    {
+        return match ($this->tag) {
+            'a'      => 'components/Button/link.html.twig',
+            'submit' => 'components/Button/submit.html.twig',
+            default  => 'components/Button/button.html.twig',
+        };
+    }
+}</code></pre>
+        </div>
+    </div>
+</section>

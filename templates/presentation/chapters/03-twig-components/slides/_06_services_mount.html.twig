@@ -1,0 +1,48 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="03-services-mount">
+    {{ ui.slide_header('3.5', 'Services, méthodes calculées, mount()', 'La logique PHP au service du template') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>Services injectables + computed.</h3>
+<pre><code class="language-php">#[AsTwigComponent]
+final class RecentOrders
+{
+    public User $user;
+    public int  $limit = 5;
+
+    public function __construct(
+        private readonly OrderRepository $orders
+    ) {}
+
+    public function results(): array
+    {
+        return $this->orders
+            ->findRecentFor($this->user, $this->limit);
+    }
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>computed. vs this.</h3>
+<pre><code class="language-twig">{% verbatim %}{# ❌ this. — appelé à chaque accès #}
+{% for order in this.results %}
+{# 2e accès → 2e requête SQL #}
+{% endfor %}
+
+{# ✅ computed. — mis en cache #}
+{% for order in computed.results %}
+{# 2e accès → retourne le cache #}
+{% endfor %}{% endverbatim %}</code></pre>
+
+            <h3>mount() — initialisation complexe</h3>
+<pre><code class="language-php">public function mount(
+    string|\DateTimeImmutable $start,
+): void {
+    $this->start = is_string($start)
+        ? new \DateTimeImmutable($start)
+        : $start;
+}</code></pre>
+        </div>
+    </div>
+</section>

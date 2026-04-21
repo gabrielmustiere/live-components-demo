@@ -1,0 +1,36 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="03-anatomie">
+    {{ ui.slide_header('3.2', 'Anatomie d\'un composant', 'Deux fichiers, zéro configuration') }}
+
+    <p><code>src/Twig/Components/Alert.php</code> &nbsp;+&nbsp; <code>templates/components/Alert.html.twig</code></p>
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>Alert.php</h3>
+<pre><code class="language-php">#[AsTwigComponent]
+final class Alert
+{
+    public string $message = '';
+    public string $type    = 'info';
+    public bool   $dismissible = false;
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>Alert.html.twig</h3>
+<pre><code class="language-twig">{% verbatim %}<div {{ attributes.defaults({
+    class: 'alert alert-' ~ type
+}) }}>
+    {% if dismissible %}
+        <button class="alert-close">×</button>
+    {% endif %}
+    {{ message }}
+</div>{% endverbatim %}</code></pre>
+        </div>
+    </div>
+
+    <p><small>
+        <code class="language-twig">{{ '{{ attributes }}' }}</code> — capture tous les attributs HTML extra passés depuis l'appelant
+        (<code>id</code>, <code>data-*</code>…) et les fusionne sur l'élément racine.
+    </small></p>
+</section>

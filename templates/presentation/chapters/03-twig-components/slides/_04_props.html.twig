@@ -1,0 +1,46 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="03-props">
+    {{ ui.slide_header('3.3', 'Props : le contrat d\'entrée', 'Propriétés publiques PHP typées') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>Props publiques</h3>
+<pre><code class="language-php">#[AsTwigComponent]
+final class ProductCard
+{
+    public string  $name     = '';
+    public int     $price    = 0;
+    public bool    $inStock  = true;
+    public ?string $imageUrl = null;
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>#[ExposeInTemplate]</h3>
+<pre><code class="language-php">#[AsTwigComponent]
+final class UserAvatar
+{
+    public User $user;
+
+    #[ExposeInTemplate]
+    private string $initials = '';
+
+    #[PostMount]
+    public function postMount(): void
+    {
+        $this->initials = strtoupper(
+            substr($this->user->getName(), 0, 2)
+        );
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <blockquote class="verdict">
+        ⚠️ <strong>Piège booleans</strong> — toujours utiliser <code>:prop</code> pour passer <code>false</code>
+        <br>
+        <code>&lt;twig:Alert dismissible="false" /&gt;</code> → string <code>'false'</code> = <strong>truthy</strong> ❌
+        <br>
+        <code>&lt;twig:Alert :dismissible="false" /&gt;</code> → booléen PHP <code>false</code> ✅
+    </blockquote>
+</section>

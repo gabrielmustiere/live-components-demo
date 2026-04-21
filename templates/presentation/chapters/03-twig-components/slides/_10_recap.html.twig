@@ -1,0 +1,53 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="03-recap">
+    {{ ui.slide_header('3.9', 'Récap : les douleurs du chapitre 1', 'Ce que Twig Components résout — et ce qu\'il laisse ouvert') }}
+
+    <table class="recap-table">
+        <thead>
+            <tr>
+                <th>Critère</th>
+                <th>Twig Components</th>
+                <th>Commentaire</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Encapsulation logique</strong></td>
+                <td>✅</td>
+                <td>Classe PHP avec services injectables</td>
+            </tr>
+            <tr>
+                <td><strong>Template séparé</strong></td>
+                <td>✅</td>
+                <td><code>Alert.html.twig</code> dédié, colocalisé</td>
+            </tr>
+            <tr>
+                <td><strong>Props typées</strong></td>
+                <td>✅</td>
+                <td>Propriétés PHP + <code>#[ExposeInTemplate]</code></td>
+            </tr>
+            <tr>
+                <td><strong>État interne</strong></td>
+                <td>❌</td>
+                <td>Instance fraîche à chaque rendu</td>
+            </tr>
+            <tr>
+                <td><strong>Performance</strong></td>
+                <td>✅</td>
+                <td>Même requête HTTP, aucun overhead</td>
+            </tr>
+            <tr>
+                <td><strong>Interactivité</strong></td>
+                <td>❌</td>
+                <td>Rendu statique uniquement</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <blockquote class="verdict">
+        <strong>Deux cases vides — c'est voulu.</strong>
+        Twig Components résout les douleurs 1 et 2 (typage, organisation).
+        Il ne prétend pas résoudre la réactivité : c'est Live Components.
+    </blockquote>
+</section>
