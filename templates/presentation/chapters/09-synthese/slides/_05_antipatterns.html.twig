@@ -1,0 +1,54 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="09-antipatterns">
+    {{ ui.slide_header('9.2', '5 anti-patterns à reconnaître', 'En code review, en 30 secondes') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <table class="recap-table">
+                <thead><tr><th>#</th><th>Anti-pattern</th><th>Fix</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Entité Doctrine complète en <code>LiveProp</code></td>
+                        <td>Passer l'ID, recharger côté serveur</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Plusieurs <code>LiveAction</code> enchaînées sur un clic</td>
+                        <td>Une seule action qui fait les étapes</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Live Component sans <code>LiveProp writable</code> ni <code>LiveAction</code></td>
+                        <td>C'est un Twig Component — économiser l'hydratation</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Slider, WYSIWYG, canvas en Live</td>
+                        <td>Stimulus pur ou lib client dédiée</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>5 Live Components imbriqués sans profiler ouvert</td>
+                        <td>Ouvrir le profiler Symfony, inspecter les <code>POST /_components/*</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="code-split__col">
+            <h3>Grille de décision rapide</h3>
+            <table class="recap-table">
+                <thead><tr><th>Question</th><th>Oui →</th><th>Non →</th></tr></thead>
+                <tbody>
+                    <tr><td>Interaction dépend d'état serveur ?</td> <td>✅ Live</td>    <td>Twig / Stimulus</td></tr>
+                    <tr><td>&lt; 1 interaction/s suffit ?</td>       <td>✅ Live</td>    <td>Stimulus only</td></tr>
+                    <tr><td>Latence ~200 ms tolérable ?</td>         <td>✅ Live</td>    <td>SPA / client</td></tr>
+                    <tr><td>Offline requis ?</td>                    <td>SPA / PWA</td> <td>✅ Live</td></tr>
+                    <tr><td>Animation 60 fps ?</td>                  <td>Client JS</td> <td>✅ Live</td></tr>
+                    <tr><td>Indexé par Google ?</td>                 <td>✅ Live</td>    <td>SPA + SSR</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

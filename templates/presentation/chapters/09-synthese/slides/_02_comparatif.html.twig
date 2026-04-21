@@ -1,0 +1,30 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="09-comparatif">
+    {{ ui.slide_header('9.1', 'Twig / Live / React — 12 axes', 'Où brille chaque approche') }}
+
+    <table class="recap-table r-stretch">
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Twig Component</th>
+                <th>Live Component</th>
+                <th>React / Vue</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Rendu</strong></td>          <td>Serveur uniquement</td>         <td>Serveur + patch Ajax</td>          <td>Client (SSR optionnel)</td></tr>
+            <tr><td><strong>État</strong></td>           <td>Aucun (figé)</td>               <td>Serveur, sérialisé dans le DOM</td> <td>Client, en mémoire JS</td></tr>
+            <tr><td><strong>JS requis</strong></td>      <td>❌ Aucun</td>                    <td>⚠️ Stimulus inclus</td>             <td>✅ Oui, significatif</td></tr>
+            <tr><td><strong>Build pipeline</strong></td> <td>❌ AssetMapper suffit</td>       <td>❌ AssetMapper suffit</td>          <td>✅ Vite / Webpack</td></tr>
+            <tr><td><strong>Poids JS</strong></td>       <td>~0 Ko</td>                      <td>~25–30 Ko</td>                     <td>40–150 Ko+</td></tr>
+            <tr><td><strong>SEO natif</strong></td>      <td>✅ HTML complet</td>             <td>✅ HTML complet</td>               <td>⚠️ SSR ou prerender</td></tr>
+            <tr><td><strong>Offline</strong></td>        <td>❌</td>                          <td>❌</td>                            <td>✅ PWA / service worker</td></tr>
+            <tr><td><strong>Latence</strong></td>        <td>N/A</td>                        <td>50–300 ms (réseau)</td>            <td>Locale (instantanée)</td></tr>
+            <tr><td><strong>Duplic. PHP/JS</strong></td> <td>Aucune</td>                     <td>Aucune</td>                        <td>Fréquente</td></tr>
+            <tr><td><strong>Apprentissage</strong></td>  <td>Faible (Twig enrichi)</td>      <td>Moyenne</td>                      <td>Élevée</td></tr>
+            <tr><td><strong>Testabilité</strong></td>    <td>PHPUnit + rendu</td>            <td>PHPUnit + InteractsWithLive</td>   <td>Jest + testing-library</td></tr>
+            <tr><td><strong>Accessibilité</strong></td>  <td>Natif (HTML pur)</td>           <td>Natif (morphing préserve focus)</td><td>Dépend de l'équipe</td></tr>
+        </tbody>
+    </table>
+</section>

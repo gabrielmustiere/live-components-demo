@@ -1,0 +1,28 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="09-hybridation">
+    {{ ui.slide_header('9.1', 'L\'hybridation — le vrai modèle', 'La bonne brique au bon endroit') }}
+
+    <table class="recap-table">
+        <thead>
+            <tr><th>Zone (backoffice e-commerce)</th><th>Brique choisie</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Layout, header, sidebar, footer</td> <td><strong>Twig Component</strong></td></tr>
+            <tr><td>Design system (boutons, cards)</td>   <td><strong>Twig Component</strong></td></tr>
+            <tr><td>Liste produits filtrable</td>         <td><strong>Live Component</strong></td></tr>
+            <tr><td>Formulaire commande (wizard)</td>     <td><strong>Live Component</strong></td></tr>
+            <tr><td>Éditeur de fiche produit riche</td>   <td><strong>React (zone isolée)</strong></td></tr>
+            <tr><td>Charts dashboard</td>                 <td><strong>Twig + Chart.js</strong></td></tr>
+        </tbody>
+    </table>
+
+    <blockquote class="verdict">
+        <strong>Une seule stack</strong> (Symfony + Twig),
+        <strong>deux moteurs de réactivité</strong> (Live et React-île),
+        <strong>un design system</strong> unifié.
+        <br>
+        Pas 100 % Twig. Pas 100 % Live. Pas 100 % React.
+        <strong>La bonne brique au bon endroit.</strong>
+    </blockquote>
+</section>

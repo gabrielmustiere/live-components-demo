@@ -1,14 +1,16 @@
 {#
     Chapitre 09 — Synthèse : comparaison, limites & take-aways.
+    Refermer la boucle : tableau 12 axes, limites honnêtes, plan d'action dès lundi.
 #}
-{% import 'presentation/_macros.html.twig' as ui %}
-
 <section
     data-chapter="09"
     data-chapter-title="Synthèse"
 >
-    <section data-slide-id="09-intro">
-        {{ ui.slide_header('Chapitre 9', 'Synthèse', 'Comparaison, limites & take-aways') }}
-        <p><small>À venir…</small></p>
-    </section>
+    {% include 'presentation/chapters/09-synthese/slides/_01_intro.html.twig' %}
+    {% include 'presentation/chapters/09-synthese/slides/_02_comparatif.html.twig' %}
+    {% include 'presentation/chapters/09-synthese/slides/_03_hybridation.html.twig' %}
+    {% include 'presentation/chapters/09-synthese/slides/_04_limites.html.twig' %}
+    {% include 'presentation/chapters/09-synthese/slides/_05_antipatterns.html.twig' %}
+    {% include 'presentation/chapters/09-synthese/slides/_06_takeaways.html.twig' %}
+    {% include 'presentation/chapters/09-synthese/slides/_07_fin.html.twig' %}
 </section>
