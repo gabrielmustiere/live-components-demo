@@ -1,47 +1,35 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="02-garde-laisse">
-    {{ ui.slide_header('2.2', 'Ce qu\'on garde, ce qu\'on laisse') }}
+    {{ ui.slide_header('2.2', 'L\'idée vs l\'implémentation') }}
 
-    <table class="recap-table">
-        <thead>
-        <tr>
-            <th>Ce qu'on <strong>veut récupérer</strong></th>
-            <th>Ce qu'on <strong>laisse côté JS</strong></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Props typées et explicites</td>
-            <td>Virtual DOM / reconciliation</td>
-        </tr>
-        <tr>
-            <td>Unité logique = classe + template</td>
-            <td>Bundle JS de plusieurs MB</td>
-        </tr>
-        <tr>
-            <td>State comme source de vérité</td>
-            <td>Hydration côté client</td>
-        </tr>
-        <tr>
-            <td>Composition (arbre de composants)</td>
-            <td>Build tools (webpack, Vite…)</td>
-        </tr>
-        <tr>
-            <td>Réactivité (état → vue automatique)</td>
-            <td>Double codebase PHP + JS</td>
-        </tr>
-        <tr>
-            <td>Raisonnement local sur un composant</td>
-            <td>Store global (Redux, Pinia…)</td>
-        </tr>
-        </tbody>
-    </table>
+    <p>
+        Ces trois piliers sont une <strong>idée</strong>.
+        Le Virtual DOM, le bundle JS, l'hydratation, le store global — c'est
+        <strong>une implémentation</strong> parmi d'autres.
+    </p>
+
+    <div class="pros-cons">
+        <div class="pros-cons__col pros-cons__col--pros">
+            <h3>Ce qu'on garde</h3>
+            <ul>
+                <li>Encapsulation (un composant = un tout)</li>
+                <li>Réactivité (état → vue)</li>
+                <li>Composition (arbre, props, events)</li>
+            </ul>
+        </div>
+        <div class="pros-cons__col pros-cons__col--cons">
+            <h3>Ce qu'on peut laisser</h3>
+            <ul>
+                <li>Virtual DOM / reconciliation</li>
+                <li>Bundle JS de plusieurs MB</li>
+                <li>Hydratation côté client</li>
+                <li>Store global (Redux, Pinia…)</li>
+            </ul>
+        </div>
+    </div>
 
     <blockquote class="verdict">
-        <strong>« Le modèle composant est une idée. La SPA est une implémentation. »</strong>
-        <br>
-        On veut la composition, les props typées, la réactivité.
-        Pas forcément tout l'écosystème JS qui va avec.
+        <strong>Symfony UX garde l'idée, laisse l'implémentation.</strong>
     </blockquote>
 </section>

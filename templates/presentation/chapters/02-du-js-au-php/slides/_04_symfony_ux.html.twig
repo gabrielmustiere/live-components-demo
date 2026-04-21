@@ -1,23 +1,32 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="02-symfony-ux">
-    {{ ui.slide_header('2.3', 'Symfony UX, la traduction en PHP') }}
-
-    <blockquote class="verdict">
-        <strong>« Ramener le modèle composant côté serveur, sans renier PHP ni Twig. »</strong>
-    </blockquote>
+    {{ ui.slide_header('2.3', 'Deux briques, une empilée sur l\'autre') }}
 
     <p>
-        <strong>Pas un framework.</strong> Une <strong>initiative</strong> qui regroupe une
-        collection de bundles autour d'un socle commun.
+        Symfony UX n'invente rien de magique. Le modèle composant tient sur
+        <strong>deux bundles</strong>, le second construit sur le premier.
     </p>
 
-    <ul>
-        <li>Couche composant PHP — <strong>Twig Components</strong>, <strong>Live Components</strong></li>
-        <li>Pont JS minimal — <strong>Stimulus</strong>, <strong>Turbo</strong></li>
-        <li>Tuyauterie asset — <strong>AssetMapper</strong> (ou Webpack Encore)</li>
-        <li>Bundles satellites — Chartjs, Dropzone, Autocomplete, LeafletMap…</li>
-    </ul>
+    <div class="pillars pillars--duo">
+        <div class="pillars__card">
+            <h3>Twig Components <span class="pillars__badge">stateless</span></h3>
+            <ul>
+                <li>Une <strong>classe PHP</strong> (attribut <code>#[AsTwigComponent]</code>) — ses propriétés publiques sont les <strong>props</strong></li>
+                <li>Un <strong>template Twig</strong> associé par convention</li>
+                <li>Rendu <strong>côté serveur</strong>, puis plus rien : un objet, une sortie HTML</li>
+            </ul>
+        </div>
 
-    <p><small>↓ Voyons comment les briques s'assemblent.</small></p>
+        <div class="pillars__card">
+            <h3>Live Components <span class="pillars__badge">stateful</span></h3>
+            <ul>
+                <li>Un <strong>Twig Component</strong> enrichi par <code>#[AsLiveComponent]</code></li>
+                <li>Un <strong>endpoint HTTP</strong> auto-exposé qui rejoue le rendu quand l'état change</li>
+                <li><strong>Stimulus</strong> capte l'interaction → <strong>Idiomorph</strong> patche les nœuds modifiés du DOM</li>
+            </ul>
+        </div>
+    </div>
+
+    <p><small>Le reste du talk : ces deux briques en pratique.</small></p>
 </section>
