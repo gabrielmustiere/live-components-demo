@@ -1,0 +1,69 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="07-form">
+    {{ ui.slide_header('7.5', 'Exemple : formulaire conditionnel', 'Champs qui apparaissent/disparaissent sans JS') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>CompanyForm.php</h3>
+<pre><code class="language-php">#[AsLiveComponent]
+final class CompanyForm
+{
+    use DefaultActionTrait;
+
+    #[LiveProp(writable: true)]
+    public AccountType $type = AccountType::Individual;
+
+    #[LiveProp(writable: true)]
+    public string $name = '';
+
+    // N'apparaît que si type === Enterprise
+    #[LiveProp(writable: true)]
+    #[Assert\When(
+        expression: 'this.type.value === "enterprise"',
+        constraints: [new Assert\NotBlank()]
+    )]
+    public string $siret = '';
+
+    #[LiveAction]
+    public function save(AccountRepository $r): RedirectResponse
+    {
+        return $this->redirectToRoute('account_show',
+            ['id' => $r->createFromComponent($this)->getId()]
+        );
+    }
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>CompanyForm.html.twig</h3>
+<pre><code class="language-twig">{% verbatim %}<form {{ attributes }}
+    data-action="submit->live#action"
+    data-live-action-param="save"
+>
+    <select data-model="type">
+        <option value="individual">Particulier</option>
+        <option value="enterprise">Entreprise</option>
+    </select>
+
+    <input type="text" data-model="on(input)|name">
+
+    {# Bloc conditionnel — re-render au changement de type #}
+    {% if this.type.value === 'enterprise' %}
+        <input type="text"
+            data-model="on(blur)|siret"
+            placeholder="14 chiffres"
+        >
+    {% endif %}
+
+    <button type="submit">Créer</button>
+</form>{% endverbatim %}</code></pre>
+
+            <blockquote class="verdict">
+                Changer le <code>type</code> déclenche un re-render —
+                le bloc SIRET apparaît ou disparaît.
+                <strong>Validation PHP</strong> via <code>Assert\When</code>,
+                rien à dupliquer en JS.
+            </blockquote>
+        </div>
+    </div>
+</section>

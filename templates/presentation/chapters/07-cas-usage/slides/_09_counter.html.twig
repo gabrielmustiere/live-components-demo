@@ -1,0 +1,58 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="07-counter">
+    {{ ui.slide_header('7.8', 'L\'exemple d\'école : le compteur', 'Les trois concepts fondamentaux en 30 lignes') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>Counter.php</h3>
+<pre><code class="language-php">#[AsLiveComponent]
+final class Counter
+{
+    use DefaultActionTrait;
+
+    #[LiveProp(writable: true)]
+    public int $count = 0;
+
+    #[LiveAction]
+    public function increment(): void { ++$this->count; }
+
+    #[LiveAction]
+    public function decrement(): void { --$this->count; }
+
+    #[LiveAction]
+    public function reset(): void { $this->count = 0; }
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>Counter.html.twig</h3>
+<pre><code class="language-twig">{% verbatim %}<div {{ attributes }} class="flex gap-4">
+    <button data-action="live#action"
+            data-live-action-param="decrement">−</button>
+
+    <span class="text-2xl font-bold tabular-nums">
+        {{ count }}
+    </span>
+
+    <button data-action="live#action"
+            data-live-action-param="increment">+</button>
+    <button data-action="live#action"
+            data-live-action-param="reset">reset</button>
+</div>{% endverbatim %}</code></pre>
+
+            <table class="recap-table">
+                <tbody>
+                    <tr><td><code>#[LiveProp]</code></td>   <td>porte l'état</td></tr>
+                    <tr><td><code>#[LiveAction]</code></td> <td>mutation de l'état</td></tr>
+                    <tr><td>re-render auto</td>             <td>DOM morphing</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <p style="text-align:center;margin-top:.5rem">
+        <a class="btn-primary" href="{{ path('app_demo', {slug: 'counter'}) }}">
+            Ouvrir la démo Counter →
+        </a>
+    </p>
+</section>

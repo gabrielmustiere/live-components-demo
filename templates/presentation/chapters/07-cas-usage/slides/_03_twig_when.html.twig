@@ -1,0 +1,35 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="07-twig-when">
+    {{ ui.slide_header('7.2', 'Quand utiliser Twig Components', 'Structure, design system, affichage') }}
+
+    <div class="pros-cons">
+        <div class="pros-cons__col pros-cons__col--pros">
+            <h3>✅ Cas typiques</h3>
+            <ul>
+                <li>UI statique réutilisable — boutons, badges, alerts, avatars</li>
+                <li>Design system interne — un seul endroit pour changer un style</li>
+                <li>Blocs de layout — header, sidebar, footer</li>
+                <li>Cards et listings sans interaction live</li>
+                <li>Data display — tables read-only, fiches détail, dashboards</li>
+            </ul>
+        </div>
+        <div class="pros-cons__col pros-cons__col--cons">
+            <h3>Ce qu'on gagne</h3>
+            <ul>
+                <li><strong>Contrat de typage</strong> — <code>variant</code> est une enum PHP, pas une string libre</li>
+                <li><strong>Zéro round-trip</strong> — rendu inclus dans la réponse initiale</li>
+                <li><strong>Refactoring sécurisé</strong> — PHPStan vérifie les props</li>
+            </ul>
+        </div>
+    </div>
+
+<pre><code class="language-twig">{% verbatim %}<twig:Button variant="primary" icon="plus" label="Nouvelle commande" />
+<twig:Button variant="danger" :disabled="not is_granted('DELETE', order)" label="Supprimer" />
+<twig:ProductCard :product="product" :canEdit="is_granted('EDIT', product)" />{% endverbatim %}</code></pre>
+
+    <blockquote class="verdict">
+        ⚠️ Si tu ajoutes un <code>data-action</code> Stimulus pour bricoler de l'Ajax sur un Twig Component
+        → c'est le moment de passer en <strong>Live Component</strong>.
+    </blockquote>
+</section>

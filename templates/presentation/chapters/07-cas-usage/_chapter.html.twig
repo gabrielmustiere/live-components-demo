@@ -1,14 +1,23 @@
 {#
     Chapitre 07 — Cas d'usage concrets.
-#}
-{% import 'presentation/_macros.html.twig' as ui %}
 
+    Patterns opérationnels : règle des deux questions, Twig vs Live,
+    cinq exemples détaillés (ProductSearch, CompanyForm, ProductList,
+    LikeButton, Counter). Démos live pour ProductSearch et Counter.
+#}
 <section
     data-chapter="07"
     data-chapter-title="Cas d'usage"
 >
-    <section data-slide-id="07-intro">
-        {{ ui.slide_header('Chapitre 7', 'Cas d\'usage concrets', 'Patterns qu\'on retrouve en backoffice') }}
-        <p><small>À venir…</small></p>
-    </section>
+    {% include 'presentation/chapters/07-cas-usage/slides/_01_intro.html.twig' %}
+    {% include 'presentation/chapters/07-cas-usage/slides/_02_decision_tree.html.twig' %}
+    {% include 'presentation/chapters/07-cas-usage/slides/_03_twig_when.html.twig' %}
+    {% include 'presentation/chapters/07-cas-usage/slides/_04_live_when.html.twig' %}
+    {% include 'presentation/chapters/07-cas-usage/slides/_05_search.html.twig' %}
+    {% include 'presentation/chapters/07-cas-usage/slides/_06_form.html.twig' %}
+    {% include 'presentation/chapters/07-cas-usage/slides/_07_list.html.twig' %}
+    {% include 'presentation/chapters/07-cas-usage/slides/_08_like.html.twig' %}
+    {% include 'presentation/chapters/07-cas-usage/slides/_09_counter.html.twig' %}
+    {% include 'presentation/chapters/07-cas-usage/slides/_10_antipatterns.html.twig' %}
+    {% include 'presentation/chapters/07-cas-usage/slides/_11_transition.html.twig' %}
 </section>

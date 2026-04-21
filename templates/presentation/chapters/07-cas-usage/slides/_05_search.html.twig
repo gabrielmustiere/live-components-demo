@@ -1,0 +1,61 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="07-search">
+    {{ ui.slide_header('7.4', 'Exemple : recherche live produit', 'Zéro endpoint JSON, debounce natif') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>ProductSearch.php</h3>
+<pre><code class="language-php">#[AsLiveComponent]
+final class ProductSearch
+{
+    use DefaultActionTrait;
+
+    // writable: true → l'input modifie la prop
+    #[LiveProp(writable: true)]
+    public string $query = '';
+
+    public function __construct(
+        private readonly ProductRepository $products,
+    ) {}
+
+    public function getResults(): array
+    {
+        if (mb_strlen($this->query) < 2) {
+            return [];
+        }
+        return $this->products->search($this->query);
+    }
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>ProductSearch.html.twig</h3>
+<pre><code class="language-twig">{% verbatim %}<div {{ attributes }}>
+    <input
+        type="search"
+        data-model="debounce(300)|query"
+        placeholder="Rechercher…"
+    >
+    <span data-loading>…</span>
+
+    {% for product in this.results %}
+        <div>{{ product.name }}</div>
+    {% endfor %}
+</div>{% endverbatim %}</code></pre>
+
+            <table class="recap-table">
+                <tbody>
+                    <tr><td>Debounce 300 ms</td>    <td><code>data-model="debounce(300)|query"</code></td></tr>
+                    <tr><td>Indicateur chargement</td><td><code>data-loading</code></td></tr>
+                    <tr><td>Aucun JS écrit</td>      <td>Stimulus + live controller</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <p style="text-align:center;margin-top:.5rem">
+        <a class="btn-primary" href="{{ path('app_demo', {slug: 'product-search'}) }}">
+            Ouvrir la démo ProductSearch →
+        </a>
+    </p>
+</section>
