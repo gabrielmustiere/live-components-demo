@@ -1,32 +1,31 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="02-stimulus-bridge">
-    {{ ui.slide_header('2.5', 'Le Stimulus bridge') }}
+    {{ ui.slide_header('2.5', 'Clé en main') }}
 
     <p>
-        Le bundle <code>ux-live-component</code> embarque son propre contrôleur Stimulus.
-        Le <strong>Stimulus bridge</strong> le branche <strong>automatiquement</strong> sur votre front.
+        Live Components arrive avec le <strong>Stimulus bridge</strong> via
+        <strong>AssetMapper</strong> et une recette <strong>Flex</strong>. Tout est câblé côté front.
     </p>
 
     <div class="r-stretch mermaid-wrapper">
         <pre class="mermaid">
 flowchart LR
-    COMPOSER["composer require symfony/ux-live-componentsup"]
-    JS["live_controller.js<br/>(livré par le bundle PHP)"]
-    BRIDGE(["Stimulus bridge"])
-    HTML["data-controller=#quot;live#quot;<br/>dispo dans vos templates"]
+    INSTALL["composer require<br/>symfony/ux-live-component"]
+    MAGIC(["AssetMapper<br/>+ Stimulus bridge"])
+    READY["Live Components<br/>prêts à l'emploi"]
 
-    COMPOSER --> JS --> BRIDGE --> HTML
+    INSTALL --> MAGIC --> READY
 
     classDef step fill:#312e81,stroke:#818cf8,stroke-width:2px,color:#e0e7ff;
     classDef bridge fill:#6366f1,stroke:#c7d2fe,stroke-width:2px,color:#ffffff;
     classDef result fill:#4338ca,stroke:#a5b4fc,stroke-width:2px,color:#eef2ff;
 
-    class COMPOSER,JS step;
-    class BRIDGE bridge;
-    class HTML result;
+    class INSTALL step;
+    class MAGIC bridge;
+    class READY result;
         </pre>
     </div>
 
-    <blockquote class="verdict"><strong>Un <code>composer require</code> suffit : zéro <code>npm install</code>, zéro ligne de JS à écrire.</strong></blockquote>
+    <blockquote class="verdict"><strong>Zéro <code>npm install</code>, zéro config JS : une commande et c'est en place.</strong></blockquote>
 </section>
