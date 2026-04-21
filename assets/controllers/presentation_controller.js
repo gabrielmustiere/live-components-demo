@@ -20,6 +20,7 @@ export default class extends Controller {
             margin: 0.04,
             minScale: 0.2,
             maxScale: 2.0,
+            center: false,
             plugins: [RevealHighlight],
         });
 

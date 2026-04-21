@@ -45,6 +45,43 @@
     font-weight: inherit;
 }
 
+/* Ancrage haut : reveal a center=false → on aligne le contenu sur le bord
+   supérieur et on ajoute un peu de respiration. */
+.reveal .slides > section:not(.stack),
+.reveal .slides > section > section {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding-top: 0.4em;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* Exception : la slide de couverture reste centrée verticalement.
+   reveal écrit `display: block` en inline-style → !important nécessaire
+   pour réactiver le flex et appliquer justify-content. */
+.reveal .slides > section[data-slide-id="cover"],
+.reveal .slides > section[data-slide-id="cover"] > section {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 0;
+}
+
+/* Filet de sécurité : si un slide_header est rappelé avec fit_title=true,
+   on plafonne la taille pour ne pas obtenir un titre démesuré sur du texte
+   court (« Message clé »). reveal écrit le font-size en inline → !important. */
+.reveal .slide-header__title.r-fit-text {
+    font-size: clamp(1em, 4vw, 2em) !important;
+}
+
+/* Centrage horizontal d'un bloc (ex. crédits de fin) sans style inline. */
+.reveal .center-block {
+    text-align: center;
+    margin-top: 1rem;
+}
+
 .reveal h1,
 .reveal h2,
 .reveal h3,
