@@ -1,15 +1,7 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="04-features">
-    {{ ui.slide_header('4.8', 'Re-render intelligent + features avancées') }}
-
-    <h3>Ce que le morphing préserve pendant un re-render</h3>
-    <ul>
-        <li><strong>Le focus</strong> — l'input en cours de saisie reste actif</li>
-        <li><strong>La position de scroll</strong></li>
-        <li><strong>Les inputs non modifiés</strong> — un champ tapé pendant le re-render n'est pas écrasé</li>
-        <li><strong>Les classes CSS et événements</strong> des éléments inchangés</li>
-    </ul>
+    {{ ui.slide_header('4.10', 'Ce que le bundle offre en plus') }}
 
     <div class="code-split">
         <div class="code-split__col">
@@ -29,13 +21,13 @@
 
     <div class="code-split">
         <div class="code-split__col">
-            <h3>Composants imbriqués — emit / listen</h3>
+            <h3>Emit / Listen — composants imbriqués</h3>
 <pre><code class="language-php">// enfant
-$this->emit('product:added', ['id' => $productId]);
+$this->emit('product:added', ['id' => $id]);
 
 // parent
 #[LiveListener('product:added')]
-public function onProductAdded(#[LiveArg] int $id): void
+public function onAdded(#[LiveArg] int $id): void
 {
     // ...
 }</code></pre>
@@ -51,4 +43,8 @@ public function beforeRender(): void
 // détaillé au chapitre 5</code></pre>
         </div>
     </div>
+
+    <blockquote class="verdict">
+        <strong>Loading, polling, events, hooks : tout est déjà dans le bundle.</strong>
+    </blockquote>
 </section>

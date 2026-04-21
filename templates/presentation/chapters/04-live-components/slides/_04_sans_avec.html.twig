@@ -1,14 +1,11 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
-<section data-slide-id="04-definition">
-    {{ ui.slide_header('4.2', 'Live = Twig + réactivité') }}
+<section data-slide-id="04-sans-avec">
+    {{ ui.slide_header('4.3', 'Sans Live · Avec Live') }}
 
-    <blockquote class="verdict">
-        <strong>Un Twig Component qui se met à jour automatiquement via Ajax.</strong>
-        <br>
-        L'utilisateur interagit → le composant <strong>ré-exécute son rendu côté serveur</strong>
-        → le DOM est patché côté client. <em>Sans une ligne de JS à écrire.</em>
-    </blockquote>
+    <p>
+        Concrètement, voilà ce qu'on <strong>arrête d'écrire</strong> dès qu'on passe en Live.
+    </p>
 
     <table class="recap-table">
         <thead>
@@ -26,5 +23,7 @@
         </tbody>
     </table>
 
-    <p><small>Vocabulaire : <code>LiveProp</code> (prop sync), <code>LiveAction</code> (méthode déclenchable), <code>data-model</code> (bind input→prop), <strong>re-render</strong>, <strong>DOM morphing</strong>.</small></p>
+    <blockquote class="verdict">
+        <strong>On garde Symfony. On gagne l'interactivité. On laisse le JS custom.</strong>
+    </blockquote>
 </section>

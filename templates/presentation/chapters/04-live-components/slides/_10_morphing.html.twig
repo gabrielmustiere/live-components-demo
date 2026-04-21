@@ -1,0 +1,40 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="04-morphing">
+    {{ ui.slide_header('4.9', 'Le morphing : ce qui survit au re-render') }}
+
+    <p>
+        À chaque re-render, le bundle renvoie le <strong>markup complet</strong> du composant.
+        Côté client, <strong>morphdom</strong> applique un diff ciblé — pas une reconstruction.
+    </p>
+
+    <div class="pillars">
+        <div class="pillars__card">
+            <h3>Le focus</h3>
+            <p>
+                L'input en cours de saisie <strong>reste actif</strong>.
+                L'utilisateur ne perd pas le fil pendant que le serveur répond.
+            </p>
+        </div>
+
+        <div class="pillars__card">
+            <h3>Le scroll</h3>
+            <p>
+                La position de scroll est <strong>préservée</strong>.
+                Pas de retour en haut de page après chaque interaction.
+            </p>
+        </div>
+
+        <div class="pillars__card">
+            <h3>Les inputs non touchés</h3>
+            <p>
+                Un champ tapé pendant le re-render <strong>n'est pas écrasé</strong>.
+                Classes CSS et events des nœuds inchangés sont conservés.
+            </p>
+        </div>
+    </div>
+
+    <blockquote class="verdict">
+        <strong>C'est le bénéfice invisible : « juste ça marche ».</strong>
+    </blockquote>
+</section>

@@ -1,0 +1,45 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="04-datamodel">
+    {{ ui.slide_header('4.8', 'data-model : lier et doser') }}
+
+    <p>
+        <code>data-model</code> lie un input à une <code>LiveProp</code>.
+        Le modificateur décide <strong>quand</strong> un re-render.
+    </p>
+
+    <table class="recap-table">
+        <thead>
+            <tr>
+                <th>Syntaxe</th>
+                <th>Quand l'utiliser</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>data-model="query"</code></td>
+                <td>Re-render à chaque frappe — <em>à éviter sur un champ texte</em></td>
+            </tr>
+            <tr>
+                <td><code>data-model="debounce(300)|query"</code></td>
+                <td>Recherche live — 1 requête après 300&nbsp;ms d'inactivité</td>
+            </tr>
+            <tr>
+                <td><code>data-model="on(change)|email"</code></td>
+                <td>Formulaires — re-render au blur / au changement</td>
+            </tr>
+            <tr>
+                <td><code>data-model="norender|message"</code></td>
+                <td>Maintenir l'état côté client sans re-render</td>
+            </tr>
+            <tr>
+                <td><code>data-model="contact.name"</code></td>
+                <td>Sous-propriété d'un objet (nécessite <code>writable: [...]</code>)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <blockquote class="verdict">
+        <strong>Un round-trip par frappe est un choix, pas une fatalité.</strong>
+    </blockquote>
+</section>

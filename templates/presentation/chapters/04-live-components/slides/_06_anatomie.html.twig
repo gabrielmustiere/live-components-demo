@@ -6,7 +6,8 @@
     <div class="code-split">
         <div class="code-split__col">
             <h3>src/Twig/Components/ProductSearch.php</h3>
-<pre><code class="language-php">use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+            <pre><code class="language-php">
+use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
@@ -17,30 +18,30 @@ final class ProductSearch
 
     #[LiveProp(writable: true)]
     public string $query = '';
-}</code></pre>
+}
+    </code></pre>
         </div>
         <div class="code-split__col">
             <h3>templates/components/ProductSearch.html.twig</h3>
-<pre><code class="language-twig">{% verbatim %}<div {{ attributes }}>
-    <input
-        type="search"
-        data-model="query"
-        placeholder="Rechercher…"
-    >
+            <pre><code class="language-twig">
+{% verbatim %}<div {{ attributes }}>
+    <input type="search" data-model="query" placeholder="Rechercher…">
 
     <ul>
         {% for product in this.results %}
             <li>{{ product.name }}</li>
         {% endfor %}
     </ul>
-</div>{% endverbatim %}</code></pre>
+</div>{% endverbatim%}
+                </code></pre>
         </div>
     </div>
 
-    <p><small>
-        <strong><code>#[AsLiveComponent]</code></strong> remplace <code>#[AsTwigComponent]</code>.
-        <strong><code>DefaultActionTrait</code></strong> active le re-render sans action explicite.
-        <strong><code>{{ '{{ attributes }}' }}</code></strong> injecte <code>data-controller="live"</code>, l'état sérialisé et le CSRF.
-        <strong><code>data-model</code></strong> lie l'input à la prop (équivalent <code>v-model</code>).
-    </small></p>
+    <ul style="list-style: disc; padding-left: 1.5rem;">
+        <li><small><strong><code>#[AsLiveComponent]</code></strong> remplace <code>#[AsTwigComponent]</code>.</small></li>
+        <li><small><strong><code>DefaultActionTrait</code></strong> active le re-render sans action explicite.</small></li>
+        <li><small><strong><code>{{ '{{ attributes }}' }}</code></strong> injecte <code>data-controller="live"</code>, l'état sérialisé et le CSRF.</small></li>
+        <li><small><strong><code>data-model</code></strong> lie l'input à la prop (équivalent <code>v-model</code>).</small></li>
+    </ul>
+
 </section>

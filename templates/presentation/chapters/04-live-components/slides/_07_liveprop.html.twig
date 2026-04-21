@@ -1,52 +1,65 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="04-liveprop">
-    {{ ui.slide_header('4.6', 'LiveProp en profondeur') }}
+    {{ ui.slide_header('4.6', 'LiveProp · quatre niveaux de puissance') }}
 
-    <div class="code-split">
-        <div class="code-split__col">
-            <h3>Les modes</h3>
-<pre><code class="language-php">#[LiveProp]                        // lecture seule côté client
-public string $locale = 'fr';
+    <p>
+        Un seul attribut, une progression en crescendo :
+        <strong>read-only par défaut</strong>, la puissance s'active <em>opt-in</em>.
+    </p>
 
-#[LiveProp(writable: true)]        // modifiable depuis le DOM
+    <div class="pillars pillars--duo">
+        <div class="pillars__card">
+            <h3>1 · Read-only <span class="pillars__badge">défaut</span></h3>
+            <pre><code class="language-php">
+#[LiveProp]
+public int $max = 1000;
+            </code></pre>
+            <p>
+                La valeur <strong>persiste entre re-renders</strong>,
+                mais le client ne peut pas la modifier.
+            </p>
+        </div>
+
+        <div class="pillars__card">
+            <h3>2 · Writable <span class="pillars__badge">input user</span></h3>
+            <pre><code class="language-php">
+#[LiveProp(writable: true)]
 public string $query = '';
+            </code></pre>
+            <p>
+                Modifiable via <code>data-model</code> → <strong>déclenche le re-render</strong>.
+                C'est le mode « input de recherche, filtre, case à cocher ».
+            </p>
+        </div>
 
+        <div class="pillars__card">
+            <h3>3 · Writable sélectif <span class="pillars__badge">objets</span></h3>
+            <pre><code class="language-php">
 #[LiveProp(writable: ['name', 'email'])]
 public ContactDto $contact;
-
-#[LiveProp(writable: true, url: true)]
-public string $sort = 'name';      // reflétée en ?sort=...</code></pre>
+            </code></pre>
+            <p>
+                Seuls les champs listés sont <strong>exposés à l'écriture</strong>.
+                Pas d'accès implicite au reste de l'objet — whitelist explicite.
+            </p>
         </div>
-        <div class="code-split__col">
-            <h3>Hydration custom — stocker un ID, pas l'entité</h3>
-<pre><code class="language-php">#[LiveProp(
-    hydrateWith: 'hydrateProduct',
-    dehydrateWith: 'dehydrateProduct',
-)]
-public Product $product;
 
-public function dehydrateProduct(Product $p): int
-{
-    return $p->getId();
-}
-
-public function hydrateProduct(int $id, ProductRepository $r): Product
-{
-    return $r->find($id) ?? throw new \RuntimeException();
-}</code></pre>
+        <div class="pillars__card">
+            <h3>4 · URL binding <span class="pillars__badge">shareable</span></h3>
+            <pre><code class="language-php">
+#[LiveProp(writable: true, url: true)]
+public string $sort = 'name';
+            </code></pre>
+            <p>
+                Reflétée en query string <code>?sort=…</code> :
+                <strong>URL partageable, back button, bookmarkable</strong>.
+            </p>
         </div>
     </div>
 
     <blockquote class="verdict">
-        Une entité Doctrine entière sérialisée en JSON dans le DOM&nbsp;?
-        Lourd, fuite de champs internes, cycles qui plantent le Serializer.
-        <strong>Toujours stocker un ID</strong> quand on peut.
+        <strong>Read-only par défaut. Puissance opt-in.</strong>
+        La sécurité est dans la convention, pas dans la vigilance.
     </blockquote>
-
-    <p><small>
-        Les <code>LiveProp</code> sont des propriétés PHP normales → on y colle
-        directement les contraintes <code>Symfony\Validator</code> (<code>#[Assert\NotBlank]</code>,
-        <code>#[Assert\Email]</code>…) avec le trait <code>ValidatableComponentTrait</code>.
-    </small></p>
 </section>

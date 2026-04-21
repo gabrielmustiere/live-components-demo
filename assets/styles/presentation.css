@@ -1,14 +1,21 @@
 /* Thème reveal.js accordé à la palette Tailwind du projet (gray-900 + indigo) */
 
-/* Conteneur reveal : pleine hauteur moins le padding (ou le header sur mobile) */
+/* En mode présentation, on neutralise le padding vertical du <main> hérité
+   du layout Tailwind : la stage reveal doit coller au bord supérieur. */
+body:has(.reveal-stage) main {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* Conteneur reveal : pleine hauteur (moins le header sur mobile uniquement) */
 .reveal-stage {
     width: 100%;
-    height: calc(100dvh - 9rem); /* mobile : header 4rem + main py-10 (5rem) */
+    height: calc(100dvh - 4rem); /* mobile : header sticky 4rem */
 }
 
 @media (min-width: 1024px) {
     .reveal-stage {
-        height: calc(100dvh - 5rem); /* desktop : main py-10 uniquement */
+        height: 100dvh; /* desktop : aucun header, on prend toute la hauteur */
     }
 }
 
@@ -46,14 +53,15 @@
 }
 
 /* Ancrage haut : reveal a center=false → on aligne le contenu sur le bord
-   supérieur et on ajoute un peu de respiration. */
+   supérieur. On neutralise le padding 20px 0 natif de reveal.css pour que
+   le titre colle au bord. La respiration vient de la marge reveal (margin: 0.04). */
 .reveal .slides > section:not(.stack),
 .reveal .slides > section > section {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
-    padding-top: 0.4em;
+    padding: 0;
     height: 100%;
     box-sizing: border-box;
 }

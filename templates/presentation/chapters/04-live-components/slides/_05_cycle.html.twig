@@ -1,0 +1,33 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="04-cycle">
+    {{ ui.slide_header('4.4', 'Comment ça marche') }}
+
+    <div class="r-stretch mermaid-wrapper">
+        <pre class="mermaid">
+flowchart TB
+    USER["User<br/>clic · input · submit"]
+    AJAX["Ajax call<br/>état du composant + action"]
+    PHP["PHP<br/>hydrate → action → re-render"]
+    HTML["HTML diff<br/>nouveau markup"]
+    DOM["DOM patch<br/>morphdom côté client"]
+
+    USER --> AJAX --> PHP --> HTML --> DOM
+
+    classDef user fill:#1f2937,stroke:#9ca3af,stroke-width:1.5px,color:#f3f4f6;
+    classDef transport fill:#312e81,stroke:#818cf8,stroke-width:2px,color:#e0e7ff;
+    classDef server fill:#4338ca,stroke:#a5b4fc,stroke-width:2px,color:#eef2ff;
+    classDef bridge fill:#6366f1,stroke:#c7d2fe,stroke-width:2px,color:#ffffff;
+
+    class USER user;
+    class AJAX transport;
+    class PHP server;
+    class HTML transport;
+    class DOM bridge;
+        </pre>
+    </div>
+
+    <blockquote class="verdict">
+        <strong>Pas de SPA. Pas d'API JSON. Juste du Twig qui réagit.</strong>
+    </blockquote>
+</section>
