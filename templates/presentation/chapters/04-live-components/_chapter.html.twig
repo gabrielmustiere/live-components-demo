@@ -1,14 +1,22 @@
 {#
     Chapitre 04 — Live Components : le game changer.
-#}
-{% import 'presentation/_macros.html.twig' as ui %}
 
+    Réactivité server-driven. Pivot narratif de la présentation : on ajoute la
+    couche qui rend le modèle composant interactif, sans quitter PHP/Twig.
+#}
 <section
     data-chapter="04"
     data-chapter-title="Live Components"
 >
-    <section data-slide-id="04-intro">
-        {{ ui.slide_header('Chapitre 4', 'Live Components', 'Le game changer') }}
-        <p><small>À venir…</small></p>
-    </section>
+    {% include 'presentation/chapters/04-live-components/slides/_01_intro.html.twig' %}
+    {% include 'presentation/chapters/04-live-components/slides/_02_probleme.html.twig' %}
+    {% include 'presentation/chapters/04-live-components/slides/_03_definition.html.twig' %}
+    {% include 'presentation/chapters/04-live-components/slides/_04_cycle.html.twig' %}
+    {% include 'presentation/chapters/04-live-components/slides/_05_famille.html.twig' %}
+    {% include 'presentation/chapters/04-live-components/slides/_06_anatomie.html.twig' %}
+    {% include 'presentation/chapters/04-live-components/slides/_07_liveprop.html.twig' %}
+    {% include 'presentation/chapters/04-live-components/slides/_08_action_binding.html.twig' %}
+    {% include 'presentation/chapters/04-live-components/slides/_09_features.html.twig' %}
+    {% include 'presentation/chapters/04-live-components/slides/_10_pieges.html.twig' %}
+    {% include 'presentation/chapters/04-live-components/slides/_11_recap.html.twig' %}
 </section>

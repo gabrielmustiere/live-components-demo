@@ -1,14 +1,19 @@
 {#
     Chapitre 02 — Du JS au PHP : ce qu'on emprunte, ce qu'on laisse.
-#}
-{% import 'presentation/_macros.html.twig' as ui %}
 
+    Chapitre court et dense : on identifie les concepts du modèle composant JS
+    qu'on veut porter en PHP, puis on voit comment Symfony UX les traduit.
+#}
 <section
     data-chapter="02"
     data-chapter-title="Du JS au PHP"
 >
-    <section data-slide-id="02-intro">
-        {{ ui.slide_header('Chapitre 2', 'Du JS au PHP', 'Ce qu\'on emprunte, ce qu\'on laisse') }}
-        <p><small>À venir…</small></p>
-    </section>
+    {% include 'presentation/chapters/02-du-js-au-php/slides/_01_intro.html.twig' %}
+    {% include 'presentation/chapters/02-du-js-au-php/slides/_02_ui_state.html.twig' %}
+    {% include 'presentation/chapters/02-du-js-au-php/slides/_03_garde_laisse.html.twig' %}
+    {% include 'presentation/chapters/02-du-js-au-php/slides/_04_symfony_ux.html.twig' %}
+    {% include 'presentation/chapters/02-du-js-au-php/slides/_05_schema.html.twig' %}
+    {% include 'presentation/chapters/02-du-js-au-php/slides/_06_stimulus_bridge.html.twig' %}
+    {% include 'presentation/chapters/02-du-js-au-php/slides/_07_douleurs_grille.html.twig' %}
+    {% include 'presentation/chapters/02-du-js-au-php/slides/_08_transition.html.twig' %}
 </section>

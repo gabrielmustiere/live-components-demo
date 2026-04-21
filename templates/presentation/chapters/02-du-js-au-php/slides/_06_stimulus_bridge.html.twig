@@ -1,0 +1,28 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="02-stimulus-bridge">
+    {{ ui.slide_header('2.5', 'Le Stimulus bridge', 'Ce qui rend Symfony UX agréable, en 30 secondes') }}
+
+    <p>
+        Un bundle PHP <strong>livre</strong> des contrôleurs Stimulus,
+        qui s'enregistrent <strong>automatiquement</strong> côté client.
+    </p>
+
+<pre><code class="language-text">1. composer require symfony/ux-live-component
+        │
+        ▼
+2. Le bundle expose un controller JS (live_controller.js)
+        │
+        ▼
+3. Symfony Flex écrit dans assets/controllers.json
+        │
+        ▼
+4. AssetMapper / Webpack Encore lit le fichier
+        │
+        ▼
+5. data-controller="live" est dispo partout, zéro npm</code></pre>
+
+    <blockquote class="verdict">
+        Un <code>composer require</code> suffit à livrer du JS — sans toucher à npm.
+    </blockquote>
+</section>

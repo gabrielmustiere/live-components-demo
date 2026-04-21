@@ -1,0 +1,46 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="04-anatomie">
+    {{ ui.slide_header('4.5', 'Anatomie d\'un Live Component', 'Twig Component + un attribut + un trait') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>src/Twig/Components/ProductSearch.php</h3>
+<pre><code class="language-php">use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\DefaultActionTrait;
+
+#[AsLiveComponent]
+final class ProductSearch
+{
+    use DefaultActionTrait;
+
+    #[LiveProp(writable: true)]
+    public string $query = '';
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>templates/components/ProductSearch.html.twig</h3>
+<pre><code class="language-twig">{% verbatim %}<div {{ attributes }}>
+    <input
+        type="search"
+        data-model="query"
+        placeholder="Rechercher…"
+    >
+
+    <ul>
+        {% for product in this.results %}
+            <li>{{ product.name }}</li>
+        {% endfor %}
+    </ul>
+</div>{% endverbatim %}</code></pre>
+        </div>
+    </div>
+
+    <p><small>
+        <strong><code>#[AsLiveComponent]</code></strong> remplace <code>#[AsTwigComponent]</code>.
+        <strong><code>DefaultActionTrait</code></strong> active le re-render sans action explicite.
+        <strong><code>{{ '{{ attributes }}' }}</code></strong> injecte <code>data-controller="live"</code>, l'état sérialisé et le CSRF.
+        <strong><code>data-model</code></strong> lie l'input à la prop (équivalent <code>v-model</code>).
+    </small></p>
+</section>

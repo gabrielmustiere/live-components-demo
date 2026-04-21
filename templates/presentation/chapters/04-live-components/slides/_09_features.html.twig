@@ -1,0 +1,54 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="04-features">
+    {{ ui.slide_header('4.8', 'Re-render intelligent + features avancées', 'Ce que le bundle fait gratuitement') }}
+
+    <h3>Ce que le morphing préserve pendant un re-render</h3>
+    <ul>
+        <li><strong>Le focus</strong> — l'input en cours de saisie reste actif</li>
+        <li><strong>La position de scroll</strong></li>
+        <li><strong>Les inputs non modifiés</strong> — un champ tapé pendant le re-render n'est pas écrasé</li>
+        <li><strong>Les classes CSS et événements</strong> des éléments inchangés</li>
+    </ul>
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>Loading states</h3>
+<pre><code class="language-twig">{% verbatim %}<button data-action="live#action" data-live-action-param="save">
+    <span data-loading="hide">Enregistrer</span>
+    <span data-loading="show">Enregistrement…</span>
+</button>{% endverbatim %}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>Polling</h3>
+<pre><code class="language-twig">{% verbatim %}<div {{ attributes }} data-poll="delay(5000)|$render">
+    Notifications : {{ count }}
+</div>{% endverbatim %}</code></pre>
+        </div>
+    </div>
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>Composants imbriqués — emit / listen</h3>
+<pre><code class="language-php">// enfant
+$this->emit('product:added', ['id' => $productId]);
+
+// parent
+#[LiveListener('product:added')]
+public function onProductAdded(#[LiveArg] int $id): void
+{
+    // ...
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>Hooks de cycle de vie</h3>
+<pre><code class="language-php">#[PreReRender]
+public function beforeRender(): void
+{
+    $this->lastRenderedAt = new \DateTimeImmutable();
+}
+
+// détaillé au chapitre 5</code></pre>
+        </div>
+    </div>
+</section>

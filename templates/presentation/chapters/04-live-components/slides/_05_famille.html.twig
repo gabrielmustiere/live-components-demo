@@ -1,0 +1,48 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="04-famille">
+    {{ ui.slide_header('4.4', 'La famille HTML-over-the-wire', 'Live Components n\'est pas un OVNI') }}
+
+    <table class="recap-table">
+        <thead>
+            <tr>
+                <th>Solution</th>
+                <th>Stack</th>
+                <th>Année</th>
+                <th>Idée centrale</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Phoenix LiveView</strong></td>  <td>Elixir</td>           <td>2018</td> <td>État serveur, diffs via WebSocket</td></tr>
+            <tr><td><strong>Hotwire / Turbo</strong></td>   <td>Rails (agnostique)</td> <td>2020</td> <td>Turbo Frames / Streams</td></tr>
+            <tr><td><strong>Laravel Livewire</strong></td>  <td>PHP / Laravel</td>    <td>2020</td> <td>Composant PHP réactif, requête HTTP</td></tr>
+            <tr><td><strong>htmx</strong></td>              <td>Agnostique</td>       <td>2020</td> <td>Attributs HTML → fragments</td></tr>
+            <tr><td><strong>UX Live Components</strong></td><td>PHP / Symfony</td>    <td>2022</td> <td>Modèle Livewire-like, idiomes Symfony</td></tr>
+        </tbody>
+    </table>
+
+    <blockquote class="verdict">
+        <strong>« Server-driven UI »</strong> : l'état de vérité vit côté serveur,
+        le client n'est qu'une projection, et on échange du <strong>HTML</strong> plutôt que du JSON.
+    </blockquote>
+
+    <div class="pros-cons">
+        <div class="pros-cons__col pros-cons__col--pros">
+            <h3>✅ Ce qu'elle refuse</h3>
+            <ul>
+                <li>Double codebase PHP + JS</li>
+                <li>Hydration coûteuse d'un SPA</li>
+                <li>Écosystème JS séparé (build, types, tests)</li>
+                <li>SEO compliqué des SPAs</li>
+            </ul>
+        </div>
+        <div class="pros-cons__col pros-cons__col--cons">
+            <h3>⚠️ Ce qu'elle assume</h3>
+            <ul>
+                <li>Round-trip HTTP par interaction (OK pour 90 % des UIs métier)</li>
+                <li>Dépendance au réseau (moins offline-friendly)</li>
+                <li>Moins adapté aux UIs ultra-fluides (canvas, drag &amp; drop, 60 fps)</li>
+            </ul>
+        </div>
+    </div>
+</section>

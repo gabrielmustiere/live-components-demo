@@ -1,0 +1,23 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="02-symfony-ux">
+    {{ ui.slide_header('2.3', 'Symfony UX, la traduction en PHP', 'Postulat fondateur') }}
+
+    <blockquote class="verdict">
+        <strong>« Ramener le modèle composant côté serveur, sans renier PHP ni Twig. »</strong>
+    </blockquote>
+
+    <p>
+        <strong>Pas un framework.</strong> Une <strong>initiative</strong> qui regroupe une
+        collection de bundles autour d'un socle commun.
+    </p>
+
+    <ul>
+        <li>Couche composant PHP — <strong>Twig Components</strong>, <strong>Live Components</strong></li>
+        <li>Pont JS minimal — <strong>Stimulus</strong>, <strong>Turbo</strong></li>
+        <li>Tuyauterie asset — <strong>AssetMapper</strong> (ou Webpack Encore)</li>
+        <li>Bundles satellites — Chartjs, Dropzone, Autocomplete, LeafletMap…</li>
+    </ul>
+
+    <p><small>↓ Voyons comment les briques s'assemblent.</small></p>
+</section>

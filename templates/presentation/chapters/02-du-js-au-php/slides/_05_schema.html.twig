@@ -1,0 +1,32 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="02-schema">
+    {{ ui.slide_header('2.4', 'Vue d\'ensemble', 'Les briques qui composent Symfony UX') }}
+
+<pre class="r-stretch"><code class="language-text">┌──────────────────────────────────────────────────────────────┐
+│                       Symfony UX                             │
+│                                                              │
+│   Couche composant PHP                                       │
+│   ┌──────────────────────┐    ┌──────────────────────┐       │
+│   │  Twig Components     │───▶│  Live Components     │       │
+│   │  (statique, props)   │    │  (réactif, état)     │       │
+│   └──────────────────────┘    └──────────────────────┘       │
+│              │                          │                    │
+│              └──────────┬───────────────┘                    │
+│                         ▼                                    │
+│              Stimulus bridge (autoload JS)                   │
+│   ┌──────────────────────────────────────────────────┐       │
+│   │  Stimulus  ── controllers JS minimaux            │       │
+│   │  Turbo     ── navigation sans rechargement       │       │
+│   └──────────────────────────────────────────────────┘       │
+│                         │                                    │
+│                         ▼                                    │
+│   ┌──────────────────────────────────────────────────┐       │
+│   │  AssetMapper (importmap, no Node required)       │       │
+│   │  ou Webpack Encore (legacy/avancé)               │       │
+│   └──────────────────────────────────────────────────┘       │
+│                                                              │
+│   + bundles satellites : Chartjs, Dropzone, Cropperjs,       │
+│     Notify, Autocomplete, LeafletMap, Icons, Toggle…         │
+└──────────────────────────────────────────────────────────────┘</code></pre>
+</section>

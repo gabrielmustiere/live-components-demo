@@ -1,0 +1,25 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="04-intro">
+    {{ ui.slide_header('Chapitre 4', 'Live Components', 'Le game changer') }}
+
+    <p>
+        Chapitre 3 a posé la brique <strong>statique</strong>.
+        Ici on attaque ce qui change tout : la <strong>réactivité server-driven</strong>.
+    </p>
+
+    <ol>
+        <li>Pourquoi un Twig Component ne suffit pas dès qu'on veut de l'interactivité&nbsp;?</li>
+        <li>Qu'est-ce qu'un Live Component, concrètement, dans le code&nbsp;?</li>
+        <li>Quelles briques manipule-t-on (<code>LiveProp</code>, <code>LiveAction</code>, data binding)&nbsp;?</li>
+        <li>Comment l'état circule entre client et serveur, sans JS&nbsp;?</li>
+        <li>Quels pièges connaître avant la prod&nbsp;?</li>
+    </ol>
+
+    <blockquote class="verdict">
+        <strong>Live Components = surcouche de Twig Components</strong>, pas un remplacement.
+        On ajoute la réactivité <strong>composant par composant</strong>, en opt-in.
+    </blockquote>
+
+    <p><small>↓ pour démarrer</small></p>
+</section>

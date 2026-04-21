@@ -1,0 +1,30 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="04-cycle">
+    {{ ui.slide_header('4.3', 'Comment ça marche', 'Vue d\'ensemble — détail au chapitre 5') }}
+
+<pre class="r-stretch"><code class="language-text">   ┌─────────────┐
+   │    User     │  clic / input / submit
+   └──────┬──────┘
+          ▼
+   ┌─────────────┐
+   │  Ajax call  │  payload = état du composant + action
+   └──────┬──────┘
+          ▼
+   ┌─────────────┐
+   │     PHP     │  hydrate → exécute action → re-render
+   └──────┬──────┘
+          ▼
+   ┌─────────────┐
+   │  HTML diff  │  réponse = nouveau markup
+   └──────┬──────┘
+          ▼
+   ┌─────────────┐
+   │  DOM patch  │  morphdom côté client
+   └─────────────┘
+
+  Pas de SPA  ·  Pas de React/Vue  ·  Pas d'API JSON custom
+  Le rendu reste du Twig — mêmes filters, mêmes extensions.</code></pre>
+
+    <p><small>Le bundle livre l'endpoint, le Stimulus controller (<code>live_controller.js</code>), l'hydration et l'algorithme de morphing qui préserve focus, scroll et inputs.</small></p>
+</section>
