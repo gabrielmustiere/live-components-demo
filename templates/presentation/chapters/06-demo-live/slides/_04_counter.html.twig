@@ -1,0 +1,45 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="06-counter">
+    {{ ui.slide_header('6.3', 'Démo 2 · Live Counter', 'Du Twig qui devient réactif, gratuitement') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>src/Twig/Components/Counter.php</h3>
+<pre><code class="language-php">#[AsLiveComponent]
+final class Counter
+{
+    use DefaultActionTrait;
+
+    #[LiveProp(writable: true)]
+    public int $count = 0;
+
+    #[LiveAction]
+    public function increment(): void
+    {
+        ++$this->count;
+    }
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>templates/components/Counter.html.twig</h3>
+<pre><code class="language-twig">{% verbatim %}&lt;div{{ attributes }}&gt;
+    &lt;h2&gt;Compteur : {{ count }}&lt;/h2&gt;
+    &lt;button
+        data-action="live#action"
+        data-live-action-param="increment"
+    &gt;+1&lt;/button&gt;
+&lt;/div&gt;{% endverbatim %}</code></pre>
+        </div>
+    </div>
+
+    <ul>
+        <li>Clic sur <code>+1</code> → le chiffre change <strong>sans rechargement</strong></li>
+        <li>Onglet Network : l'Ajax part, la réponse HTML arrive, le DOM est <strong>patché</strong> (focus et scroll préservés)</li>
+        <li><strong>Zéro ligne de JS</strong> écrite à la main</li>
+    </ul>
+
+    <p>
+        <a class="btn-primary" href="{{ path('app_demo', { slug: 'counter' }) }}?return=6/3">Ouvrir la démo Counter</a>
+    </p>
+</section>

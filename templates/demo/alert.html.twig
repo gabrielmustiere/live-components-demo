@@ -1,0 +1,28 @@
+{% extends 'demo/layout.html.twig' %}
+
+{% block demo_page_title %}Alert Twig Component{% endblock %}
+{% block demo_title %}Alert{% endblock %}
+
+{% block demo_body %}
+    <h1 class="text-3xl font-bold text-gray-900">Twig Component <code>Alert</code></h1>
+    <p class="mt-2 text-gray-600">
+        Composant statique minimal : trois props publiques, un template, aucune logique côté client.
+    </p>
+
+    <div class="mt-10 space-y-4 rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+        <twig:Alert message="Bienvenue ! C'est l'alerte de base, type 'info'." type="info" />
+        <twig:Alert message="Votre profil a bien été mis à jour." type="success" />
+        <twig:Alert message="Votre session expire dans 5 minutes." type="warning" :dismissible="true" />
+        <twig:Alert message="Impossible de contacter le serveur." type="error" :dismissible="true" />
+    </div>
+
+    <section class="mt-10">
+        <h2 class="text-xl font-semibold text-gray-900">Code source</h2>
+        <p class="mt-2 text-sm text-gray-600">
+            Voir
+            <a href="{{ file_link('src/Twig/Components/Alert.php') }}" class="font-mono text-indigo-600 hover:underline"><code>src/Twig/Components/Alert.php</code></a>
+            et
+            <a href="{{ file_link('templates/components/Alert.html.twig') }}" class="font-mono text-indigo-600 hover:underline"><code>templates/components/Alert.html.twig</code></a>.
+        </p>
+    </section>
+{% endblock %}

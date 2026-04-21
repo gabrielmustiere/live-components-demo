@@ -1,0 +1,42 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="06-coulisses">
+    {{ ui.slide_header('6.5', 'Ce qui se passe en coulisses', 'Tout ce qu’on peut pointer pendant la démo') }}
+
+    <table class="recap-table">
+        <thead>
+            <tr>
+                <th>Outil</th>
+                <th>Ce qu'on y voit</th>
+                <th>Ce que ça confirme</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Onglet <strong>Network</strong></td>
+                <td>Requête Ajax → réponse HTML partiel</td>
+                <td>Le serveur re-render, pas le client</td>
+            </tr>
+            <tr>
+                <td><strong>DOM inspector</strong></td>
+                <td>Les nœuds inchangés restent en place</td>
+                <td>morphdom patche, ne remplace pas</td>
+            </tr>
+            <tr>
+                <td><strong>Profiler Symfony</strong></td>
+                <td>Les Live actions apparaissent comme des requêtes classiques</td>
+                <td>Debug, logs, injection : normal</td>
+            </tr>
+            <tr>
+                <td><strong>Breakpoint Xdebug</strong></td>
+                <td>Arrêt dans <code>getResults()</code> ou <code>#[LiveAction]</code></td>
+                <td>C'est du PHP, vraiment du PHP</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <blockquote class="verdict">
+        <strong>Aucun outil nouveau à apprendre.</strong>
+        Les outils de debug Symfony fonctionnent <em>tels quels</em> sur un Live Component.
+    </blockquote>
+</section>

@@ -1,0 +1,27 @@
+{% extends 'demo/layout.html.twig' %}
+
+{% block demo_page_title %}ProductCard Twig Component{% endblock %}
+{% block demo_title %}ProductCard{% endblock %}
+
+{% block demo_body %}
+    <h1 class="text-3xl font-bold text-gray-900">Twig Component <code>ProductCard</code></h1>
+    <p class="mt-2 text-gray-600">
+        Composant statique avec un service injecté (<code>PriceFormatter</code>) et une méthode exposée via <code>this.formattedPrice</code>.
+    </p>
+
+    <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {% for product in products %}
+            <twig:ProductCard :product="product" />
+        {% endfor %}
+    </div>
+
+    <section class="mt-10">
+        <h2 class="text-xl font-semibold text-gray-900">Code source</h2>
+        <p class="mt-2 text-sm text-gray-600">
+            Voir
+            <a href="{{ file_link('src/Twig/Components/ProductCard.php') }}" class="font-mono text-indigo-600 hover:underline"><code>src/Twig/Components/ProductCard.php</code></a>,
+            <a href="{{ file_link('templates/components/ProductCard.html.twig') }}" class="font-mono text-indigo-600 hover:underline"><code>templates/components/ProductCard.html.twig</code></a>,
+            <a href="{{ file_link('src/Demo/PriceFormatter.php') }}" class="font-mono text-indigo-600 hover:underline"><code>src/Demo/PriceFormatter.php</code></a>.
+        </p>
+    </section>
+{% endblock %}

@@ -1,14 +1,20 @@
 {#
     Chapitre 06 — Démo live (ancre tangible après le cycle de vie, avant les cas d'usage).
-#}
-{% import 'presentation/_macros.html.twig' as ui %}
 
+    Deux démos courtes et percutantes, encadrées par une intro, une slide
+    "coulisses" pour pointer les devtools, un récap des take-aways et une
+    transition vers les cas d'usage du chapitre 7.
+#}
 <section
     data-chapter="06"
     data-chapter-title="Démo live"
 >
-    <section data-slide-id="06-intro">
-        {{ ui.slide_header('Chapitre 6', 'Démo live', 'Rendre le concept tangible') }}
-        <p><small>À venir…</small></p>
-    </section>
+    {% include 'presentation/chapters/06-demo-live/slides/_01_intro.html.twig' %}
+    {% include 'presentation/chapters/06-demo-live/slides/_02_alert.html.twig' %}
+    {% include 'presentation/chapters/06-demo-live/slides/_03_product_card.html.twig' %}
+    {% include 'presentation/chapters/06-demo-live/slides/_04_counter.html.twig' %}
+    {% include 'presentation/chapters/06-demo-live/slides/_05_product_search.html.twig' %}
+    {% include 'presentation/chapters/06-demo-live/slides/_06_coulisses.html.twig' %}
+    {% include 'presentation/chapters/06-demo-live/slides/_07_retention.html.twig' %}
+    {% include 'presentation/chapters/06-demo-live/slides/_08_transition.html.twig' %}
 </section>

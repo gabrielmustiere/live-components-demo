@@ -1,0 +1,31 @@
+<div {{ attributes.defaults({ class: 'flex flex-col gap-4' }) }}>
+    <label class="flex flex-col gap-1">
+        <span class="text-sm font-medium text-gray-700">Rechercher un produit</span>
+        <input
+            type="search"
+            data-model="debounce(300)|query"
+            placeholder="Tapez au moins 2 caractères…"
+            class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+        >
+    </label>
+
+    {% set results = this.results %}
+
+    {% if query|length < 2 %}
+        <p class="text-sm text-gray-500">Commencez à taper pour voir les résultats.</p>
+    {% elseif results is empty %}
+        <p class="text-sm text-gray-500">Aucun produit ne correspond à <strong>{{ query }}</strong>.</p>
+    {% else %}
+        <ul class="divide-y divide-gray-100 rounded-md border border-gray-200 bg-white">
+            {% for product in results %}
+                <li class="flex items-center justify-between gap-4 px-4 py-3">
+                    <span class="text-sm text-gray-900">{{ product.name }}</span>
+                    {% if product.new %}
+                        <span class="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-700">Nouveau</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        <p class="text-xs text-gray-500">{{ results|length }} résultat{{ results|length > 1 ? 's' : '' }}</p>
+    {% endif %}
+</div>

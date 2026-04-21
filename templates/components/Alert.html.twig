@@ -1,0 +1,23 @@
+{% set palette = {
+    info:    'border-sky-200 bg-sky-50 text-sky-900',
+    success: 'border-green-200 bg-green-50 text-green-900',
+    warning: 'border-amber-200 bg-amber-50 text-amber-900',
+    error:   'border-red-200 bg-red-50 text-red-900',
+} %}
+{% set icon = {
+    info:    'tabler:info-circle',
+    success: 'tabler:circle-check',
+    warning: 'tabler:alert-triangle',
+    error:   'tabler:alert-circle',
+} %}
+
+<div {{ attributes.defaults({
+    class: 'flex items-start gap-3 rounded-lg border px-4 py-3 text-sm ' ~ palette[type]|default(palette.info),
+    role: 'alert',
+}) }}>
+    <twig:ux:icon name="{{ icon[type]|default(icon.info) }}" class="mt-0.5 size-5 shrink-0"/>
+    <p class="flex-1">{{ message }}</p>
+    {% if dismissible %}
+        <button type="button" aria-label="Fermer" class="text-current opacity-60 transition hover:opacity-100">×</button>
+    {% endif %}
+</div>

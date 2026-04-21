@@ -1,0 +1,41 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="05-render-initial">
+    {{ ui.slide_header('5.2', 'Render initial', 'mount() → PostMount → Twig → PreDehydrate → DOM') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>Côté serveur</h3>
+<pre><code class="language-text">1. Symfony rend la page :
+   &lt;twig:Counter count="0" /&gt;
+2. Bundle instancie la classe
+   (services autowirés)
+3. mount() appelé si présent
+4. #[PostMount] déclenché
+5. Twig produit le markup
+6. #[PreDehydrate] déclenché
+7. LiveProp sérialisées
+   dans data-live-props-value</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>Markup généré</h3>
+<pre><code class="language-html">&lt;div
+  data-controller="live"
+  data-live-url-value="/_components/Counter"
+  data-live-props-value="{&amp;quot;count&amp;quot;:0}"
+  data-live-fingerprint-value="abc123"
+&gt;
+  &lt;p&gt;Compteur : 0&lt;/p&gt;
+  &lt;button
+    data-action="live#action"
+    data-live-action-param="increment"
+  &gt;+1&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+    </div>
+
+    <p><small>
+        <code>data-live-props-value</code> = état JSON complet ·
+        <code>data-live-fingerprint-value</code> = hash pour détecter les conflits d'état
+    </small></p>
+</section>

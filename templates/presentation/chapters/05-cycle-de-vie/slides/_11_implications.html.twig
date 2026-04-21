@@ -1,0 +1,46 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="05-implications">
+    {{ ui.slide_header('5.12', 'Implications pour un lead dev', 'Ce que le modèle impose') }}
+
+    <blockquote class="verdict">
+        <strong>« Stateless serveur, stateful DOM. »</strong>
+        <br>
+        Tout ce qui doit survivre entre deux interactions doit être une <code>LiveProp</code>.
+    </blockquote>
+
+    <table class="recap-table">
+        <thead>
+            <tr>
+                <th>Règle</th>
+                <th>Pourquoi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Aucun état implicite entre deux requêtes</td>
+                <td>Variables d'instance non <code>LiveProp</code> = perdues à chaque cycle</td>
+            </tr>
+            <tr>
+                <td><code>LiveProp writable</code> = entrée utilisateur</td>
+                <td>Le client peut envoyer n'importe quoi — valider comme un champ de formulaire</td>
+            </tr>
+            <tr>
+                <td>Chaque action = un round-trip</td>
+                <td>Debounce obligatoire sur inputs texte (<code>debounce(300)|query</code>)</td>
+            </tr>
+            <tr>
+                <td>Pas d'entités complètes en <code>LiveProp</code></td>
+                <td>Taille de l'état sérialisé — stocker un ID, recharger en <code>#[PostHydrate]</code></td>
+            </tr>
+            <tr>
+                <td>Listes → <code>id</code> stable</td>
+                <td>morphdom sinon = bugs visuels subtils sur réordonnancement</td>
+            </tr>
+            <tr>
+                <td>Actions idempotentes si possible</td>
+                <td>Retry client = action rejouée. Paiement, envoi : token d'idempotence</td>
+            </tr>
+        </tbody>
+    </table>
+</section>

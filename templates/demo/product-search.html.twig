@@ -1,0 +1,26 @@
+{% extends 'demo/layout.html.twig' %}
+
+{% block demo_page_title %}ProductSearch Live Component{% endblock %}
+{% block demo_title %}ProductSearch{% endblock %}
+
+{% block demo_body %}
+    <h1 class="text-3xl font-bold text-gray-900">Live Component <code>ProductSearch</code></h1>
+    <p class="mt-2 text-gray-600">
+        Recherche live avec <code>debounce(300)</code>. Le filtre est exécuté côté serveur à chaque frappe,
+        la liste est patchée via morphdom. Aucune ligne de JS custom.
+    </p>
+
+    <div class="mt-10 rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+        <twig:ProductSearch />
+    </div>
+
+    <section class="mt-10">
+        <h2 class="text-xl font-semibold text-gray-900">Code source</h2>
+        <p class="mt-2 text-sm text-gray-600">
+            Voir
+            <a href="{{ file_link('src/Twig/Components/ProductSearch.php') }}" class="font-mono text-indigo-600 hover:underline"><code>src/Twig/Components/ProductSearch.php</code></a>,
+            <a href="{{ file_link('templates/components/ProductSearch.html.twig') }}" class="font-mono text-indigo-600 hover:underline"><code>templates/components/ProductSearch.html.twig</code></a>,
+            <a href="{{ file_link('src/Demo/ProductRepository.php') }}" class="font-mono text-indigo-600 hover:underline"><code>src/Demo/ProductRepository.php</code></a>.
+        </p>
+    </section>
+{% endblock %}

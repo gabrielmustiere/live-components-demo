@@ -1,0 +1,47 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="06-product-card">
+    {{ ui.slide_header('6.2', 'Démo 1 · ProductCard avec service', 'On injecte, on calcule, on expose') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>src/Twig/Components/ProductCard.php</h3>
+<pre><code class="language-php">#[AsTwigComponent]
+final class ProductCard
+{
+    public function __construct(
+        private PriceFormatter $formatter,
+    ) {}
+
+    public Product $product;
+    public bool $showBadge = true;
+
+    public function formattedPrice(): string
+    {
+        return $this->formatter->format(
+            $this->product->price,
+        );
+    }
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>templates/components/ProductCard.html.twig</h3>
+<pre><code class="language-twig">{% verbatim %}&lt;article class="product-card"&gt;
+    &lt;h3&gt;{{ product.name }}&lt;/h3&gt;
+    &lt;p class="price"&gt;{{ this.formattedPrice }}&lt;/p&gt;
+    {% if showBadge and product.new %}
+        &lt;span class="badge"&gt;Nouveau&lt;/span&gt;
+    {% endif %}
+&lt;/article&gt;{% endverbatim %}</code></pre>
+        </div>
+    </div>
+
+    <blockquote class="verdict">
+        <strong>« Une classe + un template. Aucune nouveauté conceptuelle,
+        mais une organisation radicalement meilleure. »</strong>
+    </blockquote>
+
+    <p>
+        <a class="btn-primary" href="{{ path('app_demo', { slug: 'product-card' }) }}?return=6/2">Ouvrir la démo ProductCard</a>
+    </p>
+</section>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Demo\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,6 +14,7 @@ final class DemoController extends AbstractController
 {
     public function __construct(
         private readonly Environment $twig,
+        private readonly ProductRepository $products,
     ) {
     }
 
@@ -31,6 +33,18 @@ final class DemoController extends AbstractController
 
         return $this->render($template, [
             'slug' => $slug,
+            ...$this->contextFor($slug),
         ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function contextFor(string $slug): array
+    {
+        return match ($slug) {
+            'product-card' => ['products' => $this->products->all()],
+            default => [],
+        };
     }
 }

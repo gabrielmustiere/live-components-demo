@@ -1,0 +1,34 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="05-sequence">
+    {{ ui.slide_header('5.1', 'Diagramme de séquence', 'Client ↔ Serveur — les deux cycles') }}
+
+<pre class="r-stretch"><code class="language-text">Client (navigateur)              Réseau              Serveur PHP
+        │                           │                     │
+        │  ── requête initiale ──────────────────────────►│
+        │                           │       mount() / PostMount
+        │                           │       PreDehydrate
+        │                           │       Twig render
+        │◄── HTML + état DOM ────────────────────────────  │
+        │                           │                     │
+        │  [clic / input / debounce]│                     │
+        │  Stimulus lit le DOM      │                     │
+        │  ── POST /_components ───►│                     │
+        │    props + action         │── Ajax JSON ───────►│
+        │                           │       Instantiation
+        │                           │       Hydration LiveProp
+        │                           │       PostHydrate
+        │                           │       LiveAction()
+        │                           │       PreReRender
+        │                           │       Twig re-render
+        │                           │       PreDehydrate
+        │                           │◄─ HTML + nouvel état  │
+        │◄─ réponse HTML ──────────  │                     │
+        │   morphdom patch           │                     │
+        │   JS: render:finished      │                     │</code></pre>
+
+    <blockquote class="verdict">
+        Entre deux requêtes, <strong>le composant n'existe pas côté serveur</strong>.
+        Il est reconstruit à chaque cycle à partir de l'état sérialisé dans le DOM.
+    </blockquote>
+</section>

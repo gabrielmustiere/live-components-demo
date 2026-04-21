@@ -1,0 +1,55 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="06-product-search">
+    {{ ui.slide_header('6.4', 'Démo 2 · Recherche live', 'Un LiveProp + debounce = recherche temps réel') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>src/Twig/Components/ProductSearch.php</h3>
+<pre><code class="language-php">#[AsLiveComponent]
+final class ProductSearch
+{
+    use DefaultActionTrait;
+
+    #[LiveProp(writable: true)]
+    public string $query = '';
+
+    public function __construct(
+        private ProductRepository $products,
+    ) {}
+
+    public function getResults(): array
+    {
+        return \strlen($this->query) >= 2
+            ? $this->products->search($this->query)
+            : [];
+    }
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>templates/components/ProductSearch.html.twig</h3>
+<pre><code class="language-twig">{% verbatim %}&lt;div{{ attributes }}&gt;
+    &lt;input
+        type="search"
+        data-model="debounce(300)|query"
+        placeholder="Rechercher…"
+    &gt;
+    &lt;ul&gt;
+        {% for product in this.results %}
+            &lt;li&gt;{{ product.name }}&lt;/li&gt;
+        {% endfor %}
+    &lt;/ul&gt;
+&lt;/div&gt;{% endverbatim %}</code></pre>
+        </div>
+    </div>
+
+    <ul>
+        <li>On tape → liste mise à jour en <strong>direct</strong>, <code>debounce(300)</code> évite de spammer le serveur</li>
+        <li><strong>Aucune ligne de JS custom</strong>, la recherche utilise directement le repository</li>
+        <li>On peut poser un <strong>breakpoint PHP</strong> dans <code>getResults()</code> et débugger normalement</li>
+    </ul>
+
+    <p>
+        <a class="btn-primary" href="{{ path('app_demo', { slug: 'product-search' }) }}?return=6/4">Ouvrir la démo ProductSearch</a>
+    </p>
+</section>
