@@ -4,7 +4,13 @@
 {% set items = [
     { route: 'app_page',         label: 'Dashboard',    icon: 'tabler:layout-dashboard' },
     { route: 'app_presentation', label: 'Présentation', icon: 'tabler:presentation' },
-    { route: 'app_demo',         label: 'Démo Counter', icon: 'tabler:square-plus',  params: { slug: 'counter' }, slug: 'counter' },
+] %}
+
+{% set demos = [
+    { slug: 'alert',          label: 'Alert',         icon: 'tabler:alert-circle' },
+    { slug: 'product-card',   label: 'ProductCard',   icon: 'tabler:layout-grid' },
+    { slug: 'counter',        label: 'Counter',       icon: 'tabler:square-plus' },
+    { slug: 'product-search', label: 'ProductSearch', icon: 'tabler:search' },
 ] %}
 
 <nav class="relative flex flex-1 flex-col">
@@ -20,6 +26,22 @@
             </li>
         {% endfor %}
     </ul>
+
+    <div class="mt-6">
+        <div class="px-2 text-xs/6 font-semibold text-gray-400 uppercase tracking-wider">Démos</div>
+        <ul role="list" class="mt-2 -mx-2 space-y-1">
+            {% for demo in demos %}
+                {% set isActive = 'app_demo' == currentRoute and demo.slug == currentSlug %}
+                <li>
+                    <a href="{{ path('app_demo', { slug: demo.slug }) }}"
+                       class="group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold {{ isActive ? 'bg-white/5 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-white' }}">
+                        <twig:ux:icon name="{{ demo.icon }}" class="size-6 shrink-0"/>
+                        {{ demo.label }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
     {% if app.user %}
         <div class="mt-auto -mx-2 border-t border-white/10 pt-4">

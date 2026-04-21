@@ -43,7 +43,7 @@ Quatre questions structurantes pour tout le chapitre :
 
 **Lecture** : la vaste majorité des apps Symfony en production vit dans le **cadran bas-gauche** et **bas-droite**. Le cadran haut-droite (SPA) est réel mais rare — et souvent **surestimé** lors de la décision initiale.
 
-> 🧭 Le **tableau "où brille chaque approche"** — par feature et par type d'app — est repris dans la **synthèse (chapitre 9.1)** du talk principal. Ici, on se concentre sur le **raisonnement lead dev** : quelles questions se poser avant de trancher, et comment défendre la décision dans 12 mois.
+> 🧭 Le **tableau "où brille chaque approche"** — par feature et par type d'app — est repris dans la **synthèse (chapitre 8.1)** du talk principal. Ici, on se concentre sur le **raisonnement lead dev** : quelles questions se poser avant de trancher, et comment défendre la décision dans 12 mois.
 
 ### Les 4 questions à se poser par écran
 
@@ -446,4 +446,4 @@ Si une réponse est faible, le choix n'est pas assez mûr.
 
 ## 🧭 Note
 
-Ce chapitre est **extrait du talk principal** et conservé en bonus car il s'adresse davantage à un public lead dev / architecte qu'à des développeurs purement techniques. La synthèse et les take-aways du talk principal sont regroupés dans `09-synthese.md`.
+Ce chapitre est **extrait du talk principal** et conservé en bonus car il s'adresse davantage à un public lead dev / architecte qu'à des développeurs purement techniques. La synthèse et les take-aways du talk principal sont regroupés dans `08-synthese.md`.

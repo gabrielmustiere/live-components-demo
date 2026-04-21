@@ -425,6 +425,6 @@ Le bundle utilise un **header `Accept` custom** (`application/vnd.live-component
 
 ---
 
-## 🧭 Transition vers le chapitre 9
+## 🧭 Transition vers le chapitre 8
 
 On a le code, les tests, la perf et la sécu. Place à la **synthèse** : quand choisir quoi, quelles limites assumer, et qu'est-ce qu'on retient au final.

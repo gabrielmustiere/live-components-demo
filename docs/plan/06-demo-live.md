@@ -2,9 +2,9 @@
 
 ## 🎯 Objectif du chapitre
 
-On vient de voir **le modèle** (ch. 3–4) et **le moteur** (ch. 5). Avant d'attaquer les cas d'usage concrets, on **ancre** tout ça dans deux démos courtes et percutantes pour rendre le concept tangible.
+On vient de voir **le modèle** (ch. 3–4) et **le moteur** (ch. 5). Avant d'attaquer tests, perf et sécurité, on **ancre** tout ça dans deux démos courtes et percutantes pour rendre le concept tangible.
 
-> 💡 **Pourquoi placer la démo ici ?** Parce que l'audience a maintenant le vocabulaire (`LiveProp`, `LiveAction`, cycle, morphdom) pour **lire** le code en direct. Après la démo, les cas d'usage (ch. 7) s'analysent sur du tangible, pas de l'abstrait.
+> 💡 **Pourquoi placer la démo ici ?** Parce que l'audience a maintenant le vocabulaire (`LiveProp`, `LiveAction`, cycle, morphdom) pour **lire** le code en direct. Après la démo, les sujets opérationnels (tests, perf, sécu du ch. 7) s'analysent sur du tangible, pas de l'abstrait.
 
 ---
 
@@ -229,4 +229,4 @@ Après ces deux démos :
 
 ## 🧭 Transition vers le chapitre 7
 
-Le concept est ancré, les attributs `data-*` ne sont plus abstraits. Passons maintenant aux **cas d'usage concrets** : recherche, formulaires conditionnels, listes filtrables, quick actions — les patterns qu'on retrouve dans 90 % des backoffices Symfony.
+Le concept est ancré, les attributs `data-*` ne sont plus abstraits. Avant de livrer : **comment on teste, comment on profile, comment on sécurise** un Live Component ? Trois sujets qu'on retrouve systématiquement en code review et en prod.

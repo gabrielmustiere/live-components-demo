@@ -289,6 +289,17 @@ body:has(.reveal-stage) main {
     transform: translateY(0);
 }
 
+.reveal .btn-primary--sm {
+    padding: 0.35em 0.8em;
+    font-size: 0.55em;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+}
+
+.reveal .btn-primary--sm:hover {
+    box-shadow: 0 3px 10px rgba(99, 102, 241, 0.45);
+}
+
 /* ------------------------------------------------------------------ */
 /* Composants reutilisables des chapitres (macros presentation/*)      */
 /* ------------------------------------------------------------------ */

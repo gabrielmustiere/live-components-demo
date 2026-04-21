@@ -1,36 +1,25 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="04-recap">
-    {{ ui.slide_header('4.12', 'Message clé') }}
-
-    <table class="recap-table">
-        <thead>
-            <tr>
-                <th>Critère</th>
-                <th>Live Components</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>Encapsulation logique</td>    <td>✅ Classe PHP + services injectables</td></tr>
-            <tr><td>Template séparé</td>          <td>✅ Twig dédié, syntaxe <code>&lt;twig:…&gt;</code></td></tr>
-            <tr><td>Props typées</td>             <td>✅ Propriétés PHP typées + <code>LiveProp</code></td></tr>
-            <tr><td>État interne</td>             <td>✅ Toute <code>LiveProp</code> survit aux interactions</td></tr>
-            <tr><td>Interactivité</td>            <td>✅ Server-driven, sans JS custom</td></tr>
-            <tr><td>Performance</td>              <td>⚠️ 1 round-trip Ajax par interaction (assumé)</td></tr>
-        </tbody>
-    </table>
-
-    <blockquote class="verdict">
-        <strong>« Live Components rendent l'interactivité disponible sans quitter PHP/Twig. »</strong>
-        <br>
-        80&nbsp;% des bénéfices d'un SPA, 20&nbsp;% de la complexité.
-    </blockquote>
+    {{ ui.slide_header('4.11', 'Ce qu\'on retient') }}
 
     <p>
-        <strong>Server-driven</strong> · la vérité reste côté serveur.<br>
-        <strong>Opt-in</strong> · on ajoute <code>#[AsLiveComponent]</code> quand on en a besoin.<br>
-        <strong>Continuité</strong> · mêmes outils, mêmes patterns, même profiler.
+        Un Live Component tient en <strong>trois briques</strong> :
+        <strong>LiveProp</strong> pour l'état, <strong>LiveAction</strong> pour les actions,
+        <strong>le morphing</strong> pour préserver l'UI entre deux renders.
     </p>
 
-    <p><small>→ Chapitre 5 · Le cycle de vie complet, étape par étape</small></p>
+    <p>
+        La vérité reste côté serveur&nbsp;— <strong>pas de Virtual DOM, pas de store, pas d'hydratation</strong>.
+        <br>
+        Une annotation <code>#[AsLiveComponent]</code>, et un composant Twig devient réactif.
+    </p>
+
+    <p>
+        On garde Symfony. On gagne l'interactivité. On laisse la complexité SPA de côté.
+    </p>
+
+    <p>
+        <strong>Regardons maintenant le cycle de vie complet d'une interaction.</strong>
+    </p>
 </section>

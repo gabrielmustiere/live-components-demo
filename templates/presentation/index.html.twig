@@ -3,10 +3,8 @@
 {#
     Structure reveal.js de la présentation.
     - 1 slide 0 de couverture (titre général).
-    - 9 chapitres, chacun dans son dossier `chapters/XX-slug/`.
+    - 8 chapitres, chacun dans son dossier `chapters/XX-slug/`.
     - L'ordre des include ci-dessous = l'ordre de navigation avec ← →.
-    - Seul le chapitre 1 est entièrement implémenté ; les autres n'exposent
-      pour l'instant que leur slide titre (à enrichir progressivement).
 #}
 {% block presentation_body %}
     <div
@@ -21,9 +19,8 @@
             {% include 'presentation/chapters/04-live-components/_chapter.html.twig' %}
             {% include 'presentation/chapters/05-cycle-de-vie/_chapter.html.twig' %}
             {% include 'presentation/chapters/06-demo-live/_chapter.html.twig' %}
-            {% include 'presentation/chapters/07-cas-usage/_chapter.html.twig' %}
-            {% include 'presentation/chapters/08-tests-perf-securite/_chapter.html.twig' %}
-            {% include 'presentation/chapters/09-synthese/_chapter.html.twig' %}
+            {% include 'presentation/chapters/07-tests-perf-securite/_chapter.html.twig' %}
+            {% include 'presentation/chapters/08-synthese/_chapter.html.twig' %}
         </div>
     </div>
 {% endblock %}
