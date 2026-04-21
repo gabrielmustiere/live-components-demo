@@ -1,0 +1,35 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="08-secu-checklist">
+    {{ ui.slide_header('8.4 bis', 'Checklist code review', 'Sécurité Live Component') }}
+
+    <div class="pros-cons">
+        <div class="pros-cons__col pros-cons__col--pros">
+            <h3>✅ À valider systématiquement</h3>
+            <ul>
+                <li>Chaque <code>LiveProp writable</code> a une contrainte <code>Assert\*</code> adaptée</li>
+                <li>Chaque <code>LiveAction</code> sensible a un <code>#[IsGranted]</code></li>
+                <li>Les identifiants de ressource (ID, UUID) sont <strong>non-writable</strong></li>
+                <li>Chaque <code>#[LiveArg]</code> est validé avant usage (range, choice, existence)</li>
+                <li>Les erreurs métier sont <strong>attrapées</strong> et traduites en état</li>
+            </ul>
+        </div>
+        <div class="pros-cons__col pros-cons__col--cons">
+            <h3>❌ Signaux de danger</h3>
+            <ul>
+                <li>Une <code>LiveProp</code> qui stocke un <strong>secret</strong> (password, token, API key)</li>
+                <li>Une <code>LiveProp</code> qui stocke une <strong>entité complète</strong> (hash mdp exposé)</li>
+                <li>Une <code>LiveAction</code> qui mute un état sans autorisation</li>
+                <li>Un <code>int</code> writable sans <code>Assert\Range</code> (le client envoie <code>999999999</code>)</li>
+                <li>Une erreur métier qui remonte en <strong>500</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <blockquote class="verdict">
+        <strong>CSRF & same-origin.</strong>
+        Le bundle utilise un header <code>Accept</code> custom
+        (<code>application/vnd.live-component+html</code>) + la same-origin policy du navigateur.
+        Cela suffit à bloquer les requêtes CSRF cross-site classiques — pas de token explicite à gérer.
+    </blockquote>
+</section>

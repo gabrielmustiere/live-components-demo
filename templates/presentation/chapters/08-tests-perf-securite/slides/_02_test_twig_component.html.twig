@@ -1,0 +1,49 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="08-test-twig-component">
+    {{ ui.slide_header('8.1', 'Tester un Twig Component', 'InteractsWithTwigComponents dans un KernelTestCase') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>Tester le rendu</h3>
+<pre><code class="language-php">use Symfony\UX\TwigComponent\Test\InteractsWithTwigComponents;
+
+final class ButtonTest extends KernelTestCase
+{
+    use InteractsWithTwigComponents;
+
+    public function testRendersPrimary(): void
+    {
+        $rendered = $this->renderTwigComponent('Atom:Button', [
+            'label'   => 'Acheter',
+            'variant' => ButtonVariant::Primary,
+        ]);
+
+        self::assertStringContainsString('btn-primary', (string) $rendered);
+    }
+}</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>Tester uniquement le mount</h3>
+<pre><code class="language-php">// Vérifier la logique de classe sans payer le rendu Twig
+$component = $this->mountTwigComponent('UserAvatar', [
+    'user' => $this->createUser('Alice'),
+]);
+
+self::assertSame('AL', $component->initials);
+self::assertStringStartsWith('https://', $component->generatedUrl);</code></pre>
+        </div>
+    </div>
+
+    <table class="recap-table">
+        <thead>
+            <tr><th>Cas</th><th>Stratégie</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Atomic design critique (Button, FormField, Alert)</td><td>Test de <strong>rendu</strong>, quelques variantes</td></tr>
+            <tr><td>Composant avec <code>PreMount</code> / services</td><td>Test du <strong>mount</strong>, props normalisées</td></tr>
+            <tr><td>Purement présentiel (Card, layout)</td><td><strong>Pas de test</strong> — couvert par les tests fonctionnels</td></tr>
+            <tr><td>Règle métier encapsulée</td><td>Test unitaire sur la méthode, pas via le rendu</td></tr>
+        </tbody>
+    </table>
+</section>

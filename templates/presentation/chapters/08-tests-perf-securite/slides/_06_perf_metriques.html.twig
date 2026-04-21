@@ -1,0 +1,42 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="08-perf-metriques">
+    {{ ui.slide_header('8.3 bis', 'Ordre de grandeur sain vs alerte', 'Ce qu\'on regarde dans le profiler') }}
+
+    <table class="recap-table">
+        <thead>
+            <tr>
+                <th>Métrique</th>
+                <th>🟢 Sain</th>
+                <th>🟠 À surveiller</th>
+                <th>🔴 Alerte</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Temps re-render (local)</td>       <td>&lt; 50 ms</td><td>50–200 ms</td><td>&gt; 200 ms</td></tr>
+            <tr><td>Queries Doctrine / cycle</td>      <td>1–5</td>      <td>5–15</td>     <td>&gt; 15</td></tr>
+            <tr><td>Taille payload sérialisé</td>      <td>&lt; 5 KB</td><td>5–30 KB</td>  <td>&gt; 30 KB</td></tr>
+            <tr><td>Taille réponse HTML</td>           <td>&lt; 30 KB</td><td>30–100 KB</td><td>&gt; 100 KB</td></tr>
+        </tbody>
+    </table>
+
+    <blockquote class="verdict">
+        <strong>État LiveProp &gt; 30 KB dans le DOM ?</strong>
+        Quasiment toujours une entité Doctrine complète sérialisée.
+        Passer à un <strong>ID</strong> et recharger en <code>#[PostHydrate]</code>.
+    </blockquote>
+
+    <h3>Profiler en pratique</h3>
+<pre><code class="language-bash"># 1. Laisser le profiler ouvert sur la page du composant
+# 2. Interagir (taper, cliquer)
+# 3. Dans /_profiler, filtrer les requêtes par URL /_components/
+# 4. Pour chaque cycle :
+#    - Onglet Doctrine    → nombre de queries, requêtes lentes
+#    - Onglet Twig        → temps de rendu, nombre de templates
+#    - Onglet Performance → temps total, goulots</code></pre>
+
+    <p><small>
+        <strong>Blackfire</strong> : profiler directement une <code>LiveAction</code> via le header
+        <code>X-Blackfire-Query</code>. Recommandé pour les pages à trafic élevé.
+    </small></p>
+</section>

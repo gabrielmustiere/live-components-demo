@@ -1,0 +1,31 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="08-transition">
+    {{ ui.slide_header('8.5', 'Un Live Component, c\'est un contrôleur déguisé', null, true) }}
+
+    <blockquote class="verdict">
+        <strong>Tout ce qui s'applique à un contrôleur Symfony s'applique à une <code>LiveAction</code>.</strong>
+        <br>
+        Validation, autorisation, logs, profiler. Les mêmes réflexes, le même mental model.
+        <br>
+        <strong>La seule différence</strong> : l'état voyage dans le DOM — donc rien de sensible n'y a sa place.
+    </blockquote>
+
+    <table class="recap-table">
+        <thead>
+            <tr><th>Sujet</th><th>Le réflexe</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Tests</strong></td>        <td><code>createLiveComponent</code> → <code>set</code> / <code>call</code> → observer l'instance</td></tr>
+            <tr><td><strong>Performance</strong></td>  <td>Profiler les POST <code>/_components/*</code> · ID + rechargement plutôt qu'entité sérialisée</td></tr>
+            <tr><td><strong>Sécurité</strong></td>     <td>Writable = input utilisateur · non-writable = signé · <code>IsGranted</code> sur les actions</td></tr>
+        </tbody>
+    </table>
+
+    <p>
+        Le code, les tests, la perf, la sécu : tout est posé.
+        Place à la <strong>synthèse</strong> — quand choisir quoi, quelles limites assumer.
+    </p>
+
+    <p><small>→ Chapitre 9 · Synthèse, comparaison & take-aways</small></p>
+</section>

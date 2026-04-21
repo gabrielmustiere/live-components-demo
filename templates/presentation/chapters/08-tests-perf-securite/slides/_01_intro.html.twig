@@ -1,0 +1,25 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="08-intro">
+    {{ ui.slide_header('Chapitre 8', 'Tests, perf & sécu', 'Les trois sujets qu\'on retrouve en code review') }}
+
+    <p>
+        Le code marche. On sait l'écrire. Place aux questions que pose
+        <strong>systématiquement</strong> un Live Component en prod :
+    </p>
+
+    <ol>
+        <li>Comment le <strong>teste-t-on</strong> sans démarrer un navigateur ?</li>
+        <li>Comment le <strong>profile-t-on</strong>, quels sont les pièges typiques ?</li>
+        <li>Comment le <strong>sécurise-t-on</strong> quand l'état voyage dans le DOM ?</li>
+    </ol>
+
+    <blockquote class="verdict">
+        <strong>Chaque interaction utilisateur = une requête HTTP qui passe dans ton code.</strong>
+        <br>
+        Un N+1 discret à chaque page devient une cascade à chaque frappe clavier.
+        Un champ writable mal validé devient une entrée utilisateur non contrôlée.
+    </blockquote>
+
+    <p><small>↓ pour démarrer</small></p>
+</section>

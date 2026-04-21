@@ -1,0 +1,49 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="08-test-live-component">
+    {{ ui.slide_header('8.2', 'Tester un Live Component', 'InteractsWithLiveComponents : set, call, component()') }}
+
+<pre><code class="language-php">use Symfony\UX\LiveComponent\Test\InteractsWithLiveComponents;
+
+final class ProductSearchTest extends KernelTestCase
+{
+    use InteractsWithLiveComponents;
+
+    public function testSearchFiltersResults(): void
+    {
+        // 1. Instancier (équivalent d'un render initial)
+        $component = $this->createLiveComponent(
+            name: 'ProductSearch',
+            data: ['query' => ''],
+        );
+
+        // 2. Modifier une LiveProp writable — simule data-model côté client
+        $component->set('query', 'clavier');
+
+        // 3. Inspecter l'instance PHP après le cycle
+        /** @var \App\Twig\Components\ProductSearch $instance */
+        $instance = $component->component();
+        self::assertCount(3, $instance->getResults());
+
+        // 4. Inspecter le DOM re-rendu
+        self::assertStringContainsString('Clavier mécanique', (string) $component->render());
+    }
+
+    public function testIncrementAction(): void
+    {
+        $component = $this->createLiveComponent('Counter', ['count' => 0]);
+
+        $component->call('increment');
+        $component->call('increment');
+        self::assertSame(2, $component->component()->count);
+
+        $component->call('reset');
+        self::assertSame(0, $component->component()->count);
+    }
+}</code></pre>
+
+    <p><small>
+        Pas de navigateur, pas de headless, pas de jsdom. PHPUnit, vitesse d'un test unitaire —
+        la même boucle instanciation / hydratation / action / rendu que le bundle exécute en prod.
+    </small></p>
+</section>

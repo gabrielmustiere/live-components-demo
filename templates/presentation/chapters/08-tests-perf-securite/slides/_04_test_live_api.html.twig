@@ -1,0 +1,51 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="08-test-live-api">
+    {{ ui.slide_header('8.2 bis', 'L\'API du TestLiveComponent', 'Redirection, validation, événements') }}
+
+    <table class="recap-table">
+        <thead>
+            <tr><th>Méthode</th><th>Rôle</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><code>set(string $prop, mixed $value)</code></td><td>Modifie une LiveProp writable (re-render implicite)</td></tr>
+            <tr><td><code>call(string $action, array $args = [])</code></td><td>Invoque une LiveAction avec arguments <code>#[LiveArg]</code></td></tr>
+            <tr><td><code>refresh()</code></td><td>Force un re-render sans action</td></tr>
+            <tr><td><code>emit(string $name, array $args = [])</code></td><td>Émet un événement vers un parent</td></tr>
+            <tr><td><code>component()</code></td><td>Retourne l'instance PHP courante</td></tr>
+            <tr><td><code>render()</code></td><td>Retourne le HTML courant</td></tr>
+            <tr><td><code>response()</code></td><td>Retourne la <code>Response</code> brute (statuts, redirections)</td></tr>
+        </tbody>
+    </table>
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>Redirection</h3>
+<pre><code class="language-php">$component = $this->createLiveComponent('CheckoutWizard', [
+    'orderId' => 42,
+]);
+$component->call('confirm');
+
+$response = $component->response();
+self::assertStringContainsString(
+    '/orders/42/summary',
+    (string) $response->headers->get('X-Live-Redirect'),
+);</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>Validation</h3>
+<pre><code class="language-php">$component = $this->createLiveComponent('RegistrationForm', [
+    'email' => 'not-an-email',
+]);
+$component->call('submit');
+
+$instance = $component->component();
+self::assertTrue($instance->hasValidationErrors());</code></pre>
+        </div>
+    </div>
+
+    <p><small>
+        Pour les interactions qui dépendent réellement du navigateur (focus preserve, morphdom),
+        passer par <strong>Panther</strong>. Dans 90 % des cas, <code>InteractsWithLiveComponents</code> suffit.
+    </small></p>
+</section>
