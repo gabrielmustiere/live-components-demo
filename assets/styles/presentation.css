@@ -425,6 +425,80 @@
     text-align: left;
 }
 
+/* Diagrammes Mermaid : on casse le style pre hérité et on recentre le SVG.
+   Le rendu est produit hors DOM reveal (mermaid.render) pour éviter que
+   `.reveal p {margin}` ne fausse la mesure des foreignObject. */
+.reveal .mermaid-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.reveal pre.mermaid {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+    font-size: inherit;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.reveal pre.mermaid svg {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35));
+}
+
+/* Reset dur des foreignObject : neutralise les styles reveal qui y fuient.
+   On force la même font que celle utilisée par Mermaid pour mesurer (Helvetica)
+   afin que la largeur calculée corresponde à la largeur rendue. */
+.reveal pre.mermaid foreignObject * {
+    margin: 0 !important;
+    padding: 0 !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    line-height: 1.3 !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+.reveal pre.mermaid foreignObject > div {
+    /* On ne force ni max-width ni white-space : on laisse Mermaid dimensionner
+       librement le foreignObject et le texte wrapper s'il dépasse. */
+}
+
+/* Subgraph : fond très léger, texte indigo-200, coin arrondi */
+.reveal pre.mermaid .cluster rect {
+    rx: 12;
+    ry: 12;
+}
+
+.reveal pre.mermaid .cluster-label .nodeLabel,
+.reveal pre.mermaid .cluster-label p {
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+/* Nodes : coins un peu plus doux que le défaut */
+.reveal pre.mermaid .node rect,
+.reveal pre.mermaid .node polygon {
+    rx: 8;
+    ry: 8;
+}
+
+/* Edges un peu plus marquées */
+.reveal pre.mermaid .edgePath .path {
+    stroke-width: 2px;
+}
+
 /* Media queries preservees par reveal.js pour le mode print */
 @media print {
     .reveal-viewport,

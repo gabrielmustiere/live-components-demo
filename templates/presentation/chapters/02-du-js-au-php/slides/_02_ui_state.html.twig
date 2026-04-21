@@ -3,7 +3,7 @@
 <section data-slide-id="02-ui-state">
     {{ ui.slide_header('2.1', 'Le modèle composant, sans le tooling') }}
 
-<pre><code class="language-text">UI = f(state)</code></pre>
+    <pre><code class="language-text">UI = f(state)</code></pre>
 
     <p>
         La vue est une <strong>fonction pure de l'état</strong>.
@@ -13,38 +13,38 @@
 
     <table class="recap-table">
         <thead>
-            <tr>
-                <th>Concept</th>
-                <th>Définition</th>
-                <th>Propriété essentielle</th>
-            </tr>
+        <tr>
+            <th>Concept</th>
+            <th>Définition</th>
+            <th>Propriété essentielle</th>
+        </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><strong>Props</strong></td>
-                <td>Données passées par le parent</td>
-                <td>Immuables, contrat d'entrée explicite</td>
-            </tr>
-            <tr>
-                <td><strong>State</strong></td>
-                <td>État interne au composant</td>
-                <td>Mutable, déclenche un re-render</td>
-            </tr>
-            <tr>
-                <td><strong>Render</strong></td>
-                <td>Fonction <code>(props, state) → UI</code></td>
-                <td>Pure : mêmes entrées = même sortie</td>
-            </tr>
-            <tr>
-                <td><strong>Events</strong></td>
-                <td>Interactions remontées vers le parent</td>
-                <td>Couplage minimal</td>
-            </tr>
-            <tr>
-                <td><strong>Composition</strong></td>
-                <td>Arbre de composants</td>
-                <td>Décomposition en unités compréhensibles</td>
-            </tr>
+        <tr>
+            <td><strong>Props</strong></td>
+            <td>Données passées par le parent</td>
+            <td>Immuables, contrat d'entrée explicite</td>
+        </tr>
+        <tr>
+            <td><strong>State</strong></td>
+            <td>État interne au composant</td>
+            <td>Mutable, déclenche un re-render</td>
+        </tr>
+        <tr>
+            <td><strong>Render</strong></td>
+            <td>Fonction <code>(props, state) → UI</code></td>
+            <td>Pure : mêmes entrées = même sortie</td>
+        </tr>
+        <tr>
+            <td><strong>Events</strong></td>
+            <td>Interactions remontées vers le parent</td>
+            <td>Couplage minimal</td>
+        </tr>
+        <tr>
+            <td><strong>Composition</strong></td>
+            <td>Arbre de composants</td>
+            <td>Décomposition en unités compréhensibles</td>
+        </tr>
         </tbody>
     </table>
 
