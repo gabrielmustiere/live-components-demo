@@ -5,12 +5,12 @@
 
     <div class="r-stretch mermaid-wrapper">
         <pre class="mermaid">
-flowchart LR
-    subgraph PHP["&nbsp;&nbsp;&nbsp;Couche composant PHP&nbsp;&nbsp;&nbsp;"]
+flowchart TB
+    subgraph PHP["&nbsp;&nbsp;&nbsp;Php Twig&nbsp;&nbsp;&nbsp;"]
         direction TB
-        TC["Twig Components"]
         LC["Live Components"]
-        TC --> LC
+        TC["Twig Components"]
+        LC --> TC
     end
 
     BRIDGE(["Stimulus bridge"])
@@ -18,7 +18,6 @@ flowchart LR
     subgraph JS["&nbsp;&nbsp;&nbsp;Couche JS&nbsp;&nbsp;&nbsp;"]
         direction TB
         STIM["Stimulus"]
-        TURBO["Turbo"]
     end
 
     subgraph BUILD["&nbsp;&nbsp;&nbsp;Build / assets&nbsp;&nbsp;&nbsp;"]
@@ -27,22 +26,17 @@ flowchart LR
         ENCORE["Webpack Encore"]
     end
 
-    PHP --> BRIDGE --> JS --> BUILD
-
-    SAT["&nbsp;+ bundles satellites : Chartjs, Dropzone, Cropperjs, Notify, Autocomplete, LeafletMap, Icons…&nbsp;"]
-    BRIDGE -.-> SAT
+    LC --> BRIDGE --> JS --> BUILD
 
     classDef php fill:#312e81,stroke:#818cf8,stroke-width:2px,color:#e0e7ff;
     classDef live fill:#4338ca,stroke:#a5b4fc,stroke-width:2px,color:#eef2ff;
     classDef bridge fill:#6366f1,stroke:#c7d2fe,stroke-width:2px,color:#ffffff;
     classDef infra fill:#1f2937,stroke:#9ca3af,stroke-width:1.5px,color:#f3f4f6;
-    classDef sat fill:#1e293b,stroke:#64748b,stroke-width:1px,stroke-dasharray:4 3,color:#cbd5e1;
 
     class TC php;
     class LC live;
     class BRIDGE bridge;
-    class STIM,TURBO,AM,ENCORE infra;
-    class SAT sat;
+    class STIM,AM,ENCORE infra;
         </pre>
     </div>
 </section>

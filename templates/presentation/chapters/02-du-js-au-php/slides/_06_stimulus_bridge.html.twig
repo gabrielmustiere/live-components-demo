@@ -4,26 +4,29 @@
     {{ ui.slide_header('2.5', 'Le Stimulus bridge') }}
 
     <p>
-        Un bundle PHP <strong>livre</strong> des contrôleurs Stimulus,
-        qui s'enregistrent <strong>automatiquement</strong> côté client.
+        Le bundle <code>ux-live-component</code> embarque son propre contrôleur Stimulus.
+        Le <strong>Stimulus bridge</strong> le branche <strong>automatiquement</strong> sur votre front.
     </p>
 
-    <pre><code class="language-text">
-1. composer require symfony/ux-live-component
-        │
-        ▼
-2. Le bundle expose un controller JS (live_controller.js)
-        │
-        ▼
-3. Symfony Flex écrit dans assets/controllers.json
-        │
-        ▼
-4. AssetMapper / Webpack Encore lit le fichier
-        │
-        ▼
-5. data-controller="live" est dispo partout, zéro npm</code></pre>
+    <div class="r-stretch mermaid-wrapper">
+        <pre class="mermaid">
+flowchart LR
+    COMPOSER["composer require symfony/ux-live-componentsup"]
+    JS["live_controller.js<br/>(livré par le bundle PHP)"]
+    BRIDGE(["Stimulus bridge"])
+    HTML["data-controller=#quot;live#quot;<br/>dispo dans vos templates"]
 
-    <blockquote class="verdict">
-        Un <code>composer require</code> suffit à livrer du JS — sans toucher à npm.
-    </blockquote>
+    COMPOSER --> JS --> BRIDGE --> HTML
+
+    classDef step fill:#312e81,stroke:#818cf8,stroke-width:2px,color:#e0e7ff;
+    classDef bridge fill:#6366f1,stroke:#c7d2fe,stroke-width:2px,color:#ffffff;
+    classDef result fill:#4338ca,stroke:#a5b4fc,stroke-width:2px,color:#eef2ff;
+
+    class COMPOSER,JS step;
+    class BRIDGE bridge;
+    class HTML result;
+        </pre>
+    </div>
+
+    <blockquote class="verdict"><strong>Un <code>composer require</code> suffit : zéro <code>npm install</code>, zéro ligne de JS à écrire.</strong></blockquote>
 </section>
