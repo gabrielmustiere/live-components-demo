@@ -1,31 +1,32 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="05-sequence">
-    {{ ui.slide_header('5.1', 'Diagramme de séquence') }}
+    {{ ui.slide_header('5.1', 'Le cycle en deux phases', 'Rendu initial · puis cycle interaction') }}
 
-<pre class="r-stretch"><code class="language-text">Client (navigateur)              Réseau              Serveur PHP
-        │                           │                     │
-        │  ── requête initiale ──────────────────────────►│
-        │                           │       mount() / PostMount
-        │                           │       PreDehydrate
-        │                           │       Twig render
-        │◄── HTML + état DOM ────────────────────────────  │
-        │                           │                     │
-        │  [clic / input / debounce]│                     │
-        │  Stimulus lit le DOM      │                     │
-        │  ── POST /_components ───►│                     │
-        │    props + action         │── Ajax JSON ───────►│
-        │                           │       Instantiation
-        │                           │       Hydration LiveProp
-        │                           │       PostHydrate
-        │                           │       LiveAction()
-        │                           │       PreReRender
-        │                           │       Twig re-render
-        │                           │       PreDehydrate
-        │                           │◄─ HTML + nouvel état  │
-        │◄─ réponse HTML ──────────  │                     │
-        │   morphdom patch           │                     │
-        │   JS: render:finished      │                     │</code></pre>
+<pre class="r-stretch"><code class="language-text">── Phase 1 : rendu initial ──────────────────────────────────────────
+
+  Navigateur            Serveur PHP
+      │                     │
+      │── GET /ma-page ─────►│  instancie le composant
+      │                     │  monte les props (mount)
+      │                     │  rend le template Twig
+      │◄── HTML complet ─────│  sérialise l'état dans le DOM
+      │
+      │  Le composant n'existe plus côté serveur.
+      │  Son état est encodé dans le HTML rendu.
+
+
+── Phase 2 : cycle interaction (répété à chaque action) ─────────────
+
+  Navigateur            Serveur PHP
+      │                     │
+      │  [clic ou input]     │
+      │── POST /_components ►│  reconstruit le composant
+      │   état courant       │  applique l'action (LiveAction)
+      │   + action           │  re-rend le template Twig
+      │◄── HTML partiel ─────│  sérialise le nouvel état
+      │
+      │  morphdom compare et patche uniquement les nœuds modifiés.</code></pre>
 
     <blockquote class="verdict">
         Entre deux requêtes, <strong>le composant n'existe pas côté serveur</strong>.

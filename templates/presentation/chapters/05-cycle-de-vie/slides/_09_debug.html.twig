@@ -1,60 +1,53 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="05-debug">
-    {{ ui.slide_header('5.10', 'Déboguer le cycle') }}
+    {{ ui.slide_header('5.8', 'Déboguer le cycle', 'Profiler Symfony + réseau + console — aucun outil nouveau') }}
 
     <div class="code-split">
-        <div class="code-split__col">
-            <h3>Hooks JS côté client</h3>
-<pre><code class="language-javascript">import { getComponent } from
-    '@symfony/ux-live-component';
-
-const el = document.querySelector(
-    '[data-controller="live"]'
-);
-const component = await getComponent(el);
-
-component.on('connect', () =&gt; {});
-component.on('render:started',
-    (html, response, controls) =&gt; {
-        // controls.preventDefault()
-        // pour annuler le patch
-    }
-);
-component.on('render:finished', () =&gt; {});
-component.on('response:error',
-    (resp, controls) =&gt; {}
-);
-component.on('model:set',
-    (model, value) =&gt; {}
-);</code></pre>
-            <p><small>Pour des <strong>intégrations ponctuelles</strong> (analytics, animations). Jamais de logique métier.</small></p>
-        </div>
         <div class="code-split__col">
             <h3>Outils d'observation</h3>
             <ul>
                 <li>
-                    <strong>Profiler Symfony</strong><br>
-                    <code>/_profiler</code> → filtrer <code>POST /_components/*</code><br>
-                    <small>props reçues, action exécutée, erreurs de validation, temps d'exécution</small>
+                    <strong>Onglet réseau</strong> — filtrer <code>/_components</code><br>
+                    <small>payload JSON envoyé (<code>updated.query = "clav"</code>) + HTML reçu</small>
                 </li>
                 <li>
-                    <strong>Onglet réseau</strong><br>
-                    Filtrer <code>/_components</code> → payload JSON + réponse HTML lisibles
+                    <strong>Profiler Symfony</strong> <code>/_profiler</code><br>
+                    <small>props reçues · requête Doctrine exécutée · temps de rendu Twig</small>
                 </li>
                 <li>
-                    <strong>Logs dev</strong>
-<pre><code class="language-bash">tail -f var/log/dev.log \
-  | grep live_component</code></pre>
-                </li>
-                <li>
-                    <strong>Console</strong> : inspecter l'état sérialisé
-<pre><code class="language-javascript">JSON.parse(
-  el.dataset.livePropsValue
+                    <strong>Console</strong> — lire l'état sérialisé en direct
+<pre><code class="language-javascript">const el = document.querySelector(
+    '[data-controller="live"]'
 );
-// → {count: 4}</code></pre>
+JSON.parse(el.dataset.livePropsValue);
+// → { "query": "clav" }</code></pre>
                 </li>
             </ul>
+        </div>
+        <div class="code-split__col">
+            <h3>Hooks JS — intégrations ponctuelles</h3>
+<pre><code class="language-javascript">import { getComponent } from
+    '@symfony/ux-live-component';
+
+const component = await getComponent(el);
+
+// Avant que le patch DOM soit appliqué
+component.on('render:started',
+    (html, response, controls) => {
+        // controls.preventDefault()
+        // pour annuler le patch
+    }
+);
+
+// Après le patch — ex: relancer une animation
+component.on('render:finished', () => {});
+
+// Erreur réseau
+component.on('response:error',
+    (response, controls) => {}
+);</code></pre>
+            <p><small>Pour des <strong>intégrations ponctuelles</strong> (analytics, animations). Jamais de logique métier.</small></p>
         </div>
     </div>
 </section>

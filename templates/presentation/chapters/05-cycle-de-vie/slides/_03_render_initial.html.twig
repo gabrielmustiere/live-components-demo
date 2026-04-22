@@ -1,41 +1,53 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="05-render-initial">
-    {{ ui.slide_header('5.2', 'Render initial') }}
+    {{ ui.slide_header('5.2', 'Render initial : ProductSearch', 'L\'état sérialisé dans le DOM dès le premier chargement') }}
 
     <div class="code-split">
         <div class="code-split__col">
-            <h3>Côté serveur</h3>
-<pre><code class="language-text">1. Symfony rend la page :
-   &lt;twig:Counter count="0" /&gt;
-2. Bundle instancie la classe
-   (services autowirés)
-3. mount() appelé si présent
-4. #[PostMount] déclenché
-5. Twig produit le markup
-6. #[PreDehydrate] déclenché
-7. LiveProp sérialisées
-   dans data-live-props-value</code></pre>
+            <h3>La classe</h3>
+<pre><code class="language-php">#[AsLiveComponent]
+final class ProductSearch
+{
+    use DefaultActionTrait;
+
+    #[LiveProp(writable: true)]
+    public string $query = '';
+
+    public function __construct(
+        private readonly ProductRepository $products,
+    ) {}
+
+    public function getResults(): array
+    {
+        if (mb_strlen(trim($this->query)) < 2) {
+            return [];
+        }
+        return $this->products->searchByName($this->query);
+    }
+}</code></pre>
         </div>
         <div class="code-split__col">
             <h3>Markup généré</h3>
 <pre><code class="language-html">&lt;div
   data-controller="live"
-  data-live-url-value="/_components/Counter"
-  data-live-props-value="{&amp;quot;count&amp;quot;:0}"
-  data-live-fingerprint-value="abc123"
+  data-live-url-value="/_components/ProductSearch"
+  data-live-props-value='{"query":""}'
+  data-live-fingerprint-value="a1b2c3"
 &gt;
-  &lt;p&gt;Compteur : 0&lt;/p&gt;
-  &lt;button
-    data-action="live#action"
-    data-live-action-param="increment"
-  &gt;+1&lt;/button&gt;
+  &lt;input
+    type="search"
+    data-model="debounce(300)|query"
+    placeholder="Rechercher…"
+  &gt;
+  &lt;!-- query vide → getResults() retourne [] --&gt;
 &lt;/div&gt;</code></pre>
+
+            <p><small>
+                <code>data-live-props-value</code> = état sérialisé — seule <code>$query</code> est une <code>LiveProp</code>.
+                <br>
+                Les résultats Doctrine <strong>ne sont pas</strong> dans le DOM — recalculés à chaque rendu.
+            </small></p>
         </div>
     </div>
-
-    <p><small>
-        <code>data-live-props-value</code> = état JSON complet ·
-        <code>data-live-fingerprint-value</code> = hash pour détecter les conflits d'état
-    </small></p>
 </section>

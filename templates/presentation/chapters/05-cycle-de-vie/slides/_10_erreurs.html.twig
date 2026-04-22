@@ -1,55 +1,64 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="05-erreurs">
-    {{ ui.slide_header('5.11', 'Gestion des erreurs') }}
+    {{ ui.slide_header('5.9', 'Gestion des erreurs', 'Les erreurs métier deviennent un état — pas un 500') }}
 
-    <table class="recap-table">
-        <thead>
-            <tr>
-                <th>Situation</th>
-                <th>Comportement</th>
-                <th>Bonne pratique</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Exception dans une <code>LiveAction</code></td>
-                <td>Réponse 500 · <code>render:error</code> côté JS</td>
-                <td>Attraper côté serveur → état du composant</td>
-            </tr>
-            <tr>
-                <td>Violation de validation</td>
-                <td>Injection dans <code>_errors</code>, re-render normal</td>
-                <td>Afficher via <code>ValidatableComponentTrait</code></td>
-            </tr>
-            <tr>
-                <td>Conflit de <code>fingerprint</code></td>
-                <td><strong>Re-render forcé</strong> depuis l'état serveur</td>
-                <td>Rien — le bundle gère (2 onglets, déploiement)</td>
-            </tr>
-            <tr>
-                <td>Timeout réseau</td>
-                <td>Retry auto (backoff) · <code>response:error</code></td>
-                <td>Feedback utilisateur via le hook JS</td>
-            </tr>
-        </tbody>
-    </table>
-
-<pre><code class="language-php">#[LiveAction]
-public function save(): void
+    <div class="code-split">
+        <div class="code-split__col">
+            <table class="recap-table">
+                <thead>
+                    <tr><th>Situation</th><th>Comportement</th><th>À faire</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Exception dans <code>getResults()</code></td>
+                        <td>500 · <code>response:error</code> JS</td>
+                        <td>Attraper → stocker le message comme état</td>
+                    </tr>
+                    <tr>
+                        <td>Violation de validation</td>
+                        <td>Injection dans <code>_errors</code>, re-render</td>
+                        <td><code>ValidatableComponentTrait</code></td>
+                    </tr>
+                    <tr>
+                        <td>Conflit de fingerprint</td>
+                        <td>Re-render forcé depuis le serveur</td>
+                        <td>Rien — le bundle gère (2 onglets, déploiement)</td>
+                    </tr>
+                    <tr>
+                        <td>Timeout réseau</td>
+                        <td>Retry auto · <code>response:error</code></td>
+                        <td>Feedback utilisateur via hook JS</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="code-split__col">
+            <h3>ProductSearch — erreur Doctrine comme état</h3>
+<pre><code class="language-php">#[AsLiveComponent]
+final class ProductSearch
 {
-    try {
-        $this-&gt;orderService-&gt;place($this-&gt;order);
-        $this-&gt;success = true;
-    } catch (InsufficientStockException $e) {
-        // Traduire l'erreur métier en état du composant
-        // plutôt que de laisser remonter un 500.
-        $this-&gt;errorMessage = 'Stock insuffisant pour cette commande.';
+    use DefaultActionTrait;
+
+    #[LiveProp(writable: true)]
+    public string $query = '';
+
+    public ?string $error = null;
+
+    public function getResults(): array
+    {
+        try {
+            return $this->products
+                ->searchByName($this->query);
+        } catch (\Exception) {
+            $this->error = 'Recherche indisponible.';
+            return [];
+        }
     }
 }</code></pre>
-
-    <blockquote class="verdict">
-        Les erreurs <strong>métier</strong> deviennent un état.
-        Les erreurs <strong>techniques</strong> deviennent un retry ou un feedback visible.
-    </blockquote>
+<pre><code class="language-twig">{% verbatim %}{% if error %}
+    <p class="text-red-500">{{ error }}</p>
+{% endif %}{% endverbatim %}</code></pre>
+        </div>
+    </div>
 </section>

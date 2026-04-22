@@ -1,54 +1,48 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="05-hydratation">
-    {{ ui.slide_header('5.5', 'Hydratation PHP') }}
+    {{ ui.slide_header('5.4', 'Hydratation : le serveur reconstruit ProductSearch', 'query = "clav" → PostHydrate → getResults() → Doctrine') }}
 
     <div class="code-split">
         <div class="code-split__col">
             <h3>Séquence serveur</h3>
-<pre><code class="language-text">1. Requête reçue
-   /_components/Counter
-2. Classe instanciée
-   (services autowirés)
-3. LiveProp hydratées
-   depuis le payload JSON
-4. → #[PostHydrate]
-5. LiveAction exécutée
-   (increment())
-6. LiveProp éventuellement
-   modifiées</code></pre>
+<pre><code class="language-text">1. POST /_components/ProductSearch reçu
+2. new ProductSearch(ProductRepository $r)
+   (autowiring Symfony, Doctrine injecté)
+3. $this->query = "clav"
+   (depuis updated.query du payload)
+4. → #[PostHydrate] déclenché
+5. Aucune LiveAction ici
+   (juste un data-model)
+6. Twig appelle getResults()
+   → QueryBuilder → Product[]</code></pre>
         </div>
         <div class="code-split__col">
-            <h3>Exemple</h3>
-<pre><code class="language-php">#[AsLiveComponent]
-final class Counter
+            <h3>PostHydrate : normaliser avant Doctrine</h3>
+<pre><code class="language-php">#[PostHydrate]
+public function normalize(): void
 {
-    use DefaultActionTrait;
+    $this->query = mb_strtolower(
+        trim($this->query)
+    );
+}
 
-    #[LiveProp(writable: true)]
-    public int $count = 0;
-
-    #[PostHydrate]
-    public function afterHydration(): void
-    {
-        // Corriger une valeur hors limites
-        // avant d'exécuter l'action.
-        if ($this->count &lt; 0) {
-            $this->count = 0;
-        }
+public function getResults(): array
+{
+    if (mb_strlen($this->query) < 2) {
+        return [];
     }
-
-    #[LiveAction]
-    public function increment(): void
-    {
-        $this->count++;
-    }
+    // $this->query déjà normalisée
+    return $this->products->searchByName(
+        $this->query, limit: 10
+    );
 }</code></pre>
         </div>
     </div>
 
     <p><small>
-        Types non-scalaires (entités, DTO, VO) : <strong>Symfony Serializer</strong>.
-        Surcharger avec <code>hydrateWith</code> / <code>dehydrateWith</code> — souvent indispensable pour Doctrine.
+        <code>#[PostHydrate]</code> s'exécute après l'assignation des <code>LiveProp</code>,
+        avant toute <code>LiveAction</code> et avant le rendu Twig.
+        C'est le bon endroit pour valider et normaliser l'entrée utilisateur.
     </small></p>
 </section>

@@ -1,45 +1,38 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="05-implications">
-    {{ ui.slide_header('5.12', 'Implications pour un lead dev') }}
+    {{ ui.slide_header('5.10', 'Règles à retenir', 'Stateless serveur, stateful DOM') }}
 
     <blockquote class="verdict">
         <strong>« Stateless serveur, stateful DOM. »</strong>
         <br>
-        Tout ce qui doit survivre entre deux interactions doit être une <code>LiveProp</code>.
+        Tout ce qui doit survivre entre deux requêtes doit être une <code>LiveProp</code>.
     </blockquote>
 
     <table class="recap-table">
         <thead>
-            <tr>
-                <th>Règle</th>
-                <th>Pourquoi</th>
-            </tr>
+            <tr><th>Règle</th><th>Sur ProductSearch</th></tr>
         </thead>
         <tbody>
             <tr>
-                <td>Aucun état implicite entre deux requêtes</td>
-                <td>Variables d'instance non <code>LiveProp</code> = perdues à chaque cycle</td>
+                <td>Aucun état implicite entre requêtes</td>
+                <td><code>$query</code> est <code>LiveProp</code> — les résultats Doctrine sont recalculés, jamais stockés</td>
             </tr>
             <tr>
-                <td><code>LiveProp writable</code> = entrée utilisateur</td>
-                <td>Le client peut envoyer n'importe quoi — valider comme un champ de formulaire</td>
+                <td><code>LiveProp writable</code> = entrée utilisateur non fiable</td>
+                <td>Valider / normaliser <code>$query</code> dans <code>#[PostHydrate]</code> avant d'interroger la base</td>
             </tr>
             <tr>
-                <td>Chaque action = un round-trip</td>
-                <td>Debounce obligatoire sur inputs texte (<code>debounce(300)|query</code>)</td>
+                <td>Chaque frappe = un round-trip</td>
+                <td><code>debounce(300)|query</code> — sans debounce, une requête Doctrine par touche</td>
             </tr>
             <tr>
                 <td>Pas d'entités complètes en <code>LiveProp</code></td>
-                <td>Taille de l'état sérialisé — stocker un ID, recharger en <code>#[PostHydrate]</code></td>
+                <td>Stocker l'ID du produit sélectionné, pas l'objet <code>Product</code> entier</td>
             </tr>
             <tr>
                 <td>Listes → <code>id</code> stable</td>
-                <td>morphdom sinon = bugs visuels subtils sur réordonnancement</td>
-            </tr>
-            <tr>
-                <td>Actions idempotentes si possible</td>
-                <td>Retry client = action rejouée. Paiement, envoi : token d'idempotence</td>
+                <td><code>id="product-{{ '{{ product.id }}' }}"</code> sur chaque <code>&lt;li&gt;</code> — l'ID Doctrine est parfait</td>
             </tr>
         </tbody>
     </table>

@@ -1,16 +1,18 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="07-perf-pieges">
-    {{ ui.slide_header('7.4', 'Performance : les 3 pièges') }}
+    {{ ui.slide_header('7.4', 'Performance : 3 erreurs à éviter') }}
 
-    <h3>🔴 Piège 1 — Le N+1 qui rejoue à chaque interaction</h3>
+    <h3>N+1 SQL — le coût du lazy loading se répète à chaque interaction</h3>
     <p><small>
-        Chaque cycle = toutes les queries du re-render. Un N+1 discret à la page initiale
-        devient une cascade à chaque frappe. <strong>Diagnostic</strong> : profiler Symfony,
-        filtrer sur <code>POST /_components/*</code>, onglet Doctrine.
+        Le template boucle sur une collection et accède à une relation non chargée
+        (ex. <code>article.author</code>) → Doctrine exécute 1 requête par élément.
+        Avec un Live Component, ce rendu est rejoué à chaque requête Ajax :
+        un N+1 imperceptible au chargement initial peut devenir bloquant à chaque frappe.
+        <strong>Diagnostic</strong> : profiler Symfony → <code>POST /_components/*</code> → onglet Doctrine.
     </small></p>
 
-    <h3>🔴 Piège 2 — Appel répété des méthodes de rendu</h3>
+    <h3>Appels répétés aux méthodes de rendu</h3>
     <div class="code-split">
         <div class="code-split__col">
             <h3>❌ this.results appelé 2 fois = 2 requêtes SQL</h3>
@@ -19,18 +21,15 @@
 {% endif %}{% endverbatim %}</code></pre>
         </div>
         <div class="code-split__col">
-            <h3>✅ computed. mis en cache sur la durée du rendu</h3>
-<pre><code class="language-twig">{% verbatim %}{% if computed.results is not empty %}
-    <ul>{% for p in computed.results %}...{% endfor %}</ul>
+            <h3>✅ assigner dans une variable Twig</h3>
+<pre><code class="language-twig">{% verbatim %}{% set results = this.results %}
+{% if results is not empty %}
+    <ul>{% for p in results %}...{% endfor %}</ul>
 {% endif %}{% endverbatim %}</code></pre>
         </div>
     </div>
-    <p><small>
-        ⚠️ Le cache <code>computed.</code> <strong>ne survit pas entre deux cycles Ajax</strong> —
-        chaque re-render repart de zéro. Pour partager entre rendus : cache Doctrine ou Symfony.
-    </small></p>
 
-    <h3>🔴 Piège 3 — Volume de requêtes réseau</h3>
+    <h3>Volume de requêtes réseau — contrôler quand le re-render se déclenche</h3>
 <pre><code class="language-twig">{% verbatim %}{# Recherche : debounce 300 ms #}
 <input data-model="debounce(300)|query" type="search">
 

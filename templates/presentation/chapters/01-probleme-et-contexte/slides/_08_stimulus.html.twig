@@ -2,32 +2,42 @@
 {% import 'presentation/chapters/01-probleme-et-contexte/_macros.html.twig' as card %}
 
 <section data-slide-id="01-stimulus">
-    {{ ui.slide_header('1.6', 'Template + sprinkle de JS') }}
+    {{ ui.slide_header('1.6', 'Template Twig + contrôleur JS', 'Ajouter de l\'interactivité via Stimulus') }}
+
+    <p>
+        Le template déclare <strong>qui fait quoi</strong> via des attributs <code>data-</code>.
+        Un contrôleur JS écoute et agit — sans toucher au HTML.
+    </p>
 
     <div class="code-split">
         <div class="code-split__col">
-            <h3>Markup</h3>
-<pre><code class="language-twig">{% verbatim %}<div data-controller="search"
+            <h3>Twig — le markup</h3>
+<pre><code class="language-twig">{% verbatim %}{# data-controller="search" → active le contrôleur JS #}
+<div data-controller="search"
      data-search-url-value="{{ path('app_search') }}">
+
+    {# data-action → appelle search#query à chaque frappe #}
     <input type="text"
-           data-search-target="input"
-           data-action="input->search#query">
+           data-action="input->search#query"
+           data-search-target="input">
+
+    {# la liste vide — remplie par le JS #}
     <ul data-search-target="results"></ul>
 </div>{% endverbatim %}</code></pre>
         </div>
 
         <div class="code-split__col">
-            <h3>Comportement</h3>
-<pre><code class="language-javascript">import { Controller } from '@hotwired/stimulus';
-
-export default class extends Controller {
+            <h3>JS — le comportement</h3>
+<pre><code class="language-javascript">export default class extends Controller {
     static targets = ['input', 'results'];
-    static values = { url: String };
+    static values  = { url: String };
 
     async query() {
+        // appelle l'endpoint PHP, reçoit du HTML
         const r = await fetch(
             `${this.urlValue}?q=${this.inputTarget.value}`
         );
+        // injecte le HTML dans la liste
         this.resultsTarget.innerHTML = await r.text();
     }
 }</code></pre>
@@ -37,17 +47,17 @@ export default class extends Controller {
     {{ card.pros_cons(
         [
             '<strong>Vraie interactivité</strong> côté client',
-            'Séparation markup / comportement claire',
+            'Séparation markup / comportement propre',
         ],
         [
-            '<strong>Double codebase</strong> : logique métier souvent dupliquée (PHP + JS)',
-            'État client et état serveur divergent',
-            'Un endpoint ad hoc et du boilerplate par comportement',
+            '<strong>Double codebase</strong> : validation, formatage souvent dupliqués PHP + JS',
+            'Un endpoint dédié + du boilerplate par comportement',
+            'État client et état serveur peuvent diverger',
         ]
     ) }}
 
     {{ card.legitimate_uses([
-        'Comportements purement client : toggler une classe, ouvrir un menu, copier dans le presse-papier',
-        'Rôle résiduel de Stimulus dans Symfony UX — il ne disparaît pas, il est recadré',
+        'Comportements purement visuels : ouvrir un menu, copier dans le presse-papier, toggler une classe',
+        'Dans Symfony UX, Stimulus reste là — mais uniquement pour ces cas',
     ]) }}
 </section>

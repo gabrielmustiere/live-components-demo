@@ -1,44 +1,44 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="05-interaction-payload">
-    {{ ui.slide_header('5.3', 'Interaction & payload') }}
+    {{ ui.slide_header('5.3', 'Interaction : payload envoyé', 'L\'utilisateur tape "clav" — debounce 300 ms — POST') }}
 
     <div class="code-split">
         <div class="code-split__col">
-            <h3>Côté client</h3>
-            <ul>
-                <li>Stimulus intercepte via <code>data-action</code></li>
-                <li>Lit l'état depuis <code>data-live-props-value</code></li>
-                <li>Attend le debounce (150 ms par défaut pour <code>data-model</code>)</li>
-                <li>Construit le payload et POSTe</li>
-            </ul>
-<pre><code class="language-text">POST /_components/Counter
-Accept: application/vnd.live-component+html
-Content-Type: application/json</code></pre>
+            <h3>Déclencheur Twig</h3>
+<pre><code class="language-twig">{% verbatim %}{# data-model surveille l'input #}
+{# debounce(300) : attend 300 ms sans frappe #}
+{# |query : cible la LiveProp $query #}
+<input
+    type="search"
+    data-model="debounce(300)|query"
+    placeholder="Rechercher…"
+>{% endverbatim %}</code></pre>
+
+            <p>Après 300 ms sans frappe, Stimulus lit <code>data-live-props-value</code> et envoie&nbsp;:</p>
         </div>
         <div class="code-split__col">
-            <h3>Payload</h3>
+            <h3>Payload → POST /_components/ProductSearch</h3>
 <pre><code class="language-json">{
   "props": {
-    "count": 0
+    "query": ""
   },
   "updated": {
-    "query": "symfony"
+    "query": "clav"
   },
-  "actions": [
-    { "name": "increment", "args": {} }
-  ]
+  "actions": []
 }</code></pre>
-            <p><small>
-                <strong>props</strong> : état courant · <strong>updated</strong> : delta des <code>data-model</code> ·
-                <strong>actions</strong> : <code>LiveAction</code> à exécuter
-            </small></p>
+            <ul>
+                <li><code>props</code> — état courant lu dans le DOM</li>
+                <li><code>updated</code> — uniquement ce qui a changé</li>
+                <li><code>actions</code> — vide ici (juste une mise à jour de modèle, pas un clic)</li>
+            </ul>
         </div>
     </div>
 
     <blockquote class="verdict">
         <strong>Aucune logique métier en JS.</strong>
-        Stimulus est un mécanisme de transport.
-        Le serveur reste la seule autorité.
+        Stimulus transporte l'état — c'est tout.
+        Le serveur décide quels produits afficher.
     </blockquote>
 </section>
