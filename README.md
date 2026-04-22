@@ -1,88 +1,116 @@
-# Symfony Template
+# Live Components Demo
 
-Ce projet est un squelette (template) pour les nouvelles applications Symfony, pré-configuré avec les outils modernes de
-développement.
+Support de présentation et démos interactives autour de **Symfony UX Live Components**.
 
-## Fonctionnalités
+Le projet sert deux usages complémentaires :
 
-- **Framework** : Symfony 8.0+
-- **Serveur local** : Intégration complète avec le CLI Symfony (proxy HTTPS `*.wip`)
-- **Base de données** : SQLite (fichier local `var/data.db`)
-- **Assets** : Tailwind CSS 4 via Symfony UX
-- **Auth** : Authentification par formulaire (email/password)
-- **Tests** : PHPUnit 12 (Unit + Functional)
-- **Qualité** : PHPStan (level 9) + PHP-CS-Fixer
+1. **Une présentation reveal.js** (`/presentation`) découpée en 7 chapitres, qui raconte le passage d'un front JS classique à des composants Twig rendus côté serveur.
+2. **Des démos isolées** (`/demo/{slug}`) qui illustrent chaque notion du talk : Twig Components, Live Components, binding, actions, cycle de vie, etc.
+
+## Stack
+
+- **Framework** : Symfony 8.0+ (PHP 8.4+, `declare(strict_types=1)` partout)
+- **Serveur local** : Symfony CLI (proxy HTTPS `*.wip`)
+- **Base de données** : SQLite (fichier `var/data.db`)
+- **Front** : Tailwind CSS 4, Stimulus, AssetMapper
+- **Symfony UX** : Live Component, Turbo, Icons
+- **Tests** : PHPUnit 12
+- **Qualité** : PHPStan (level 9), PHP-CS-Fixer
 - **Async** : Symfony Messenger (transport Doctrine)
-- **AI** : Serveurs MCP intégrés (Symfony AI Mate, Chrome DevTools)
+- **AI / Debug** : serveurs MCP `symfony-ai-mate` et `chrome-devtools`
+
+## Contenu
+
+### Présentation (`/presentation`)
+
+Structure reveal.js dans `templates/presentation/` :
+
+| Chapitre | Sujet                          |
+|----------|--------------------------------|
+| 01       | Problème et contexte           |
+| 02       | Du JS au PHP                   |
+| 03       | Twig Components                |
+| 04       | Live Components                |
+| 05       | Démo live                      |
+| 06       | Tests, perf, sécurité          |
+| 07       | Synthèse                       |
+
+Les plans détaillés de chaque chapitre sont dans `docs/plan/`.
+
+### Démos (`/demo/{slug}`)
+
+Composants implémentés dans `src/Twig/Components/` + `templates/components/` :
+
+- `counter` — Live Component minimal (state + action)
+- `alert` — Twig Component simple (props, slot)
+- `product-card` — Twig Component avec service injecté (`PriceFormatter`)
+- `product-search` — Live Component avec `LiveProp` writable et recherche réactive
+- `source-viewer` — utilitaire d'affichage du code source d'un composant
 
 ## Prérequis
 
 - [PHP 8.4+](https://www.php.net/) avec l'extension `pdo_sqlite`
 - [Composer](https://getcomposer.org/)
 - [Symfony CLI](https://symfony.com/download)
-- [Node.js](https://nodejs.org/) (pour Tailwind et les outils MCP)
+- [Node.js](https://nodejs.org/) (Tailwind + outils MCP)
 
 ## Installation
 
-1. **Cloner le projet**
-2. **Installer les dépendances et démarrer le serveur**
-   ```bash
-   make init serve
-   ```
-   La cible `init` installe Composer, npm et build Tailwind ; `serve` démarre le serveur Symfony.
-3. **Créer la base de données** (première exécution ou reset complet)
-   ```bash
-   make db-reset
-   ```
-4. **Variables d'environnement** (optionnel)
-
-   Copiez le fichier `.env` en `.env.local` pour surcharger des variables.
-
-> 💡 Exécutez `make` (ou `make help`) pour lister toutes les cibles disponibles.
-
-## Workflow de développement
-
-### Commandes utiles
-
-- **Lancer les workers (Tailwind, Messenger)** :
-  Le fichier `.symfony.local.yaml` configure le démarrage automatique de Tailwind en mode watch et du worker Messenger
-  via le CLI Symfony.
-- **Accéder à la base de données** :
-  Le fichier SQLite se trouve dans `var/data.db`. N'importe quel client SQLite peut l'ouvrir.
-- **E-mails** :
-  Le mailer est configuré sur `null://null` en dev/test (les mails sont avalés). Pour activer un envoi réel,
-  surchargez `MAILER_DSN` dans `.env.local`.
-
-### Tests
-
 ```bash
-symfony php bin/phpunit                              # Tests Unit + Functional
+make init            # composer install + npm install + tailwind:build + asset-map:compile
+make db-reset        # recrée var/data.db (migrations + fixtures)
+make serve           # démarre le serveur Symfony
 ```
 
-### Qualité de code
+> 💡 `make` (ou `make help`) liste toutes les cibles disponibles.
+
+Le fichier `.symfony.local.yaml` démarre automatiquement Tailwind en mode watch et le worker Messenger.
+
+## Commandes utiles
+
+Toutes les commandes PHP passent par `symfony` — jamais `php` directement.
 
 ```bash
+symfony serve                                        # Serveur dev
+symfony console make:migration                       # Après modif d'entité
+symfony php bin/phpunit                              # Tests Unit + Functional
 symfony php vendor/bin/phpstan analyse               # Analyse statique (level 9)
 symfony php vendor/bin/php-cs-fixer fix              # Code style
+make quality                                         # cs-fix + phpstan + build
 ```
 
-## Serveurs MCP (Claude Code)
+## Identifiants de test
 
-Le fichier `.mcp.json` configure deux serveurs MCP pour l'assistance IA :
+- `admin@example.com` / `password` (ROLE_USER)
+
+## Organisation du code
+
+```
+src/
+├── Controller/          # PresentationController, DemoController, SecurityController
+├── Demo/                # Product, ProductRepository, PriceFormatter, SourceFileReader
+├── Entity/              # Entités Doctrine
+├── Repository/
+└── Twig/
+    ├── Components/      # Twig + Live Components de la démo
+    └── FileLinkExtension.php
+
+templates/
+├── components/          # Templates des composants (Alert, Counter, ProductCard, …)
+├── demo/                # Pages /demo/{slug} qui montent chaque composant
+└── presentation/        # reveal.js + chapitres
+
+docs/plan/               # Plan éditorial des 7 chapitres
+fixtures/                # DataFixtures\ (PSR-4) — PAS dans src/
+```
+
+Voir `CLAUDE.md` pour les règles d'architecture (Controller → Service → Repository → Entity) et les conventions de code.
+
+## Serveurs MCP
+
+`.mcp.json` configure deux serveurs pour l'assistance IA :
 
 | Serveur             | Description                                                    |
 |---------------------|----------------------------------------------------------------|
 | **symfony-ai-mate** | Accès au profiler Symfony, logs Monolog, services du container |
 | **chrome-devtools** | Interaction avec Chrome via DevTools Protocol                  |
-
-## État d'avancement (v1.0.0)
-
-- [x] Configuration Symfony CLI
-- [x] Base de données SQLite (zéro dépendance externe)
-- [x] Installation Tailwind CSS 4
-- [x] Configuration PHP-CS-Fixer / PHPStan
-- [x] Configuration Editorconfig
-- [x] Création du template de base (base.html.twig)
-- [x] Installation Symfony UX (Icons, Flash Messages, Live Component)
-- [x] Authentification par formulaire (login/logout)
-- [x] Serveurs MCP (Symfony AI Mate, Chrome DevTools)
