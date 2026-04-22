@@ -492,6 +492,17 @@ body:has(.reveal-stage) main {
     line-height: 1.35;
 }
 
+/* Variante : deux blocs de code cote a cote */
+.reveal .code-split--row {
+    flex-direction: row;
+    gap: 0.8em;
+}
+
+.reveal .code-split--row .code-split__col {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
 /* Tableau recap final : polices reduites pour tenir sur une slide */
 .reveal .recap-table {
     font-size: 0.55em;
