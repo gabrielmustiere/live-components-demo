@@ -8,7 +8,7 @@
     <div class="code-split">
         <div class="code-split__col">
             <h3>Alert.php</h3>
-<pre><code class="language-php">#[AsTwigComponent]
+            <pre><code class="language-php">#[AsTwigComponent]
 final class Alert
 {
     public string $message = '';
@@ -18,19 +18,21 @@ final class Alert
         </div>
         <div class="code-split__col">
             <h3>Alert.html.twig</h3>
-<pre><code class="language-twig">{% verbatim %}<div {{ attributes.defaults({
+            <pre><code class="language-twig">
+{% verbatim %}<div {{ attributes.defaults({
     class: 'alert alert-' ~ type
 }) }}>
     {% if dismissible %}
         <button class="alert-close">×</button>
     {% endif %}
     {{ message }}
-</div>{% endverbatim %}</code></pre>
+</div>{% endverbatim %}
+    </code></pre>
         </div>
     </div>
 
     <p><small>
-        <code class="language-twig">{{ '{{ attributes }}' }}</code> — capture tous les attributs HTML extra passés depuis l'appelant
-        (<code>id</code>, <code>data-*</code>…) et les fusionne sur l'élément racine.
-    </small></p>
+            <code class="language-twig">{{ '{{ attributes }}' }}</code> — capture tous les attributs HTML extra passés depuis l'appelant
+            (<code>id</code>, <code>data-*</code>…) et les fusionne sur l'élément racine.
+        </small></p>
 </section>

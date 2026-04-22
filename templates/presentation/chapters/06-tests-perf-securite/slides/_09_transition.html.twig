@@ -1,31 +1,28 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="06-transition">
-    {{ ui.slide_header('6.9', 'Un Live Component, c\'est un contrôleur déguisé') }}
-
-    <blockquote class="verdict">
-        <strong>Tout ce qui s'applique à un contrôleur Symfony s'applique à une <code>LiveAction</code>.</strong>
-        <br>
-        Validation, autorisation, logs, profiler. Les mêmes réflexes, le même mental model.
-        <br>
-        <strong>La seule différence</strong> : l'état voyage dans le DOM — donc rien de sensible n'y a sa place.
-    </blockquote>
-
-    <table class="recap-table">
-        <thead>
-            <tr><th>Sujet</th><th>Le réflexe</th></tr>
-        </thead>
-        <tbody>
-            <tr><td><strong>Tests</strong></td>        <td><code>createLiveComponent</code> → <code>set</code> / <code>call</code> → observer l'instance</td></tr>
-            <tr><td><strong>Performance</strong></td>  <td>Profiler les POST <code>/_components/*</code> · ID + rechargement plutôt qu'entité sérialisée</td></tr>
-            <tr><td><strong>Sécurité</strong></td>     <td>Writable = input utilisateur · non-writable = signé · <code>IsGranted</code> sur les actions</td></tr>
-        </tbody>
-    </table>
+    {{ ui.slide_header('6.9', 'Rien de nouveau — sauf une chose') }}
 
     <p>
-        Le code, les tests, la perf, la sécu : tout est posé.
-        Place à la <strong>synthèse</strong> — quand choisir quoi, quelles limites assumer.
+        Un Live Component, <strong>c'est un contrôleur Symfony</strong>.
+        Les outils que vous utilisez déjà suffisent.
     </p>
 
-    <p><small>→ Chapitre 7 · Synthèse, comparaison & take-aways</small></p>
+    <ul>
+        <li><strong>Tester&nbsp;?</strong> <code>createLiveComponent()</code>, on pilote avec <code>set()</code> / <code>call()</code>, on lit l'instance. Pas de navigateur.</li>
+        <li><strong>Profiler&nbsp;?</strong> Chaque interaction est un POST <code>/_components/*</code> — le profiler Symfony la voit comme n'importe quelle requête.</li>
+        <li><strong>Sécuriser&nbsp;?</strong> <code>#[IsGranted]</code> sur les actions, contraintes sur les <code>writable</code>, comme sur un <code>FormType</code>.</li>
+    </ul>
+
+    <blockquote class="verdict">
+        <strong>La seule règle propre aux Live Components</strong>&nbsp;: l'état voyage dans le DOM.
+        <br>
+        Donc jamais de secret dans une <code>LiveProp</code>, et on fait confiance à la signature pour le reste.
+    </blockquote>
+
+    <p>
+        Les briques sont posées. Reste la question qui décide&nbsp;:
+        <strong>quand choisir Live Components, et quand s'en passer&nbsp;?</strong>
+    </p>
+
 </section>

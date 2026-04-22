@@ -1,11 +1,11 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="04-morphing">
-    {{ ui.slide_header('4.9', 'Le morphing : ce qui survit au re-render') }}
+    {{ ui.slide_header('4.9', 'La mise à jour du DOM') }}
 
     <p>
         À chaque re-render, le bundle renvoie le <strong>markup complet</strong> du composant.
-        Côté client, <strong>morphdom</strong> applique un diff ciblé — pas une reconstruction.
+        Côté client, <strong>morphdom</strong> applique un diff ciblé — pas une reconstruction complète.
     </p>
 
     <div class="pillars">

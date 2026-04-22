@@ -1,7 +1,7 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="06-perf-metriques">
-    {{ ui.slide_header('6.5', 'Ordre de grandeur sain vs alerte') }}
+    {{ ui.slide_header('6.5', 'Les performances') }}
 
     <table class="recap-table">
         <thead>
@@ -30,7 +30,7 @@
 #    - Onglet Performance → temps total, goulots</code></pre>
 
     <p><small>
-        <strong>Blackfire</strong> : profiler directement une <code>LiveAction</code> via le header
+        <strong>Blackfire</strong>(pas testé) : profiler directement une <code>LiveAction</code> via le header
         <code>X-Blackfire-Query</code>. Recommandé pour les pages à trafic élevé.
     </small></p>
 </section>

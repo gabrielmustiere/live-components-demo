@@ -34,16 +34,4 @@ self::assertSame('AL', $component->initials);
 self::assertStringStartsWith('https://', $component->generatedUrl);</code></pre>
         </div>
     </div>
-
-    <table class="recap-table">
-        <thead>
-            <tr><th>Cas</th><th>Stratégie</th></tr>
-        </thead>
-        <tbody>
-            <tr><td>Atomic design critique (Button, FormField, Alert)</td><td>Test de <strong>rendu</strong>, quelques variantes</td></tr>
-            <tr><td>Composant avec <code>PreMount</code> / services</td><td>Test du <strong>mount</strong>, props normalisées</td></tr>
-            <tr><td>Purement présentiel (Card, layout)</td><td><strong>Pas de test</strong> — couvert par les tests fonctionnels</td></tr>
-            <tr><td>Règle métier encapsulée</td><td>Test unitaire sur la méthode, pas via le rendu</td></tr>
-        </tbody>
-    </table>
 </section>

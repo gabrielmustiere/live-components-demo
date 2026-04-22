@@ -18,8 +18,7 @@ final class RecentOrders
 
     public function results(): array
     {
-        return $this->orders
-            ->findRecentFor($this->user, $this->limit);
+        return $this->orders->findRecentFor($this->user, $this->limit);
     }
 }</code></pre>
         </div>
@@ -36,12 +35,8 @@ final class RecentOrders
 {% endfor %}{% endverbatim %}</code></pre>
 
             <h3>mount() — initialisation complexe</h3>
-<pre><code class="language-php">public function mount(
-    string|\DateTimeImmutable $start,
-): void {
-    $this->start = is_string($start)
-        ? new \DateTimeImmutable($start)
-        : $start;
+<pre><code class="language-php">public function mount(string|\DateTimeImmutable $start): void {
+    $this->start = is_string($start) ? new \DateTimeImmutable($start) : $start;
 }</code></pre>
         </div>
     </div>

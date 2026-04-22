@@ -3,6 +3,8 @@
 <section data-slide-id="04-liveaction">
     {{ ui.slide_header('4.7', 'LiveAction · une méthode, un endpoint') }}
 
+
+
     <p>
         Une méthode PHP annotée devient un <strong>endpoint HTTP</strong>.
         Pas de route à déclarer, pas de JSON à parser.
@@ -34,7 +36,7 @@ public function addToCart(
             </code></pre>
             <p>
                 Passés depuis le DOM, <strong>typés et validés</strong>
-                côté PHP — pas de déballage manuel.
+                côté PHP.
             </p>
         </div>
 
@@ -52,18 +54,6 @@ public function save(
             </p>
         </div>
 
-        <div class="pillars__card">
-            <h3>4 · Invocation Twig <span class="pillars__badge">idiomatique</span></h3>
-            <pre><code class="language-twig">
-{% verbatim %}{{ live_action('save',
-    { id: item.id },
-    { debounce: 300 }) }}{% endverbatim %}
-            </code></pre>
-            <p>
-                Helper qui masque <code>data-action</code> / <code>data-live-*-param</code>.
-                Options : <strong>debounce, files, confirm</strong>.
-            </p>
-        </div>
     </div>
 
     <blockquote class="verdict">

@@ -3,52 +3,51 @@
 <section data-slide-id="04-cycle">
     {{ ui.slide_header('4.4', 'Le cycle en deux phases') }}
 
-    <div class="code-split">
+    <div class="code-split code-split--row">
         <div class="code-split__col">
             <h3>Phase 1 — rendu initial (une fois)</h3>
-<pre><code class="language-text">Navigateur          Serveur PHP
-    │                    │
+            <pre><code class="language-text">
+Navigateur           Serveur PHP
+    │                     │
     │── GET /ma-page ────►│  instancie le composant
-    │                    │  mount() · PostMount
-    │                    │  rend le template Twig
-    │◄── HTML complet ───│  sérialise l'état dans le DOM
+    │                     │  Twig render
+    │                     │  sérialise l'état dans le DOM
+    │◄── HTML complet ────│
     │
     │  Le composant n'existe plus côté serveur.
     │  Son état est encodé dans le HTML rendu.</code></pre>
-
-            <h3 style="margin-top: 1rem">Phase 2 — cycle interaction (à chaque action)</h3>
-<pre><code class="language-text">Navigateur          Serveur PHP
-    │                    │
+        </div>
+        <div class="code-split__col">
+            <h3>Phase 2 — cycle interaction (à chaque action)</h3>
+            <pre><code class="language-text">
+Navigateur           Serveur PHP
+    │                     │
     │  [clic ou input]    │
     │── POST /_components►│  reconstruit le composant
-    │   état + action     │  PostHydrate · LiveAction
-    │                     │  PreReRender · Twig re-render
-    │◄── HTML partiel ───│  sérialise le nouvel état
+    │   état + action     │  Twig re-render
+    │◄── HTML partiel ────│  sérialise le nouvel état
     │
     │  morphdom patche uniquement les nœuds modifiés.</code></pre>
         </div>
+    </div>
+
+    <div class="code-split code-split--row" style="margin-top: 1rem">
         <div class="code-split__col">
-            <h3>Le payload Ajax</h3>
-<pre><code class="language-twig">{% verbatim %}{# debounce(300) : attend 300 ms sans frappe #}
-<input
-    type="search"
-    data-model="debounce(300)|query"
-    placeholder="Rechercher…"
->{% endverbatim %}</code></pre>
-
-            <p style="margin: 0.5rem 0; font-size: 0.85em">Stimulus lit le DOM et envoie :</p>
-
-<pre><code class="language-json">{
-  "props":   { "query": "" },
-  "updated": { "query": "clav" },
-  "actions": []
-}</code></pre>
-
-            <ul>
-                <li><code>props</code> — état courant lu dans le DOM</li>
-                <li><code>updated</code> — uniquement ce qui a changé</li>
-                <li><code>actions</code> — vide ici (pas de clic, juste un input)</li>
-            </ul>
+            <h3>Stimulus lit le DOM et envoie</h3>
+            <pre><code class="language-json">
+ {
+  "props": {
+    "query": "",
+    "@attributes": {
+      "id": "live-1630620926-0"
+    },
+    "@checksum": "rZqkfjCx6svzp7p1xYbt9lwLJ2IrEzLkUZC5n/EXj5Q="
+  },
+  "updated": {
+    "query": "cl"
+  }
+}
+                </code></pre>
         </div>
     </div>
 

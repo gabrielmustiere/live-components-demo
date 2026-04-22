@@ -1,28 +1,24 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="03-transition">
-    {{ ui.slide_header('3.7', 'Message clé') }}
-
-    <blockquote class="verdict">
-        <strong>Contrat</strong> — les props typées remplacent les tableaux associatifs opaques.
-        <br>
-        <strong>Colocation</strong> — la classe PHP et le template vivent ensemble.
-        <br>
-        <strong>Composition</strong> — les slots permettent d'envelopper d'autres composants.
-    </blockquote>
+    {{ ui.slide_header('3.7', 'Ce qu\'on retient') }}
 
     <p>
-        Un Twig Component reste <strong>statique</strong> : il rend une fois, c'est terminé.
-        Pour un filtre qui se met à jour, un compteur, un formulaire qui valide à la frappe —
+        Un Twig Component tient en <strong>trois idées</strong> :
+        <strong>contrat</strong> avec des props typées, <strong>colocation</strong> de la classe et du template,
+        <strong>composition</strong> via les slots.
+    </p>
+
+    <p>
+        Mais un Twig Component reste <strong>statique</strong>&nbsp;— il rend une fois, c'est terminé.
+        <br>
+        Pour un filtre qui se met à jour, un compteur, un formulaire qui valide à la frappe,
         il faut passer à la couche suivante.
     </p>
 
     <p>
-        Live Components prend cette même base (classe PHP + template + props typées),
-        et y ajoute un <strong>état synchronisé</strong> et des <strong>actions déclenchables depuis le DOM</strong>.
-        <br>
-        Sans écrire une ligne de JavaScript.
+        Live Components repart de cette même base et y ajoute <strong>un état synchronisé</strong>
+        et <strong>des actions déclenchables depuis le DOM</strong>&nbsp;— sans une ligne de JavaScript.
     </p>
 
-    <p><small>→ Chapitre 4 · Live Components, l'état arrive</small></p>
 </section>
