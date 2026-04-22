@@ -15,13 +15,9 @@
         {% endfor %}
     </div>
 
-    <section class="mt-10">
-        <h2 class="text-xl font-semibold text-gray-900">Code source</h2>
-        <p class="mt-2 text-sm text-gray-600">
-            Voir
-            <a href="{{ file_link('src/Twig/Components/ProductCard.php') }}" class="font-mono text-indigo-600 hover:underline"><code>src/Twig/Components/ProductCard.php</code></a>,
-            <a href="{{ file_link('templates/components/ProductCard.html.twig') }}" class="font-mono text-indigo-600 hover:underline"><code>templates/components/ProductCard.html.twig</code></a>,
-            <a href="{{ file_link('src/Demo/PriceFormatter.php') }}" class="font-mono text-indigo-600 hover:underline"><code>src/Demo/PriceFormatter.php</code></a>.
-        </p>
-    </section>
+    <twig:SourceViewer :files="[
+        'src/Twig/Components/ProductCard.php',
+        'templates/components/ProductCard.html.twig',
+        'src/Demo/PriceFormatter.php',
+    ]" />
 {% endblock %}

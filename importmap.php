@@ -429,4 +429,7 @@ return [
     'vscode-jsonrpc' => [
         'version' => '8.2.0',
     ],
+    'highlight.js' => [
+        'version' => '11.11.1',
+    ],
 ];

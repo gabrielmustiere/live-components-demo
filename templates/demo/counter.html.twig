@@ -13,13 +13,8 @@
         <twig:Counter />
     </div>
 
-    <section class="mt-10">
-        <h2 class="text-xl font-semibold text-gray-900">Code source</h2>
-        <p class="mt-2 text-sm text-gray-600">
-            Voir
-            <a href="{{ file_link('src/Twig/Components/Counter.php') }}" class="font-mono text-indigo-600 hover:underline"><code>src/Twig/Components/Counter.php</code></a>
-            et
-            <a href="{{ file_link('templates/components/Counter.html.twig') }}" class="font-mono text-indigo-600 hover:underline"><code>templates/components/Counter.html.twig</code></a>.
-        </p>
-    </section>
+    <twig:SourceViewer :files="[
+        'src/Twig/Components/Counter.php',
+        'templates/components/Counter.html.twig',
+    ]" />
 {% endblock %}

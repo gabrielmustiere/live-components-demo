@@ -14,13 +14,9 @@
         <twig:ProductSearch />
     </div>
 
-    <section class="mt-10">
-        <h2 class="text-xl font-semibold text-gray-900">Code source</h2>
-        <p class="mt-2 text-sm text-gray-600">
-            Voir
-            <a href="{{ file_link('src/Twig/Components/ProductSearch.php') }}" class="font-mono text-indigo-600 hover:underline"><code>src/Twig/Components/ProductSearch.php</code></a>,
-            <a href="{{ file_link('templates/components/ProductSearch.html.twig') }}" class="font-mono text-indigo-600 hover:underline"><code>templates/components/ProductSearch.html.twig</code></a>,
-            <a href="{{ file_link('src/Demo/ProductRepository.php') }}" class="font-mono text-indigo-600 hover:underline"><code>src/Demo/ProductRepository.php</code></a>.
-        </p>
-    </section>
+    <twig:SourceViewer :files="[
+        'src/Twig/Components/ProductSearch.php',
+        'templates/components/ProductSearch.html.twig',
+        'src/Demo/ProductRepository.php',
+    ]" />
 {% endblock %}
