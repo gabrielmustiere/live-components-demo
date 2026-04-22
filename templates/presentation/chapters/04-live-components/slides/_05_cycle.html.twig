@@ -1,33 +1,59 @@
 {% import 'presentation/_macros.html.twig' as ui %}
 
 <section data-slide-id="04-cycle">
-    {{ ui.slide_header('4.4', 'Comment ça marche') }}
+    {{ ui.slide_header('4.4', 'Le cycle en deux phases') }}
 
-    <div class="r-stretch mermaid-wrapper">
-        <pre class="mermaid">
-flowchart TB
-    USER["User<br/>clic · input · submit"]
-    AJAX["Ajax call<br/>état du composant + action"]
-    PHP["PHP<br/>hydrate → action → re-render"]
-    HTML["HTML diff<br/>nouveau markup"]
-    DOM["DOM patch<br/>morphdom côté client"]
+    <div class="code-split">
+        <div class="code-split__col">
+            <h3>Phase 1 — rendu initial (une fois)</h3>
+<pre><code class="language-text">Navigateur          Serveur PHP
+    │                    │
+    │── GET /ma-page ────►│  instancie le composant
+    │                    │  mount() · PostMount
+    │                    │  rend le template Twig
+    │◄── HTML complet ───│  sérialise l'état dans le DOM
+    │
+    │  Le composant n'existe plus côté serveur.
+    │  Son état est encodé dans le HTML rendu.</code></pre>
 
-    USER --> AJAX --> PHP --> HTML --> DOM
+            <h3 style="margin-top: 1rem">Phase 2 — cycle interaction (à chaque action)</h3>
+<pre><code class="language-text">Navigateur          Serveur PHP
+    │                    │
+    │  [clic ou input]    │
+    │── POST /_components►│  reconstruit le composant
+    │   état + action     │  PostHydrate · LiveAction
+    │                     │  PreReRender · Twig re-render
+    │◄── HTML partiel ───│  sérialise le nouvel état
+    │
+    │  morphdom patche uniquement les nœuds modifiés.</code></pre>
+        </div>
+        <div class="code-split__col">
+            <h3>Le payload Ajax</h3>
+<pre><code class="language-twig">{% verbatim %}{# debounce(300) : attend 300 ms sans frappe #}
+<input
+    type="search"
+    data-model="debounce(300)|query"
+    placeholder="Rechercher…"
+>{% endverbatim %}</code></pre>
 
-    classDef user fill:#1f2937,stroke:#9ca3af,stroke-width:1.5px,color:#f3f4f6;
-    classDef transport fill:#312e81,stroke:#818cf8,stroke-width:2px,color:#e0e7ff;
-    classDef server fill:#4338ca,stroke:#a5b4fc,stroke-width:2px,color:#eef2ff;
-    classDef bridge fill:#6366f1,stroke:#c7d2fe,stroke-width:2px,color:#ffffff;
+            <p style="margin: 0.5rem 0; font-size: 0.85em">Stimulus lit le DOM et envoie :</p>
 
-    class USER user;
-    class AJAX transport;
-    class PHP server;
-    class HTML transport;
-    class DOM bridge;
-        </pre>
+<pre><code class="language-json">{
+  "props":   { "query": "" },
+  "updated": { "query": "clav" },
+  "actions": []
+}</code></pre>
+
+            <ul>
+                <li><code>props</code> — état courant lu dans le DOM</li>
+                <li><code>updated</code> — uniquement ce qui a changé</li>
+                <li><code>actions</code> — vide ici (pas de clic, juste un input)</li>
+            </ul>
+        </div>
     </div>
 
     <blockquote class="verdict">
-        <strong>Pas de SPA. Pas d'API JSON. Juste du Twig qui réagit.</strong>
+        Entre deux requêtes, <strong>le composant n'existe pas côté serveur</strong>.
+        Il est reconstruit à chaque cycle à partir de l'état sérialisé dans le DOM.
     </blockquote>
 </section>

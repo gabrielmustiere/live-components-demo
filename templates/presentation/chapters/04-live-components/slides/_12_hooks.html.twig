@@ -1,0 +1,59 @@
+{% import 'presentation/_macros.html.twig' as ui %}
+
+<section data-slide-id="04-hooks">
+    {{ ui.slide_header('4.11', 'Hooks de cycle de vie', 'S\'accrocher au bon moment') }}
+
+    <div class="code-split">
+        <div class="code-split__col">
+            <table class="recap-table">
+                <thead>
+                    <tr>
+                        <th>Hook</th>
+                        <th>Initial</th>
+                        <th>Ajax</th>
+                        <th>Moment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>#[PostMount]</code></td>    <td>✅</td><td>❌</td><td>Après instanciation</td></tr>
+                    <tr><td><code>#[PostHydrate]</code></td>  <td>❌</td><td>✅</td><td>Après hydratation des props</td></tr>
+                    <tr><td><code>#[PreReRender]</code></td>  <td>❌</td><td>✅</td><td>Juste avant le re-render Twig</td></tr>
+                    <tr><td><code>#[PreDehydrate]</code></td> <td>✅</td><td>✅</td><td>Avant sérialisation</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="code-split__col">
+<pre><code class="language-php">#[AsLiveComponent]
+final class ProductSearch
+{
+    #[LiveProp(writable: true)]
+    public string $query = '';
+
+    // render initial : normaliser la prop passée
+    #[PostMount]
+    public function onMount(): void
+    {
+        $this->query = trim($this->query);
+    }
+
+    // cycle Ajax : normaliser l'entrée utilisateur
+    #[PostHydrate]
+    public function onHydrate(): void
+    {
+        $this->query = mb_strtolower(trim($this->query));
+    }
+
+    // avant re-render : calculer des valeurs dérivées
+    #[PreReRender]
+    public function onPreRender(): void
+    {
+        $this->resultCount = count($this->getResults());
+    }
+}</code></pre>
+        </div>
+    </div>
+
+    <p><small>
+        Priorité d'exécution si plusieurs hooks du même type : <code>#[PostHydrate(priority: 10)]</code> — valeur haute = exécuté en premier.
+    </small></p>
+</section>

@@ -10,6 +10,7 @@ init: ## Installe les dépendances et build les assets
 	symfony composer install
 	npm install
 	symfony console tailwind:build
+	symfony console asset-map:compile
 
 serve: ## Lance le serveur Symfony
 	symfony serve
