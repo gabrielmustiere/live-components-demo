@@ -15,6 +15,7 @@ final class ProductSearch
 {
     use DefaultActionTrait;
 
+    // Bindée à l'input côté client : chaque frappe met à jour $query sur le serveur
     #[LiveProp(writable: true)]
     public string $query = '';
 
@@ -24,6 +25,8 @@ final class ProductSearch
     }
 
     /**
+     * Recalculée à chaque rendu : pas besoin d'une LiveAction dédiée pour filtrer.
+     *
      * @return list<Product>
      */
     public function getResults(): array

@@ -1,13 +1,13 @@
-<div {{ attributes.defaults({ class: 'flex flex-col items-center gap-6' }) }}>
+<div class="flex flex-col items-center gap-6">
     <div class="text-6xl font-bold tabular-nums text-gray-900">{{ count }}</div>
 
     <div class="flex items-center gap-3">
+        {# live#action + data-live-action-param : appelle la LiveAction côté serveur puis re-rend le component #}
         <button
             type="button"
             data-action="live#action"
             data-live-action-param="decrement"
-            class="inline-flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500"
-        >
+            class="inline-flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500">
             −
         </button>
 
@@ -15,8 +15,7 @@
             type="button"
             data-action="live#action"
             data-live-action-param="reset"
-            class="inline-flex items-center gap-2 rounded-md bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-300"
-        >
+            class="inline-flex items-center gap-2 rounded-md bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-300">
             Reset
         </button>
 
@@ -24,8 +23,7 @@
             type="button"
             data-action="live#action"
             data-live-action-param="increment"
-            class="inline-flex items-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500"
-        >
+            class="inline-flex items-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500">
             +
         </button>
     </div>

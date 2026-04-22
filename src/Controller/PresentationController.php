@@ -11,6 +11,15 @@ use Symfony\Component\Routing\Attribute\Route;
 final class PresentationController extends AbstractController
 {
     #[Route(
+        path: '/',
+        name: 'app_home',
+    )]
+    public function home(): Response
+    {
+        return $this->redirectToRoute('app_presentation');
+    }
+
+    #[Route(
         path: '/presentation',
         name: 'app_presentation',
     )]

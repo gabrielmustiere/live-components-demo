@@ -1,6 +1,7 @@
-<div {{ attributes.defaults({ class: 'flex flex-col gap-4' }) }}>
+<div class="flex flex-col gap-4">
     <label class="flex flex-col gap-1">
         <span class="text-sm font-medium text-gray-700">Rechercher un produit</span>
+        {# data-model : binding bidirectionnel sur la prop `query`, avec 300 ms de debounce avant re-rendu #}
         <input
             type="search"
             data-model="debounce(300)|query"

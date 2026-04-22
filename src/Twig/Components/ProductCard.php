@@ -15,11 +15,13 @@ final class ProductCard
 
     public bool $showBadge = true;
 
+    // Les components sont autowirés : on peut injecter n'importe quel service
     public function __construct(
         private readonly PriceFormatter $formatter,
     ) {
     }
 
+    // Méthode publique accessible dans le template via `this.formattedPrice`
     public function formattedPrice(): string
     {
         return $this->formatter->format($this->product->price);

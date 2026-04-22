@@ -4,6 +4,7 @@
     warning: 'border-amber-200 bg-amber-50 text-amber-900',
     error:   'border-red-200 bg-red-50 text-red-900',
 } %}
+
 {% set icon = {
     info:    'tabler:info-circle',
     success: 'tabler:circle-check',
@@ -11,10 +12,8 @@
     error:   'tabler:alert-circle',
 } %}
 
-<div {{ attributes.defaults({
-    class: 'flex items-start gap-3 rounded-lg border px-4 py-3 text-sm ' ~ palette[type]|default(palette.info),
-    role: 'alert',
-}) }}>
+<div class="flex items-start gap-3 rounded-lg border px-4 py-3 text-sm {{ palette[type]|default(palette.info) }}" role="alert">
+    {# Icône fournie par Symfony UX Icons (bundle twig:ux:icon) #}
     <twig:ux:icon name="{{ icon[type]|default(icon.info) }}" class="mt-0.5 size-5 shrink-0"/>
     <p class="flex-1">{{ message }}</p>
     {% if dismissible %}
