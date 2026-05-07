@@ -2,175 +2,155 @@
 
 ## 🎯 Objectif du chapitre
 
-Comprendre **ce qui rend un composant "Live"**, et pourquoi c'est un vrai changement de jeu côté Symfony.
+Comprendre **ce qui rend un composant "Live"**, pourquoi c'est un vrai changement de jeu côté Symfony, et **comment l'état circule** entre le client et le serveur sans une ligne de JS.
 
-Après le chapitre 3 sur les Twig Components — la brique **statique** — ce chapitre attaque la couche qui change tout : la **réactivité server-driven**. On va répondre à cinq questions :
+Ce chapitre absorbe le **cycle technique complet** d'un Live Component (ex-chapitre 5 du plan original) : en 11 slides, on couvre l'écosystème HTML-over-the-wire, les briques (`LiveProp`, `LiveAction`, `data-model`), le cycle en deux phases, l'anatomie réelle, et les features avancées du bundle.
 
-1. **Pourquoi** un Twig Component ne suffit pas dès qu'on veut de l'interactivité ?
-2. **Qu'est-ce qu'un Live Component**, concrètement, dans le code ?
-3. **Quelles sont les briques** qu'on va manipuler (`LiveProp`, `LiveAction`, data binding Twig) ?
-4. **Comment l'état circule** entre le client et le serveur, sans qu'on écrive de JS ?
-5. **Quels sont les pièges** à connaître avant d'en mettre en production ?
-
-> ⚠️ **À retenir** : Live Components est une **surcouche** de Twig Components, pas un remplacement. Tout ce qu'on a vu au chapitre 3 reste vrai — on ajoute juste une couche de **réactivité** quand on en a besoin. C'est de l'**opt-in**, composant par composant.
+> ⚠️ **À retenir** : Live Components est une **surcouche** de Twig Components, pas un remplacement. Tout ce qu'on a vu au chapitre 3 reste vrai — on ajoute une couche de **réactivité** quand on en a besoin. C'est de l'**opt-in**, composant par composant.
 
 ---
 
-## Slide 4.1 — Le problème restant
+## Slide d'intro — Live Components
 
-### Rappel des chapitres précédents
-
-À ce stade du talk, on a posé deux choses :
-
-- **Chapitre 1** — les **trois douleurs** historiques côté Symfony : pas de typage, pas d'unité d'organisation, pas de réactivité server-driven.
-- **Chapitre 3** — les **Twig Components** ont réglé les deux premières : une classe PHP, un template Twig, des props typées, un dossier par composant.
-
-Reste la troisième douleur : **la réactivité**.
-
-### Un Twig Component est statique
-
-Un `<twig:ProductCard ... />` est rendu **une fois**, côté serveur, et c'est terminé :
-
-- Aucune interaction utilisateur ne le met à jour
-- Pour qu'il "vive", il faut sortir de Twig et écrire du **Stimulus / Ajax / JS custom**
-- L'état utilisateur (un filtre, un compteur, une saisie en cours) **n'existe pas** dans le composant — il vit ailleurs, en JS, ou pas du tout
-
-### Conséquence concrète
-
-Dès qu'on veut un composant réactif — un filtre de produits, un panier qui se met à jour, un formulaire qui valide à la frappe — on retombe dans le scénario du chapitre 1 :
-
-- **Logique métier dupliquée** : règles de filtrage en PHP côté serveur **et** réimplémentées en JS côté client
-- **Endpoint custom** par interaction (route + contrôleur + format de réponse improvisé)
-- **Friction DX** : un composant "vivant" = 4 fichiers hétérogènes (PHP + Twig + JS Stimulus + contrôleur + parfois route DTO)
-- **Synchronisation d'état** fragile entre client et serveur
-
-C'est exactement ce mur que Live Components vient abattre.
+1. D'où ça vient : la famille **HTML-over-the-wire**
+2. Les briques : `LiveProp`, `LiveAction`, data binding
+3. Comment l'état circule sans écrire de JS
 
 ---
 
-## Slide 4.2 — Live Components = Twig + réactivité
+## Slide 4.1 — La famille HTML-over-the-wire
 
-### Définition
+Live Components n'est pas un OVNI. Il s'inscrit dans une **famille d'approches** émergée entre 2018 et 2022.
 
-> **Un Twig Component qui se met à jour automatiquement via Ajax.**
+> 💬 **« Server-driven UI »** : l'état de vérité vit côté serveur, le client n'est qu'une projection, on échange du **HTML** plutôt que du JSON.
 
-L'utilisateur interagit, le composant **ré-exécute son rendu côté serveur**, et le DOM est patché côté client — **sans qu'on écrive une ligne de JS**.
+| Solution | Stack | Année | Idée centrale |
+|----------|-------|-------|---------------|
+| **Phoenix LiveView** | Elixir | 2018 | État serveur, diffs via WebSocket |
+| **Hotwire / Turbo** | Rails (agnostique) | 2020 | Turbo Frames / Streams |
+| **Laravel Livewire** | PHP / Laravel | 2020 | Composant PHP réactif, requête HTTP |
+| **htmx** | Agnostique | 2020 | Attributs HTML → fragments |
+| **UX Live Components** | PHP / Symfony | 2022 | Modèle Livewire-like, idiomes Symfony |
 
-### Ce qui change concrètement
+### Ce que cette famille refuse
+
+- Double codebase PHP + JS
+- Hydration coûteuse d'un SPA
+- Écosystème JS séparé (build, types, tests)
+- SEO compliqué des SPAs
+
+### Ce qu'elle assume
+
+- Un round-trip HTTP par interaction (OK pour 90 % des UIs métier)
+- Dépendance au réseau (moins offline-friendly)
+- Moins adapté au canvas, drag & drop, 60 fps
+
+---
+
+## Slide 4.2 — Trois briques, zéro JavaScript
+
+Un **Live Component**, c'est un Twig Component augmenté de **trois briques**. Rien d'autre à écrire côté client.
+
+### `LiveProp` — état
+
+Une propriété PHP **synchronisée** entre le client et le serveur. Elle se sérialise dans le DOM, revient dans chaque payload, rejoue le rendu.
+
+### `LiveAction` — verbe
+
+Une méthode PHP **déclenchable depuis le DOM**. L'autowiring fonctionne, le routing est auto-exposé, le CSRF est géré.
+
+### `data-model` — liaison
+
+Un attribut Twig qui **lie un input à une `LiveProp`** et déclenche un re-render — équivalent du `v-model` de Vue.
+
+> 💬 **Trois briques : un état, un verbe, une liaison.**
+
+---
+
+## Slide 4.3 — Sans Live · Avec Live
+
+Concrètement, voilà ce qu'on **arrête d'écrire** dès qu'on passe en Live.
 
 | Sans Live | Avec Live |
 |-----------|-----------|
 | Écrire un endpoint Ajax dédié | **Aucun endpoint** à écrire |
 | Définir un format de réponse (JSON ? HTML ?) | **Du HTML**, c'est tout |
-| Réimplémenter la logique en JS | **La logique reste en PHP**, le JS est généré par le bundle |
-| Mettre à jour le DOM à la main | **DOM morphing** automatique (morphdom) |
-| Gérer le CSRF, la sécurité, la sérialisation à la main | **Géré par le bundle** |
+| Réimplémenter la logique en JS | La logique reste **en PHP** |
+| Mettre à jour le DOM à la main | **DOM morphing** (morphdom) |
+| Gérer CSRF, sécurité, sérialisation | **Géré par le bundle** |
 
-### Le vocabulaire qu'on va utiliser
-
-- **`LiveProp`** : une propriété de la classe PHP **synchronisée** entre client et serveur
-- **`LiveAction`** : une méthode PHP **déclenchable** depuis le DOM
-- **Data model** : un input Twig **lié** à une `LiveProp` (équivalent du `v-model` de Vue)
-- **Re-render** : la régénération du markup du composant après une interaction
-- **DOM morphing** : la **fusion ciblée** du nouveau markup avec le DOM existant, sans tout détruire
+> 💬 **On garde Symfony. On gagne l'interactivité. On laisse le JS custom.**
 
 ---
 
-## Slide 4.3 — Comment ça marche (vue d'ensemble)
+## Slide 4.4 — Le cycle en deux phases
 
-> 🧭 **Pour situer** : ce schéma est volontairement haut niveau. Le **détail technique** de chaque étape (hydration, action, re-render, patch) fait l'objet du chapitre 5.
+C'est le **moteur** : ce qui se passe entre le clic utilisateur et le DOM patché.
+
+### Phase 1 — rendu initial (une fois)
 
 ```
-   ┌─────────────┐
-   │   User      │  clic / input / submit
-   └──────┬──────┘
-          ▼
-   ┌─────────────┐
-   │  Ajax call  │  payload = état du composant + action
-   └──────┬──────┘
-          ▼
-   ┌─────────────┐
-   │     PHP     │  hydrate → exécute action → re-render
-   └──────┬──────┘
-          ▼
-   ┌─────────────┐
-   │  HTML diff  │  réponse = nouveau markup
-   └──────┬──────┘
-          ▼
-   ┌─────────────┐
-   │  DOM patch  │  morphdom côté client
-   └─────────────┘
+Navigateur           Serveur PHP
+    │                     │
+    │── GET /ma-page ────►│  instancie le composant
+    │                     │  Twig render
+    │                     │  sérialise l'état dans le DOM
+    │◄── HTML complet ────│
+    │
+    │  Le composant n'existe plus côté serveur.
+    │  Son état est encodé dans le HTML rendu.
 ```
 
-### Ce qui est remarquable
+### Phase 2 — cycle interaction (à chaque action)
 
-- **Pas de SPA** : aucun routeur côté client, pas de `<App />` racine
-- **Pas de React / Vue** : aucun runtime virtuel, aucun JSX
-- **Pas d'API JSON custom** à concevoir, documenter, versionner
-- Le rendu **reste du Twig** — mêmes filters, mêmes extensions, même héritage
+```
+Navigateur           Serveur PHP
+    │                     │
+    │  [clic ou input]    │
+    │── POST /_components►│  reconstruit le composant
+    │   état + action     │  Twig re-render
+    │◄── HTML partiel ────│  sérialise le nouvel état
+    │
+    │  morphdom patche uniquement les nœuds modifiés.
+```
 
-### Ce que livre le bundle
+### Stimulus lit le DOM et envoie
 
-- Un **endpoint interne** (route fournie par `ux-live-component`) — tu n'écris pas de contrôleur
-- Un **Stimulus controller** (`live_controller.js`) chargé via le Stimulus bridge — tu ne touches pas à `npm`
-- Une **machinerie d'hydration / déshydration** des `LiveProp` (sérialisation JSON dans le DOM)
-- Un **algorithme de morphing** qui préserve focus, scroll et inputs non modifiés
+```json
+{
+  "props": {
+    "query": "",
+    "@attributes": {
+      "id": "live-1630620926-0"
+    },
+    "@checksum": "rZqkfjCx6svzp7p1xYbt9lwLJ2IrEzLkUZC5n/EXj5Q="
+  },
+  "updated": {
+    "query": "cl"
+  }
+}
+```
 
----
+> 💬 Entre deux requêtes, **le composant n'existe pas côté serveur**. Il est reconstruit à chaque cycle à partir de l'état sérialisé dans le DOM.
 
-## Slide 4.4 — Inspirations : la famille "HTML-over-the-wire"
+### ⚠️ Implications pour un lead dev
 
-Live Components n'est pas un OVNI. Il s'inscrit dans une **famille d'approches** qui a émergé entre 2018 et 2021 :
-
-| Solution | Stack | Année | Idée centrale |
-|----------|-------|------|---------------|
-| **Phoenix LiveView** | Elixir | 2018 | État serveur, diffs envoyés par WebSocket |
-| **Hotwire / Turbo** | Rails (agnostique) | 2020 | HTML-over-the-wire via Turbo Frames / Streams |
-| **Laravel Livewire** | PHP / Laravel | 2020 | Composant PHP réactif, état serveur, requête HTTP |
-| **htmx** | Agnostique | 2020 | Attributs HTML déclencheurs de fragments |
-| **Symfony UX Live Components** | PHP / Symfony | 2022 | Modèle Livewire-like, idiomes Symfony |
-
-### Philosophie commune
-
-> **"Server-driven UI"** : l'état de vérité vit côté serveur, le client n'est qu'une projection, et on échange du **HTML** plutôt que du JSON.
-
-### Ce que cette famille refuse
-
-- ❌ La **double codebase** (logique métier en PHP **et** en JS)
-- ❌ L'**hydration coûteuse** d'un SPA au chargement de la page
-- ❌ La **complexité opérationnelle** d'un écosystème JS distinct (build, types, tests, déploiement)
-- ❌ Le **SEO compliqué** des SPAs (SSR à reconstruire, meta tags dynamiques)
-
-### Ce qu'elle assume
-
-- ✅ Un **round-trip HTTP** par interaction réactive (acceptable pour 90 % des UIs métier)
-- ✅ Une **dépendance au réseau** (l'app est moins offline-friendly qu'un SPA pur)
-- ✅ Un **modèle moins adapté** aux UIs ultra-fluides (canvas, drag & drop intensif, animations 60 fps)
+- **Aucun état implicite** entre deux requêtes → variables d'instance non `LiveProp` : perdues à chaque cycle
+- **`LiveProp writable` = entrée utilisateur** → valider comme un champ de formulaire
+- **Chaque action = un round-trip** → debounce obligatoire sur les inputs texte
+- **Taille de l'état sérialisé** → pas d'entité complète dans une `LiveProp`, stocker un ID et recharger
+- **Listes sans id stable** → morphdom crée des bugs visuels subtils. Toujours `id="item-{{ item.id }}"`
+- **Idempotence** souhaitée → une action peut être rejouée si le client retry
 
 ---
 
 ## Slide 4.5 — Anatomie d'un Live Component
 
-Un Live Component, c'est exactement la même structure qu'un Twig Component — **plus** un attribut et un trait.
+Concrètement, on peut voir ça comme **un gros controller ++**.
 
-### Les trois fichiers
-
-```
-src/Twig/Components/ProductSearch.php       ← classe PHP
-templates/components/ProductSearch.html.twig ← template
-(éventuellement)
-assets/controllers/product_search_controller.js ← Stimulus extra (rare)
-```
-
-### Le squelette minimal
+### src/Twig/Components/ProductSearch.php
 
 ```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Twig\Components;
-
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -185,23 +165,11 @@ final class ProductSearch
 }
 ```
 
-### Ce qu'il faut savoir lire
-
-- **`#[AsLiveComponent]`** remplace `#[AsTwigComponent]` — c'est le seul changement structurel
-- **`use DefaultActionTrait`** ajoute l'action par défaut (`__invoke`) qui permet le re-render sans action explicite
-- **`#[LiveProp]`** marque une propriété comme **synchronisée** avec le client
-- **`writable: true`** autorise le client à modifier la valeur (sinon elle est en lecture seule côté client)
-
-### Le template associé
+### templates/components/ProductSearch.html.twig
 
 ```twig
-{# templates/components/ProductSearch.html.twig #}
 <div {{ attributes }}>
-    <input
-        type="search"
-        data-model="query"
-        placeholder="Rechercher un produit…"
-    >
+    <input type="search" data-model="query" placeholder="Rechercher…">
 
     <ul>
         {% for product in this.results %}
@@ -211,42 +179,58 @@ final class ProductSearch
 </div>
 ```
 
-### Trois détails cruciaux
+### Quatre détails cruciaux
 
-1. **`{{ attributes }}`** sur la racine — c'est ici que le bundle injecte les `data-controller="live"`, l'état sérialisé, le token CSRF
-2. **`data-model="query"`** — lie l'input à la `LiveProp` `query` (équivalent du `v-model` de Vue)
-3. **`this.results`** — méthode publique de la classe PHP, recalculée à chaque re-render (parfait pour les valeurs dérivées)
+- **`#[AsLiveComponent]`** remplace `#[AsTwigComponent]`
+- **`DefaultActionTrait`** active le re-render sans action explicite
+- **`{{ attributes }}`** injecte `data-controller="live"`, l'état sérialisé et le CSRF
+- **`data-model`** lie l'input à la prop (équivalent `v-model`)
 
 ---
 
-## Slide 4.6 — `LiveProp` en profondeur
+## Slide 4.6 — `LiveProp` · quatre niveaux de puissance
 
-`LiveProp` est **l'attribut central** : tout passe par lui.
-
-### Les modes
+### 1 · Read-only (défaut)
 
 ```php
-#[LiveProp]                        // Lecture seule côté client
-public string $locale = 'fr';
+#[LiveProp]
+public int $max = 1000;
+```
 
-#[LiveProp(writable: true)]        // Modifiable depuis le DOM
+La valeur **persiste entre re-renders**, mais le client ne peut pas la modifier.
+
+### 2 · Writable (input user)
+
+```php
+#[LiveProp(writable: true)]
 public string $query = '';
+```
 
-#[LiveProp(writable: ['name', 'email'])]  // Champs spécifiques d'un objet
+Modifiable via `data-model` → **déclenche le re-render**. C'est le mode « input de recherche, filtre, case à cocher ».
+
+### 3 · Writable sélectif (objets)
+
+```php
+#[LiveProp(writable: ['name', 'email'])]
 public ContactDto $contact;
 ```
 
-### Synchronisation : ce qui se passe à chaque cycle
+Seuls les champs listés sont **exposés à l'écriture**. Pas d'accès implicite au reste de l'objet — whitelist explicite.
 
-1. La `LiveProp` est **sérialisée** dans le DOM au render initial (`data-live-props-value="..."`)
-2. À chaque interaction, le client la **renvoie** au serveur dans le payload Ajax
-3. Le serveur **reconstruit** l'objet à partir de ce payload
-4. La méthode action est exécutée, la prop peut changer
-5. La nouvelle valeur est **re-sérialisée** dans le DOM lors du re-render
+### 4 · URL binding (shareable)
+
+```php
+#[LiveProp(writable: true, url: true)]
+public string $sort = 'name';
+```
+
+Reflétée en query string `?sort=…` : **URL partageable, back button, bookmarkable**.
+
+> 💬 **Read-only par défaut. Puissance opt-in.** La sécurité est dans la convention, pas dans la vigilance.
 
 ### Hydration / déshydration custom
 
-Pour les objets non-scalaires (entités Doctrine, value objects, DTOs), le bundle utilise par défaut le **Symfony Serializer**. On peut forcer un comportement custom :
+Pour les objets non-scalaires (entités, value objects, DTOs), on peut surcharger le comportement par défaut du Symfony Serializer :
 
 ```php
 #[LiveProp(
@@ -267,190 +251,103 @@ public function hydrateProduct(int $id, ProductRepository $repo): Product
 }
 ```
 
-> ⚠️ **Pourquoi c'est important** : sans déshydration custom, une entité Doctrine entière serait sérialisée en JSON dans le DOM. **Stocker un ID** est plus léger, plus sûr (le client ne voit que ce qu'on veut) et évite les problèmes de cycles.
-
-### Synchronisation avec l'URL
-
-```php
-#[LiveProp(writable: true, url: true)]
-public string $query = '';
-```
-
-La prop est **reflétée dans la query string** (`?query=foo`) — utile pour le partage de lien et le back/forward navigateur.
-
-### Validation
-
-Les `LiveProp` sont des **propriétés PHP normales** : on y colle les contraintes Symfony Validator standard.
-
-```php
-use Symfony\Component\Validator\Constraints as Assert;
-
-#[LiveProp(writable: true)]
-#[Assert\NotBlank]
-#[Assert\Email]
-public string $email = '';
-```
-
-Couplé avec le trait `ValidatableComponentTrait`, on déclenche la validation dans une `LiveAction` et on récupère les erreurs dans le template.
+> ⚠️ Sans déshydration custom, une entité Doctrine entière serait sérialisée en JSON dans le DOM. **Stocker un ID** est plus léger, plus sûr, et évite les problèmes de cycles.
 
 ---
 
-## Slide 4.7 — `LiveAction` en profondeur
+## Slide 4.7 — `LiveAction` · une méthode, un endpoint
 
-`LiveAction` marque les **méthodes appelables depuis le DOM**.
+Une méthode PHP annotée devient un **endpoint HTTP**. Pas de route à déclarer, pas de JSON à parser.
 
-### La forme la plus simple
+### 1 · Minimale (le verbe)
 
 ```php
-#[AsLiveComponent]
-final class Counter
+#[LiveAction]
+public function increment(): void
 {
-    use DefaultActionTrait;
-
-    #[LiveProp(writable: true)]
-    public int $count = 0;
-
-    #[LiveAction]
-    public function increment(): void
-    {
-        $this->count++;
-    }
-
-    #[LiveAction]
-    public function reset(): void
-    {
-        $this->count = 0;
-    }
+    $this->count++;
 }
 ```
 
-```twig
-<div {{ attributes }}>
-    <p>Compteur : {{ count }}</p>
+Une méthode → **un endpoint POST** auto-exposé, re-render du composant inclus.
 
-    <button data-action="live#action" data-live-action-param="increment">
-        +1
-    </button>
-    <button data-action="live#action" data-live-action-param="reset">
-        Reset
-    </button>
-</div>
-```
-
-### Action avec arguments
-
-Les arguments sont passés via des `data-live-arg-*` :
-
-```twig
-<button
-    data-action="live#action"
-    data-live-action-param="addToCart"
-    data-live-product-id-param="{{ product.id }}"
-    data-live-quantity-param="1"
->
-    Ajouter au panier
-</button>
-```
+### 2 · Arguments typés (`LiveArg`)
 
 ```php
 #[LiveAction]
 public function addToCart(
     #[LiveArg] int $productId,
-    #[LiveArg] int $quantity,
-    CartManager $cart,
-): void {
-    $cart->add($productId, $quantity);
-}
+): void
 ```
 
-### Injection de services dans une action
+Passés depuis le DOM, **typés et validés** côté PHP.
 
-L'autowiring fonctionne **directement dans la signature** de la méthode action — pas besoin d'injecter dans le constructeur si le service n'est utilisé que par une action.
-
-### Retour HTTP custom
-
-Une action peut retourner une `RedirectResponse` ou n'importe quelle `Response` :
+### 3 · Autowiring (services)
 
 ```php
 #[LiveAction]
-public function checkout(): RedirectResponse
-{
-    return $this->redirectToRoute('app_order_summary');
-}
+public function save(
+    EntityManagerInterface $em,
+): void
 ```
 
-Le client gère le redirect comme une navigation Turbo classique.
+Injection de services **comme dans un controller** : repositories, mailer, logger… rien à configurer.
+
+> 💬 **Une méthode PHP = un endpoint.** CSRF, re-render, hydration — offerts. Pas de route, pas de JSON, pas d'Ajax à la main.
 
 ---
 
-## Slide 4.8 — Data binding côté Twig
+## Slide 4.8 — `data-model` : binding
 
-Le `data-model` est la deuxième pierre angulaire — il **lie** un input à une `LiveProp` et déclenche un re-render à chaque modification.
+`data-model` lie un input à une `LiveProp`. Le modificateur décide **quand** déclencher un re-render.
 
-### Les variantes
+| Syntaxe | Quand l'utiliser |
+|---------|------------------|
+| `data-model="query"` | Re-render à chaque frappe — *à éviter sur un champ texte* |
+| `data-model="debounce(300)|query"` | Recherche live — 1 requête après 300 ms d'inactivité |
+| `data-model="on(change)|email"` | Formulaires — re-render au blur / au changement |
+| `data-model="norender|message"` | Maintenir l'état côté client sans re-render |
+| `data-model="contact.name"` | Sous-propriété d'un objet (nécessite `writable: [...]`) |
 
-```twig
-{# Re-render à chaque frappe (par défaut) #}
-<input data-model="query" type="search">
-
-{# Debounce 300 ms — utile pour la recherche #}
-<input data-model="debounce(300)|query" type="search">
-
-{# Re-render seulement au blur — utile pour un formulaire #}
-<input data-model="on(change)|email" type="email">
-
-{# Pas de re-render automatique — la prop change côté client mais on attend une action #}
-<input data-model="norender|message" type="text">
-```
-
-### Pour un select / checkbox / radio
-
-```twig
-<select data-model="sortBy">
-    <option value="name">Nom</option>
-    <option value="price">Prix</option>
-</select>
-
-<input type="checkbox" data-model="onlyInStock"> En stock seulement
-```
-
-### Pour les sous-propriétés d'un objet
-
-```twig
-<input data-model="contact.name" type="text">
-<input data-model="contact.email" type="email">
-```
-
-> ⚠️ Pour que ça fonctionne, la `LiveProp` doit être déclarée `writable: ['name', 'email']` — sinon le client n'a pas le droit de modifier ces champs.
+> 💬 **Une boucle HTTP par frappe est un choix, pas une fatalité.**
 
 ---
 
-## Slide 4.9 — Re-render : qui le déclenche ?
+## Slide 4.9 — La mise à jour du DOM
 
-Trois événements provoquent un re-render du composant :
+À chaque re-render, le bundle renvoie le **markup complet** du composant. Côté client, **morphdom** applique un diff ciblé — pas une reconstruction complète.
 
-1. **Une `LiveProp` modifiée côté client** (via `data-model`)
-2. **Une `LiveAction` exécutée**
-3. **Un appel explicite** à `$this->emit(...)` ou `$this->dispatchBrowserEvent(...)`
+### Le focus
 
-À chaque re-render, le bundle :
+L'input en cours de saisie **reste actif**. L'utilisateur ne perd pas le fil pendant que le serveur répond.
 
-- Re-sérialise les `LiveProp` dans le DOM (le client repart avec un état frais)
-- Renvoie le markup complet du composant
-- Le client applique un **diff DOM** (morphdom) — seuls les nœuds réellement modifiés sont remplacés
+### Le scroll
 
-### Ce qui est préservé pendant le morphing
+La position de scroll est **préservée**. Pas de retour en haut de page après chaque interaction.
 
-- Le **focus** (l'input en cours de saisie reste actif)
-- La **position de scroll**
-- Les **inputs non modifiés** (un champ que l'utilisateur tape pendant le re-render n'est pas écrasé)
-- Les **classes CSS et événements** des éléments qui n'ont pas changé
+### Les inputs non touchés
+
+Un champ tapé pendant le re-render **n'est pas écrasé**. Classes CSS et events des nœuds inchangés sont conservés.
+
+> 💬 **C'est le bénéfice invisible : « juste ça marche ».**
+
+### Contrôler le morphing
+
+```html
+{# Exclure un élément du morphing (animation JS, éditeur riche) #}
+<div data-live-ignore>
+    Ce contenu n'est jamais touché par morphdom.
+</div>
+
+{# Sur les listes : id stable obligatoire pour éviter les bugs visuels #}
+{% for item in items %}
+    <li id="item-{{ item.id }}">{{ item.name }}</li>
+{% endfor %}
+```
 
 ---
 
-## Slide 4.10 — Aperçu des features avancées
-
-On ne va pas tout couvrir ici (cf. chapitres 9 et démo), mais voici **ce que le bundle propose** au-delà du basique :
+## Slide 4.10 — Ce que le bundle offre en plus
 
 ### Loading states
 
@@ -461,8 +358,6 @@ On ne va pas tout couvrir ici (cf. chapitres 9 et démo), mais voici **ce que le
 </button>
 ```
 
-Le bundle ajoute / retire des classes CSS pendant la requête Ajax. On peut aussi **désactiver** un bouton (`data-loading="addAttribute(disabled)"`).
-
 ### Polling
 
 ```twig
@@ -471,19 +366,15 @@ Le bundle ajoute / retire des classes CSS pendant la requête Ajax. On peut auss
 </div>
 ```
 
-Le composant se re-render automatiquement toutes les 5 secondes — utile pour des compteurs, des statuts de jobs.
-
-### Embedded components
-
-Un Live Component peut **contenir** un autre Live Component, chacun avec son propre état. La communication se fait via **emit** / **listen** :
+### Emit / Listen — composants imbriqués
 
 ```php
-// Dans le composant enfant
-$this->emit('product:added', ['id' => $productId]);
+// enfant
+$this->emit('product:added', ['id' => $id]);
 
-// Dans le composant parent
+// parent
 #[LiveListener('product:added')]
-public function onProductAdded(#[LiveArg] int $id): void
+public function onAdded(#[LiveArg] int $id): void
 {
     // ...
 }
@@ -497,73 +388,30 @@ public function beforeRender(): void
 {
     $this->lastRenderedAt = new \DateTimeImmutable();
 }
+
+// Hooks disponibles : PostMount · PostHydrate · PreReRender · PreDehydrate
 ```
 
-Détaillé au chapitre 5.
+| Hook | Render initial | Re-render Ajax | Moment |
+|------|:---:|:---:|---|
+| `#[PostMount]` | ✅ | ❌ | Après instanciation + mount() |
+| `#[PostHydrate]` | ❌ | ✅ | Après hydratation des LiveProp |
+| `#[PreReRender]` | ❌ | ✅ | Juste avant le re-render Twig |
+| `#[PreDehydrate]` | ✅ | ✅ | Avant la sérialisation des props |
+
+> 💬 **Loading, polling, events, hooks : tout est déjà dans le bundle.**
 
 ---
 
-## Slide 4.11 — Les pièges classiques
+## Slide 4.11 — Ce qu'on retient
 
-À connaître **avant** de pousser en production :
+Un Live Component tient en **trois briques** : **`LiveProp`** pour l'état, **`LiveAction`** pour les actions, **le morphing** pour préserver l'UI entre deux renders.
 
-### 1. Tout `LiveProp` `writable` est une entrée utilisateur
+La vérité reste côté serveur — **pas de Virtual DOM, pas de store, pas d'hydratation**. Une annotation `#[AsLiveComponent]`, et un composant Twig devient réactif.
 
-Le client peut envoyer **n'importe quelle valeur** dans le payload. **Valider** systématiquement (Symfony Validator, type strict, contraintes métier).
+On garde Symfony. On gagne l'interactivité. On laisse la complexité SPA de côté.
 
-### 2. Stocker des entités complètes dans une `LiveProp` est dangereux
-
-- **Sérialisation lourde** dans le DOM (tout l'objet en JSON)
-- **Fuite de données** (champs internes sérialisés)
-- **Cycles** Doctrine qui plantent le serializer
-
-→ Toujours préférer un **ID** + déshydration custom (cf. slide 6.6).
-
-### 3. Une action = un round-trip HTTP
-
-Un input avec `data-model` sans debounce sur un champ texte = une requête **par frappe**. Sur 4G, c'est lent. Toujours :
-
-- Utiliser `debounce(300)` pour la recherche live
-- Utiliser `on(change)` pour les selects
-- Utiliser `norender` quand on veut juste maintenir l'état sans recalculer
-
-### 4. Le composant est **stateless** entre deux requêtes
-
-Aucun état hors `LiveProp` ne survit. Une variable d'instance non `LiveProp` ? Perdue au prochain cycle. Une session, un cache ? Possibles, mais explicites.
-
-### 5. Le morphing peut surprendre sur les listes
-
-Si on rend une liste dont l'ordre change, morphdom peut **réutiliser** un nœud DOM existant pour un autre item — ce qui crée des bugs visuels. Solution : ajouter des **clés stables** (`id="item-{{ item.id }}"`) sur les éléments de liste.
-
----
-
-## Slide 4.12 — Récap : la grille du chapitre 1 cochée
-
-Reprenons les cinq critères du chapitre 1 et regardons où Live Components nous mène :
-
-| Critère | Live Components |
-|---------|:---------------:|
-| **Encapsulation logique** | ✅ Classe PHP avec services injectables |
-| **Template séparé** | ✅ Twig dédié, syntaxe `<twig:...>` |
-| **Props typées** | ✅ Propriétés PHP typées + `LiveProp` |
-| **État interne** | ✅ Toute `LiveProp` survit entre les interactions |
-| **Performance** | ⚠️ 1 round-trip Ajax par interaction réactive |
-| **Interactivité** | ✅ Server-driven, sans JS custom |
-
-C'est **la première ligne** de tout le tableau du chapitre 1 où **toutes les cases** (sauf une nuance perf assumée) sont vertes.
-
----
-
-## 💬 Message clé
-
-> **"Live Components rendent l'interactivité disponible sans quitter PHP/Twig."**
-> On obtient 80 % des bénéfices d'un SPA avec 20 % de la complexité.
-
-### Trois mots à retenir
-
-- **Server-driven** : la vérité reste côté serveur, le client est une projection
-- **Opt-in** : on ajoute `#[AsLiveComponent]` quand on en a besoin, pas avant
-- **Continuité** : mêmes outils, mêmes patterns, même profiler que le reste de Symfony
+> **Place à la démo : tout ça en live dans un navigateur.**
 
 ---
 
@@ -573,12 +421,12 @@ C'est **la première ligne** de tout le tableau du chapitre 1 où **toutes les c
 >
 > Concrètement, tu prends un Twig Component, tu changes l'attribut `#[AsTwigComponent]` en `#[AsLiveComponent]`, tu ajoutes le `DefaultActionTrait`, et tu marques les propriétés que tu veux synchroniser avec `#[LiveProp]`. Côté template, tu poses un `data-model` sur un input, et c'est tout. Tu n'écris **pas** de JavaScript. Tu n'écris **pas** d'endpoint. Tu n'écris **pas** de format JSON.
 >
-> Et côté utilisateur : ça réagit, ça met à jour le DOM intelligemment, ça préserve le focus et le scroll. C'est exactement la promesse de la famille HTML-over-the-wire — Livewire, Hotwire, LiveView, htmx — portée en idiomes Symfony."
+> Le mental model à garder : un Live Component est **stateless côté serveur**. Il n'y a pas d'objet qui attend entre deux requêtes. À chaque cycle Ajax, la classe est re-instanciée, les props sont re-hydratées depuis ce que le client a renvoyé, l'action s'exécute, Twig re-rend, et l'état repart dans le HTML.
+>
+> Ça a deux conséquences directes : tout ce qui doit persister doit être une `LiveProp`, et tout ce qui vient du client est une entrée utilisateur — pas de confiance implicite."
 
 ---
 
 ## 🧭 Transition vers le chapitre 5
 
-On a vu **ce qu'est** un Live Component, **comment il s'écrit** et **ce qu'il propose** comme features. Mais pour bien le maîtriser en tant que lead dev — pour debugger, optimiser, sécuriser — il faut comprendre **précisément ce qui se passe** entre le clic utilisateur et le DOM patché.
-
-C'est l'objet du chapitre 5 : le **cycle de vie complet** d'un Live Component, étape par étape.
+On a vu **ce qu'est** un Live Component, **comment il s'écrit**, **comment l'état circule** et **ce qu'il propose** comme features. Place à la démo : deux pas de quatre minutes pour ancrer le vocabulaire dans du code qui s'exécute, et voir tous ces concepts en action dans un navigateur.

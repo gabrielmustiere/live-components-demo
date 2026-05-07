@@ -2,102 +2,120 @@
 
 ## 🎯 Objectif du chapitre
 
-Chapitre **court et volontairement dense** — on ne refait pas l'histoire des SPA. On identifie **les concepts précis** du modèle composant JS qu'on veut porter en PHP, puis on regarde **comment Symfony UX les traduit** en idiomes PHP/Symfony.
+Chapitre **court et volontairement dense**. On ne refait pas l'histoire des SPA. On identifie **les concepts précis** du modèle composant JS qu'on veut porter en PHP, puis on regarde **comment Symfony UX les traduit** en idiomes PHP/Symfony.
 
-Deux questions, une slide chacune :
+Cinq slides, chacune une idée :
 
-1. **Qu'est-ce qu'on garde** du modèle React/Vue, et **qu'est-ce qu'on laisse** ?
-2. **Comment Symfony UX** assemble les briques pour répondre aux 3 douleurs du chapitre 1 ?
-
----
-
-## Slide 2.1 — Le modèle composant, sans le tooling
-
-### Le postulat universel des frameworks modernes
-
-```
-UI = f(state)
-```
-
-La vue est une **fonction pure de l'état**. Quand l'état change, la vue se recalcule. Pas de synchronisation manuelle, pas de DOM mutable partagé.
-
-### Cinq concepts transverses (indépendants du langage)
-
-| Concept | Définition | Propriété essentielle |
-|---------|-----------|----------------------|
-| **Props** | Données passées par le parent | Immuables côté composant, contrat d'entrée explicite |
-| **State** | État interne au composant | Mutable localement, déclenche un re-render |
-| **Render** | Fonction `(props, state) → UI` | Pure : mêmes entrées = même sortie |
-| **Events** | Interactions remontées vers le parent | Couplage minimal |
-| **Composition** | Arbre de composants | Décomposition en unités compréhensibles |
-
-### Résonance avec les 3 douleurs du chapitre 1
-
-| Douleur Symfony historique | Réponse du modèle composant |
-|----------------------------|-----------------------------|
-| Pas de contrat de typage entre vue et données | **Props explicites et typées** |
-| Pas d'unité d'organisation (logique/markup dispersés) | **Un composant = une unité colocalisée** |
-| Pas de réactivité server-driven | **State + render** : la vue est une projection de l'état |
-
-### Ce qu'on garde / ce qu'on laisse
-
-| Ce qu'on **veut récupérer** | Ce qu'on **laisse côté JS** |
-|-----------------------------|-----------------------------|
-| Props typées et explicites | Virtual DOM / reconciliation |
-| Unité logique = classe + template | Bundle JS de plusieurs MB |
-| State comme source de vérité | Hydration côté client |
-| Composition (arbre de composants) | Build tools (webpack, Vite…) |
-| Réactivité (état → vue automatique) | Double codebase PHP + JS |
-| Raisonnement local sur un composant | Store global (Redux, Pinia…) |
-
-### 💬 Message clé
-
-> **"Le modèle composant est une idée. La SPA est une implémentation. Les deux ne sont pas liés."**
->
-> On veut la **composition, les props typées, la réactivité**. Pas forcément tout l'écosystème JS qui va avec.
+1. Les **trois piliers** universels du modèle composant
+2. L'**idée** (qu'on garde) vs **l'implémentation** (qu'on laisse)
+3. Les **deux briques** de Symfony UX, l'une empilée sur l'autre
+4. L'**architecture en un schéma**
+5. Ce qu'on retient
 
 ---
 
-## Slide 2.2 — Symfony UX : la traduction en PHP
+## Slide d'intro — Du JS au PHP
 
-### Postulat fondateur
+Ce qu'on **emprunte** au modèle composant JS, ce qu'on **laisse**.
 
-> **"Ramener le modèle composant côté serveur, sans renier PHP ni Twig."**
+1. Quels concepts on garde de React/Vue ?
+2. Comment Symfony UX les assemble côté serveur ?
 
-Pas un framework. Une **initiative** qui regroupe une collection de bundles autour d'un socle commun.
+---
 
-### Vue d'ensemble en un schéma
+## Slide 2.1 — Le modèle composant : trois piliers
+
+Peu importe le framework ou le langage, tout modèle composant repose sur **trois idées**.
+
+### 1. Encapsulation
+
+Un composant = un **bout d'UI autonome** qui réunit template, état et logique. On le raisonne **localement**, sans regarder le reste de la page.
+
+### 2. Réactivité
+
+L'état change → la vue se met à jour. Pas de `querySelector`, pas de synchronisation manuelle du DOM.
+
+### 3. Composition
+
+Les composants s'imbriquent en arbre. Les **props descendent**, les **événements remontent**.
+
+> 💬 **Trois idées indépendantes de React, Vue ou de JavaScript.**
+
+---
+
+## Slide 2.2 — L'idée vs l'implémentation
+
+Ces trois piliers sont une **idée**. Le Virtual DOM, le bundle JS, l'hydratation, le store global — c'est **une implémentation** parmi d'autres.
+
+### Ce qu'on garde
+
+- Encapsulation (un composant = un tout)
+- Réactivité (état → vue)
+- Composition (arbre, props, events)
+
+### Ce qu'on peut laisser
+
+- Virtual DOM / reconciliation
+- Bundle JS de plusieurs MB
+- Hydratation côté client
+- Store global (Redux, Pinia…)
+
+> 💬 **Symfony UX garde l'idée, laisse l'implémentation.**
+
+---
+
+## Slide 2.3 — Deux briques, une empilée sur l'autre
+
+Symfony UX n'invente rien de magique. Le modèle composant tient sur **deux bundles**, le second construit sur le premier.
+
+### Twig Components — `stateless`
+
+- Une **classe PHP** (attribut `#[AsTwigComponent]`) — ses propriétés publiques sont les **props**
+- Un **template Twig** associé par convention
+- Rendu **côté serveur**, puis plus rien : un objet, une sortie HTML
+
+### Live Components — `stateful`
+
+- Un **Twig Component** enrichi par `#[AsLiveComponent]`
+- Un **endpoint HTTP** auto-exposé qui rejoue le rendu quand l'état change
+- **Stimulus** capte l'interaction → **Idiomorph** patche les nœuds modifiés du DOM
+
+---
+
+## Slide 2.4 — Une architecture, une commande
+
+Tout cet assemblage arrive par un seul `composer require symfony/ux-live-component` — **AssetMapper** et le **bridge Stimulus** sont câblés par la recette Flex.
+
+### Schéma d'ensemble
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                       Symfony UX                             │
-│                                                              │
-│   Couche composant PHP                                       │
-│   ┌──────────────────────┐    ┌──────────────────────┐       │
-│   │  Twig Components     │───▶│  Live Components     │       │
-│   │  (statique, props)   │    │  (réactif, état)     │       │
-│   └──────────────────────┘    └──────────────────────┘       │
-│              │                          │                    │
-│              └──────────┬───────────────┘                    │
-│                         ▼                                    │
-│              Stimulus bridge (autoload JS)                   │
-│   ┌──────────────────────────────────────────────────┐       │
-│   │  Stimulus  ── controllers JS minimaux            │       │
-│   │  Turbo     ── navigation sans rechargement       │       │
-│   └──────────────────────────────────────────────────┘       │
-│                         │                                    │
-│                         ▼                                    │
-│   ┌──────────────────────────────────────────────────┐       │
-│   │  AssetMapper (importmap, no Node required)       │       │
-│   │  ou Webpack Encore (legacy/avancé)               │       │
-│   └──────────────────────────────────────────────────┘       │
-│                                                              │
-│   + bundles satellites : Chartjs, Dropzone, Cropperjs,       │
-│     Notify, Autocomplete, LeafletMap, Icons, Toggle…         │
-└──────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────┐
+│            PHP / Twig                    │
+│   ┌────────────────┐                     │
+│   │ Live Components│                     │
+│   └───────┬────────┘                     │
+│           │                              │
+│   ┌───────▼────────┐                     │
+│   │ Twig Components│                     │
+│   └────────────────┘                     │
+└──────────────┬───────────────────────────┘
+               │
+        ┌──────▼──────────┐
+        │ Stimulus bridge │
+        └──────┬──────────┘
+               │
+┌──────────────▼───────────────────────────┐
+│            JavaScript                    │
+│           (Stimulus)                     │
+└──────────────┬───────────────────────────┘
+               │
+┌──────────────▼───────────────────────────┐
+│         Build / Assets                   │
+│         (AssetMapper)                    │
+└──────────────────────────────────────────┘
 ```
 
-### Le Stimulus bridge, en 30 secondes
+### Le Stimulus bridge en 30 secondes
 
 C'est le **mécanisme central** qui rend Symfony UX agréable : un bundle PHP **livre** des contrôleurs Stimulus, qui s'enregistrent **automatiquement** côté client.
 
@@ -111,44 +129,33 @@ C'est le **mécanisme central** qui rend Symfony UX agréable : un bundle PHP **
 3. Symfony Flex écrit dans assets/controllers.json
         │
         ▼
-4. AssetMapper / Webpack Encore lit le fichier
+4. AssetMapper lit le fichier
         │
         ▼
 5. data-controller="live" est dispo partout, zéro npm
 ```
 
-### Les 3 douleurs du chapitre 1, cochées
+> 💬 **Zéro `npm install`, zéro config JS : une commande et c'est en place.**
 
-| Douleur | Brique de réponse |
-|---------|-------------------|
-| Contrat de typage | **Twig Components** → props PHP typées, `#[ExposeInTemplate]` |
-| Unité d'organisation | **Twig Components** → 1 classe + 1 template colocalisés |
-| Réactivité server-driven | **Live Components** → `#[LiveProp]`, `#[LiveAction]`, DOM morphing |
+---
 
-### Grille d'évaluation appliquée
+## Slide 2.5 — Ce qu'on retient
 
-| Brique | Logique PHP | Template séparé | Props typées | État | Interactivité |
-|--------|:-----------:|:---------------:|:------------:|:----:|:-------------:|
-| **Twig Components** | ✅ | ✅ | ✅ | ❌ | ❌ |
-| **Live Components** | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Stimulus** | ❌ | ⚠️ | ⚠️ | ⚠️ client | ✅ |
-| **Turbo** | n/a | n/a | n/a | n/a | ✅ nav |
+Le modèle composant tient en **trois idées** : **encapsulation**, **réactivité**, **composition**.
 
-C'est la **combinaison** qui couvre tout le tableau du chapitre 1.
+Symfony UX les apporte en PHP — **sans Virtual DOM, sans bundle, sans hydratation**. Une commande `composer`, le bridge Stimulus, et c'est prêt.
 
-### 💬 Message clé
+On garde Symfony. On gagne le composant. On laisse la complexité SPA de côté.
 
-> **"Symfony UX = bridge backend ↔ frontend."**
->
-> On garde la productivité Symfony, on gagne le modèle composant, on évite la complexité SPA quand elle n'est pas nécessaire.
+> **Regardons en détails les Twig Components et les Live Components.**
 
 ---
 
 ## 🗣️ Narration (script oral)
 
-> "Le modèle composant, c'est cinq idées : props, state, render, events, composition. Indépendantes du langage. React et Vue les implémentent en JS — mais rien, conceptuellement, n'empêche de les porter en PHP.
+> "Le modèle composant, c'est trois idées : encapsulation, réactivité, composition. Indépendantes du langage. React et Vue les implémentent en JS — mais rien, conceptuellement, n'empêche de les porter en PHP.
 >
-> Symfony UX fait exactement ça. Twig Components apporte les props typées et l'unité d'organisation. Live Components ajoute l'état et la réactivité, via un round-trip Ajax et du DOM morphing. Stimulus reste là pour les cas purement client. Turbo gère la navigation. Et tout ça communique par un pont unique — le Stimulus bridge — qui permet à un `composer require` de livrer du JS sans que tu touches à npm."
+> Symfony UX fait exactement ça. Twig Components apporte la classe PHP + le template + les props typées : un composant statique, sans état. Live Components reprend cette base et y ajoute une couche d'état synchronisé entre client et serveur, plus un endpoint HTTP auto-exposé. Stimulus reste là pour les cas purement client. Et tout ça communique par un pont unique — le Stimulus bridge — qui permet à un `composer require` de livrer du JS sans que tu touches à npm."
 
 ---
 
